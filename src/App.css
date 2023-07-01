@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+@font-face {
+  font-family: Vazir;
+  font-style: normal;
+  font-weight: 100;
+  src: url("../public/assets/fonts/Vazir.woff2") format("woff2"),
+ }
+
+body {
+   font-family: "Vazir";
   direction: rtl;
-  background: linear-gradient(104.05deg, #0c0a5a 19.72%, #1f0042 92.22%)
-
+  background: linear-gradient(104.05deg, #0c0a5a 19.72%, #1f0042 92.22%);
 }
-.primary-gradient {
-  background: linear-gradient(104.05deg, #0c0a5a 19.72%, #1f0042 92.22%)
 
+.primary-gradient {
+  background: linear-gradient(104.05deg, #0c0a5a 19.72%, #1f0042 92.22%);
 }
