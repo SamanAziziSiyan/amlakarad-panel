@@ -2,7 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./Components/pages/Auth/Login";
 import Home from "./Components/pages/Home";
 import "./App.css";
-import Layout from "./Components/pages/Layout";
+import Layout from "./Components/Layout";
+import CreateEstate from "./Components/pages/CreateEstate";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/create-estate" element={<CreateEstate />} />
         </Routes>
       </Layout>
     </>
