@@ -4,6 +4,7 @@ import Home from "./Components/pages/Home";
 import "./App.css";
 import Layout from "./Components/Layout";
 import CreateEstate from "./Components/pages/CreateEstate";
+import SearchEstate from "./Components/pages/SearchEstate";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-estate" element={<CreateEstate />} />
+          <Route path="/search-estate" element={<SearchEstate />} />
         </Routes>
       </Layout>
     </>
