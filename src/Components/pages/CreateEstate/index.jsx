@@ -19,7 +19,7 @@ const CreateEstate = () => {
               handleCreateEstate(values);
             }}
           >
-            <Form className=" px-32">
+            <Form className=" px-32 py-10">
               <label htmlFor="title" className="mb-3 text-white block">
                 عنوان
               </label>
