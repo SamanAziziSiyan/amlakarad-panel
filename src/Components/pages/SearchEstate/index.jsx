@@ -1,7 +1,7 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 
-const Home = () => {
+const SearchEstate = () => {
   return (
     <>
       <div className="w-full text-center m-auto mt-20">
@@ -376,4 +376,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SearchEstate;

@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginSchema } from "../../../validation/formikValidation";
-const CreateEstate = () => {
+const CreatePersonnel = () => {
   const handleCreateEstate = () => {};
 
   return (
@@ -110,4 +110,4 @@ const CreateEstate = () => {
   );
 };
 
-export default CreateEstate;
+export default CreatePersonnel;

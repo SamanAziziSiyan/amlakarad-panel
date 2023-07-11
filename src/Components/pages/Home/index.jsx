@@ -45,8 +45,11 @@ const Home = () => {
                   </span>
                 </div>
               </Link>
+
               <div className=" w-1/3  max-md:w-5/6 h-52 flex items-center gap-2 ">
-                <div className="bg-white/20 backdrop-blur-md bg-opacity-50 w-3/6 h-full hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
+              <Link to={"/search-personnel"} className="h-full  w-3/6">
+
+                <div className="bg-white/20 backdrop-blur-md bg-opacity-50  h-full hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
                   <RiUserSearchFill
                     className="text-white max-md:w-10"
                     size={60}
@@ -55,6 +58,7 @@ const Home = () => {
                     جستجو اشخاص
                   </span>
                 </div>
+                </Link>
                 <div className="bg-white/20 w-3/6 backdrop-blur-md bg-opacity-50 h-full rounded-xl hover:scale-[1.02] cursor-pointer flex items-center flex-col justify-between py-8">
                   <RiSettings3Fill
                     className="text-white max-md:w-10"
