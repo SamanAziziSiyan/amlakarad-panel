@@ -1,7 +1,29 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginSchema } from "../../../validation/formikValidation";
+import service from "../../../server/service";
+import { toastAlert } from "../../helper";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const handleLogin = () => {};
+  const navigate = useNavigate();
+
+  const handleLogin = (values) => {
+    let { username, password } = values;
+    service.auth
+      .lgoin({
+        username,
+        password,
+      })
+      .then((data) => {
+        if (data.status == 403)
+          throw new Error("نام کاربری یا رمز عبور اشتباه است.");
+        localStorage.setItem("token", data.data.token);
+        toastAlert("با موفقیت وارد شدید ", "success");
+        navigate("/");
+      })
+      .catch((err) => {
+        return toastAlert("نام کاربری یا رمز عبور اشتباه است", "error");
+      });
+  };
   return (
     <>
       <div className="h-screen  primary-gradient flex items-center justify-center relative  ">
@@ -18,7 +40,7 @@ const Login = () => {
 
             <Formik
               initialValues={{
-                mobile: "",
+                username: "",
                 password: "",
               }}
               validationSchema={loginSchema}
@@ -28,10 +50,10 @@ const Login = () => {
             >
               <Form className=" px-4 text-center">
                 <Field
-                  id="mobile"
-                  name="mobile"
+                  id="username"
+                  name="username"
                   type="text"
-                  placeholder="شماره موبایل"
+                  placeholder="نام کاربری یا موبایل"
                   className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
                 />
 
@@ -48,7 +70,7 @@ const Login = () => {
                   className="bg-[#4a80bb] shadow-sm shadow-indigo-700 my-4 w-3/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                 >
                   {" "}
-                  ارسال کد
+                  ورود
                 </button>
               </Form>
             </Formik>

@@ -1,12 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./Components/pages/Auth/Login";
 import Home from "./Components/pages/Home";
-import "./App.css";
 import Layout from "./Components/Layout";
 import CreateEstate from "./Components/pages/CreateEstate";
 import SearchEstate from "./Components/pages/SearchEstate";
 import CreatePersonnel from "./Components/pages/CreatePersonnel";
 import SearchPersonnel from "./Components/pages/SearchPersonnel";
+import { ToastContainer } from "react-toastify";
+
+import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -19,11 +22,10 @@ function App() {
           <Route path="/search-estate" element={<SearchEstate />} />
           <Route path="/create-personnel" element={<CreatePersonnel />} />
           <Route path="/search-personnel" element={<SearchPersonnel />} />
-
-
-          
         </Routes>
+        <ToastContainer />
       </Layout>
+      
     </>
   );
 }

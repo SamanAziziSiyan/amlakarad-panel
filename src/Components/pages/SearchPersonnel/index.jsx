@@ -1,7 +1,11 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
-
+import { useEffect } from "react";
+import service from "../../../server/service";
 const SearchPersonnel = () => {
+  useEffect(()=>{
+
+  }, [])
   return (
     <>
       <div className="w-full text-center m-auto mt-20">
