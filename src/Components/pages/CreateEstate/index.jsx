@@ -9,8 +9,7 @@ const CreateEstate = () => {
         <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
         <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
         <div className="w-full h-full rounded-2xl backdrop-blur-md bg-opacity-50 shadow-blue-800 shadow-sm bg-white/20 flex justify-around flex-col ">
-          <h3>ثبت ملک جدید</h3>
-          <Formik
+           <Formik
             initialValues={{
               mobile: "",
               password: "",
@@ -20,7 +19,7 @@ const CreateEstate = () => {
               handleCreateEstate(values);
             }}
           >
-            <Form className=" px-32">
+            <Form className=" px-32 py-10">
               <label htmlFor="title" className="mb-3 text-white block">
                 عنوان
               </label>
