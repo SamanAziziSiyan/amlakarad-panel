@@ -4,7 +4,12 @@ import { useEffect } from "react";
 import service from "../../../server/service";
 const SearchPersonnel = () => {
   useEffect(()=>{
-
+    service.personnel.getUsers()
+    .then(data=>{
+      console.log(data);
+    }).catch(err=>{
+      console.log(err);
+    })
   }, [])
   return (
     <>
