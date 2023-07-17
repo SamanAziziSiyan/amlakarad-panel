@@ -35,7 +35,7 @@ const Login = () => {
               <h3 className="mb-5 text-2xl font-medium text-gray-300">
                 ورود به پنل{" "}
               </h3>
-              <img src="/images/logo.png" className="w-16 h-16 " />
+              <img src="/assets/images/logo.png" className="w-16 h-16 " />
             </div>
 
             <Formik
