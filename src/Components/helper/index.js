@@ -13,3 +13,11 @@ export const toastAlert = (msg, type = "error") => {
     type: type,
   });
 };
+
+export const getToken = () => {
+  return localStorage.getItem("token");
+};
+export const getUserDataOnLocalStorage = () => {
+  let userData = localStorage.getItem("user");
+  return JSON.parse(userData);
+};

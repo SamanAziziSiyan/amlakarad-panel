@@ -47,17 +47,16 @@ const Home = () => {
               </Link>
 
               <div className=" w-1/3  max-md:w-5/6 h-52 flex items-center gap-2 ">
-              <Link to={"/search-personnel"} className="h-full  w-3/6">
-
-                <div className="bg-white/20 backdrop-blur-md bg-opacity-50  h-full hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
-                  <RiUserSearchFill
-                    className="text-white max-md:w-10"
-                    size={60}
-                  />
-                  <span className="font-bold text-base xl:text-lg text-white">
-                    جستجو اشخاص
-                  </span>
-                </div>
+                <Link to={"/search-personnel"} className="h-full  w-3/6">
+                  <div className="bg-white/20 backdrop-blur-md bg-opacity-50  h-full hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
+                    <RiUserSearchFill
+                      className="text-white max-md:w-10"
+                      size={60}
+                    />
+                    <span className="font-bold text-base xl:text-lg text-white">
+                      جستجو اشخاص
+                    </span>
+                  </div>
                 </Link>
                 <div className="bg-white/20 w-3/6 backdrop-blur-md bg-opacity-50 h-full rounded-xl hover:scale-[1.02] cursor-pointer flex items-center flex-col justify-between py-8">
                   <RiSettings3Fill
@@ -86,7 +85,7 @@ const Home = () => {
               <div className="bg-white/20 w-1/3 h-52  max-md:w-5/6 backdrop-blur-md bg-opacity-50 hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
                 <RiMindMap className="text-white max-md:w-[50px]" size={80} />
                 <span className="font-bold text-base xl:text-lg text-white">
-                  تعیین سطح دسترسی
+                  گزارش فعالیت کاربران
                 </span>
               </div>
               <div className=" w-1/3  max-md:w-5/6 h-52 flex items-center gap-2 ">

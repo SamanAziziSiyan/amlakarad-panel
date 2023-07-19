@@ -3,6 +3,7 @@ import { loginSchema } from "../../../validation/formikValidation";
 import service from "../../../server/service";
 import { toastAlert } from "../../helper";
 import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 const Login = () => {
   const navigate = useNavigate();
 
@@ -17,6 +18,20 @@ const Login = () => {
         if (data.status == 403)
           throw new Error("نام کاربری یا رمز عبور اشتباه است.");
         localStorage.setItem("token", data.data.token);
+        let decodeToken = jwtDecode(data.data.token);
+
+        service.personnel
+          .getUser(data.data.token, decodeToken.data.user.id)
+          .then((user) => {
+            let userData = {
+              username: user.data.extra.username,
+              role: user.data.extra.role[0],
+            };
+            localStorage.setItem("user", JSON.stringify(userData));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         toastAlert("با موفقیت وارد شدید ", "success");
         navigate("/");
       })

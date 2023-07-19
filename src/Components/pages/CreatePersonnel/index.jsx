@@ -1,7 +1,37 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { loginSchema } from "../../../validation/formikValidation";
+import { createUser } from "../../../validation/formikValidation";
+import service from "../../../server/service";
+import { getToken, toastAlert } from "../../helper";
 const CreatePersonnel = () => {
-  const handleCreateEstate = () => {};
+  const handleCreateUser = (value) => {
+    console.log(value);
+    let data = {
+      username: value.username,
+      name: value.name,
+      password: value.password,
+      email: value.email,
+      meta: { phone: value.meta },
+      roles: value.roles,
+    };
+
+    let userToken = getToken();
+    console.log(value);
+    service.personnel
+      .creatUser(data, userToken)
+      .then((data) => {
+        if (data.status != 201) throw new Error();
+        if (data.data.status == 500) throw new Error("isdfsdf");
+        toastAlert(
+          `کاربر با نام ${data.data.name} با موفقیت ایجاد شد`,
+          "success"
+        );
+      })
+      .catch((err) => {
+        if (err.response) {
+          toastAlert(err.response.data.message);
+        } else toastAlert("سرور مشغول است");
+      });
+  };
 
   return (
     <>
@@ -11,31 +41,39 @@ const CreatePersonnel = () => {
         <div className="w-full h-full rounded-2xl backdrop-blur-md bg-opacity-50 shadow-blue-800 shadow-sm bg-white/20 flex justify-around flex-col ">
           <Formik
             initialValues={{
-              mobile: "",
+              username: "",
+              name: "",
               password: "",
+              email: "",
+              meta: "",
+              roles: "",
             }}
-            validationSchema={loginSchema}
+            validationSchema={createUser}
             onSubmit={(values) => {
-              handleCreateEstate(values);
+              handleCreateUser(values);
             }}
           >
             <Form className=" px-32 py-10">
               <div className="flex items-center justify-between gap-4">
                 <div className="w-full">
-                  <label htmlFor="mobile" className="mb-3 text-white block">
+                  <label htmlFor="username" className="mb-3 text-white block">
                     نام کاربری
                   </label>
                   <Field
-                    id="mobile"
-                    name="mobile"
+                    id="username"
+                    name="username"
                     type="text"
                     placeholder=""
                     className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
                   />
+                  <ErrorMessage
+                    name="username"
+                    render={(msg) => <div className="text-red-500">{msg}</div>}
+                  />
                 </div>
                 <div className="w-full">
                   <label htmlFor="email" className="mb-3 text-white block">
-                    شماره تماس
+                    ایمیل
                   </label>
                   <Field
                     id="email"
@@ -44,53 +82,85 @@ const CreatePersonnel = () => {
                     placeholder=""
                     className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
                   />
+                  <ErrorMessage
+                    name="email"
+                    render={(msg) => <div className="text-red-500">{msg}</div>}
+                  />
                 </div>
               </div>
 
-              <label htmlFor="description" className="mb-3 text-white block">
-                آدرس
-              </label>
-              <Field
-                id="description"
-                name="description"
-                as="textarea"
-                rows={2}
-                className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-              />
-
-<label htmlFor="description" className="mb-3 text-white block">
-                توضیحات
-              </label>
-              <Field
-                id="description"
-                name="description"
-                as="textarea"
-                rows={4}
-                className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-              />
-
-             
+              <div className="flex items-center justify-between gap-4">
+                <div className="w-full">
+                  <label htmlFor="username" className="mb-3 text-white block">
+                    نام و نام خانوادگی
+                  </label>
+                  <Field
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder=""
+                    className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                  <ErrorMessage
+                    name="name"
+                    render={(msg) => <div className="text-red-500">{msg}</div>}
+                  />
+                </div>
+                <div className="w-full">
+                  <label htmlFor="email" className="mb-3 text-white block">
+                    رمز عبور
+                  </label>
+                  <Field
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder=""
+                    className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                  <ErrorMessage
+                    name="password"
+                    render={(msg) => <div className="text-red-500">{msg}</div>}
+                  />
+                </div>
+              </div>
 
               <div className="flex items-center justify-between gap-4">
                 <div className="w-full flex items-center justify-between gap-4">
-                  <div className="w-3/6">
+                  <div className="w-full">
                     <label htmlFor="area" className="mb-3 text-white block">
                       نوع کاربری
                     </label>
                     <Field
-                      id="area"
-                      name="area"
+                      id="roles"
+                      name="roles"
                       as="select"
-                      rows={10}
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                     >
-                      <option>انتخاب کنید</option>
-                      <option>انتخاب کنید</option>
-                      <option>انتخاب کنید</option>
-                      <option>انتخاب کنید</option>
-                      <option>انتخاب کنید</option>
-                    
+                      <option value="">انتخاب کنید </option>
+                      <option value="administrator">مدیر کل </option>
+                      <option value="karmand"> کارمند</option>
+                      <option value="moshaver">مشاور املاک </option>
+                      <option value="karbar">کاربر عادی</option>
                     </Field>
+                    <ErrorMessage
+                      name="roles"
+                      render={(msg) => (
+                        <div className="text-red-500">{msg}</div>
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="w-full flex items-center justify-between gap-4">
+                  <div className="w-full">
+                    <label htmlFor="area" className="mb-3 text-white block">
+                      شماره تماس
+                    </label>
+                    <Field
+                      id="meta"
+                      name="meta"
+                      type="text"
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    />
                   </div>
                 </div>
               </div>

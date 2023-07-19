@@ -1,7 +1,74 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
+import service from "../../../server/service";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SearchEstate = () => {
+  const [states, setStates] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let userToken = getToken();
+    service.states
+      .filterStates(
+        {
+          from: 1,
+          to:1000000
+        },
+        userToken
+      )
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    let userData = getUserDataOnLocalStorage();
+    if (userData.role.administrator) {
+      service.states
+        .getStates()
+        .then((data) => {
+          // if (data.data.states != 200) throw new Error();
+          console.log(data.data);
+          setStates(data.data);
+        })
+        .catch((err) => {
+          navigate("/");
+          toastAlert("سرور مشغول است");
+        });
+    }
+  }, []);
+  const deleteState = (stateId, stateTitle) => {
+    let userToken = getToken();
+    Swal.fire({
+      title: `آیا از حذف ${stateTitle} مطمئن هستید ؟`,
+      text: "این عمل قابل بازگردانی نیست!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "!بله حذف شود",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        service.states
+          .deleteState(stateId, userToken)
+          .then((data) => {
+            console.log(data.data);
+            // if (!data.data.deleted) throw new Error();
+            let filteredStates = states.filter((item) => item.ID != stateId);
+            setStates(filteredStates);
+          })
+          .catch((err) => {
+            console.log(err);
+            toastAlert("سرور مشغول است");
+          });
+        Swal.fire("حذف شد!", "ملک مورد نظر حذف شد", "success");
+      }
+    });
+  };
   return (
     <>
       <div className="w-full text-center m-auto mt-20">
@@ -83,289 +150,90 @@ const SearchEstate = () => {
               </div>
               <div className="w-full h-auto ">
                 <div className="grid grid-cols-12 gap-4 px-2 mt-10">
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                    <div className="flex flex-col p-2">
-                      <img
-                        src="/assets/images/home-img.jpg"
-                        className="w-full rounded-md"
-                      />
+                  {states.map((item) => (
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
+                      <div className="flex flex-col p-2">
+                        <img
+                          src="/assets/images/home-img.jpg"
+                          className="w-full rounded-md"
+                        />
 
-                      <p className="mt-3 text-center text-gray-100">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        تابهای زیادی در شصت
-                      </p>
+                        <p className="mt-3 text-center text-gray-100">
+                          {item.post_content.substring(0, 100) + " ..."}
+                        </p>
 
-                      <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
+                        <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
+                          <div className="flex ">
+                            <FaShower color="#fff" />
+                            <span className="mr-2 text-sm ">
+                              آسانسور
+                              {item.asansor[0] == "دارد" ? "دارد" : "ندارد"}
+                            </span>
+                          </div>
+
+                          <div className="flex ">
+                            <FaShower color="#fff" />
+                            <span className="mr-2 text-sm ">
+                              نوع کاربری
+                              {item.karbari}
+                            </span>
+                          </div>
+
+                          <div className="flex ">
+                            <FaShower color="#fff" />
+                            <span className="mr-2 text-sm ">
+                              پارکینگ{" "}
+                              {item.parking[0] == "دارد" ? "دارد" : "ندارد"}
+                            </span>
+                          </div>
+
+                          <div className="flex ">
+                            <FaShower color="#fff" />
+                            <span className="mr-2 text-sm ">
+                              متراژ{" "}
+                              {item.metrazh[0] == ""
+                                ? "نامعلوم"
+                                : item.metrazh[0]}
+                            </span>
+                          </div>
+
+                          <div className="flex ">
+                            <FaShower color="#fff" />
+                            <span className="mr-2 text-sm ">
+                              نوع ملک
+                              {item.karbari}
+                            </span>
+                          </div>
+
+                          <div className="flex ">
+                            <FaShower color="#fff" />
+                            <span className="mr-2 text-sm ">
+                              معامله {item.moamele}
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
+                        <div className="flex items-center gap-4 mt-4 justify-center">
+                          <button
+                            onClick={() => {
+                              deleteState(item.ID, item.post_title);
+                            }}
+                            type="button"
+                            className="bg-red-500 p-2 rounded-3xl text-white text-sm "
+                          >
+                            حذف{" "}
+                          </button>
+
+                          <button
+                            type="button"
+                            className="bg-sky-700 p-2 rounded-3xl text-white text-sm"
+                          >
+                            ویرایش
+                          </button>
                         </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center">
-                        <button type="button" className="bg-red-500 p-2 rounded-3xl text-white text-sm ">حذف </button>
-
-                        <button type="button" className="bg-sky-700 p-2 rounded-3xl text-white text-sm">ویرایش</button>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                    <div className="flex flex-col p-2">
-                      <img
-                        src="/assets/images/home-img.jpg"
-                        className="w-full rounded-md"
-                      />
-
-                      <p className="mt-3 text-center text-gray-100">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        تابهای زیادی در شصت
-                      </p>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center">
-                        <button type="button" className="bg-red-500 p-2 rounded-3xl text-white text-sm ">حذف </button>
-
-                        <button type="button" className="bg-sky-700 p-2 rounded-3xl text-white text-sm">ویرایش</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                    <div className="flex flex-col p-2">
-                      <img
-                        src="/assets/images/home-img.jpg"
-                        className="w-full rounded-md"
-                      />
-
-                      <p className="mt-3 text-center text-gray-100">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        تابهای زیادی در شصت
-                      </p>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center">
-                        <button type="button" className="bg-red-500 p-2 rounded-3xl text-white text-sm ">حذف </button>
-
-                        <button type="button" className="bg-sky-700 p-2 rounded-3xl text-white text-sm">ویرایش</button>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                    <div className="flex flex-col p-2">
-                      <img
-                        src="/assets/images/home-img.jpg"
-                        className="w-full rounded-md"
-                      />
-
-                      <p className="mt-3 text-center text-gray-100">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        تابهای زیادی در شصت
-                      </p>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center">
-                        <button type="button" className="bg-red-500 p-2 rounded-3xl text-white text-sm ">حذف </button>
-
-                        <button type="button" className="bg-sky-700 p-2 rounded-3xl text-white text-sm">ویرایش</button>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                    <div className="flex flex-col p-2">
-                      <img
-                        src="/assets/images/home-img.jpg"
-                        className="w-full rounded-md"
-                      />
-
-                      <p className="mt-3 text-center text-gray-100">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        تابهای زیادی در شصت
-                      </p>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center">
-                        <button type="button" className="bg-red-500 p-2 rounded-3xl text-white text-sm ">حذف </button>
-
-                        <button type="button" className="bg-sky-700 p-2 rounded-3xl text-white text-sm">ویرایش</button>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                    <div className="flex flex-col p-2">
-                      <img
-                        src="/assets/images/home-img.jpg"
-                        className="w-full rounded-md"
-                      />
-
-                      <p className="mt-3 text-center text-gray-100">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        تابهای زیادی در شصت
-                      </p>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-
-                        <div className="flex ">
-                          <FaShower color="#fff" />
-                          <span className="mr-2 text-sm ">دارد</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mt-4 justify-center">
-                        <button type="button" className="bg-red-500 p-2 rounded-3xl text-white text-sm ">حذف </button>
-
-                        <button type="button" className="bg-sky-700 p-2 rounded-3xl text-white text-sm">ویرایش</button>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
