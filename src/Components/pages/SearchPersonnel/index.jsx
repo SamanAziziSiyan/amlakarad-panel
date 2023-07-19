@@ -2,7 +2,7 @@ import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import service from "../../../server/service";
-import { getToken, toastAlert } from "../../helper";
+import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -14,6 +14,17 @@ const SearchPersonnel = () => {
   const [showFilteredUser, setShowFilterdUser] = useState(false);
 
   useEffect(() => {
+    let userData = getUserDataOnLocalStorage();
+
+    if (
+      userData.role.administrator == undefined &&
+      userData.role.karmand == undefined
+    ) {
+      toastAlert("شما به این بخش دسترسی ندارید");
+      navigate("/");
+      return;
+    }
+
     let userToken = getToken();
     service.personnel
       .getUsers(userToken)
@@ -25,7 +36,6 @@ const SearchPersonnel = () => {
         console.log(err);
         toastAlert("شما به بخش دسترسی ندارید");
       });
-
   }, []);
 
   const handleDeleteUser = (id, name) => {
@@ -272,7 +282,6 @@ const SearchPersonnel = () => {
                                   </td>
                                 </tr>
                               ))}
-                           
                         </tbody>
                       </table>
                     </div>

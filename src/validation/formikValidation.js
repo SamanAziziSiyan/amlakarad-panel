@@ -14,3 +14,8 @@ export const createUser = Yup.object().shape({
   password: Yup.string().required("رمز عبور الزامی می باشد"),
   roles: Yup.string().required("نقش کاربر الزامی می باشد"),
 });
+
+export const changePasswordSchema = Yup.object().shape({
+  confirmPassword: Yup.string().required(" تکرار رمز عبور الزامی می باشد"),
+  password: Yup.string().required("رمز عبور الزامی می باشد"),
+});

@@ -11,12 +11,15 @@ const SearchEstate = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let userData = getUserDataOnLocalStorage();
+    console.log(userData);
+    if(userData.role.administrator) return navigate("/")
     let userToken = getToken();
     service.states
       .filterStates(
         {
           from: 1,
-          to:1000000
+          to: 1000000,
         },
         userToken
       )
@@ -26,7 +29,6 @@ const SearchEstate = () => {
       .catch((err) => {
         console.log(err);
       });
-    let userData = getUserDataOnLocalStorage();
     if (userData.role.administrator) {
       service.states
         .getStates()

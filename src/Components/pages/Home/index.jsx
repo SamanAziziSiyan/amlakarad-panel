@@ -9,9 +9,25 @@ import {
   RiUserSearchFill,
 } from "react-icons/ri";
 import { FaSignOutAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
 
 const Home = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    let userToken = getToken();
+
+    if (userToken == null) {
+      toastAlert("لطفا ابتدا وارد شوید");
+      navigate("/login");
+    }
+  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    toastAlert("از حساب کاربری خارج شدید", "success");
+    navigate("/login");
+  };
   return (
     <>
       <div className="w-full text-center m-auto mt-20">
@@ -58,15 +74,17 @@ const Home = () => {
                     </span>
                   </div>
                 </Link>
-                <div className="bg-white/20 w-3/6 backdrop-blur-md bg-opacity-50 h-full rounded-xl hover:scale-[1.02] cursor-pointer flex items-center flex-col justify-between py-8">
-                  <RiSettings3Fill
-                    className="text-white max-md:w-10"
-                    size={60}
-                  />
-                  <span className="font-bold text-base xl:text-lg text-white">
-                    تنظیمات
-                  </span>
-                </div>
+                <Link to={"/settings"} className="h-full  w-3/6">
+                  <div className="bg-white/20 backdrop-blur-md bg-opacity-50 h-full rounded-xl hover:scale-[1.02] cursor-pointer flex items-center flex-col justify-between py-8">
+                    <RiSettings3Fill
+                      className="text-white max-md:w-10"
+                      size={60}
+                    />
+                    <span className="font-bold text-base xl:text-lg text-white">
+                      تنظیمات
+                    </span>
+                  </div>
+                </Link>
               </div>
             </div>
 
@@ -98,7 +116,10 @@ const Home = () => {
                     پشتیبان گیری
                   </span>
                 </div>
-                <div className="bg-red-600 b w-3/6 backdrop-blur-md bg-opacity-60 h-full rounded-xl hover:scale-[1.02] cursor-pointer flex items-center flex-col justify-between py-8">
+                <div
+                  onClick={handleLogout}
+                  className="bg-red-600 b w-3/6 backdrop-blur-md bg-opacity-60 h-full rounded-xl hover:scale-[1.02] cursor-pointer flex items-center flex-col justify-between py-8"
+                >
                   <FaSignOutAlt className="text-white max-md:w-10" size={50} />
                   <span className="font-bold text-base xl:text-lg text-white">
                     خروج

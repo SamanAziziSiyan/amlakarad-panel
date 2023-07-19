@@ -1,8 +1,21 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { createUser } from "../../../validation/formikValidation";
 import service from "../../../server/service";
-import { getToken, toastAlert } from "../../helper";
+import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const CreatePersonnel = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let userToken = getToken();
+    let userData = getUserDataOnLocalStorage();
+    if (userData.role.administrator == undefined) {
+      toastAlert("شما به این بخش دسترسی ندارید");
+      navigate("/");
+      return;
+    }
+  }, []);
   const handleCreateUser = (value) => {
     console.log(value);
     let data = {
@@ -15,7 +28,6 @@ const CreatePersonnel = () => {
     };
 
     let userToken = getToken();
-    console.log(value);
     service.personnel
       .creatUser(data, userToken)
       .then((data) => {

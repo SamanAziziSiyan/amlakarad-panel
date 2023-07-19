@@ -19,13 +19,14 @@ const Login = () => {
           throw new Error("نام کاربری یا رمز عبور اشتباه است.");
         localStorage.setItem("token", data.data.token);
         let decodeToken = jwtDecode(data.data.token);
-
+        console.log(decodeToken);
         service.personnel
           .getUser(data.data.token, decodeToken.data.user.id)
           .then((user) => {
             let userData = {
               username: user.data.extra.username,
               role: user.data.extra.role[0],
+              ID: user.data.user.id,
             };
             localStorage.setItem("user", JSON.stringify(userData));
           })

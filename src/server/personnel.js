@@ -11,6 +11,15 @@ const getUser = (token, userId) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+const changePassword = (token, userId, password) => {
+  return axios.post(
+    `${config.api}/wp-json/wp/v2/users/${userId}?password=${password}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
 const deleteUser = (id, token) => {
   return axios.delete(
     `${config.api}/wp-json/wp/v2/users/${id}?reassign=1&force=true`,
@@ -37,4 +46,5 @@ export default {
   deleteUser,
   searchUser,
   creatUser,
+  changePassword
 };
