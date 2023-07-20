@@ -33,7 +33,6 @@ const SearchPersonnel = () => {
         setUsers(data.data);
       })
       .catch((err) => {
-        console.log(err);
         toastAlert("شما به بخش دسترسی ندارید");
       });
   }, []);
@@ -67,17 +66,17 @@ const SearchPersonnel = () => {
     });
   };
   const filterUsers = (xx) => {
+    setFilterUser([]);
+    setShowFilterdUser(true);
     users.map((item) => {
       let userRole = item.extra.role[0];
       if (userRole[xx]) {
-        setUsers([...users, item]);
+        setFilterUser((users) => [...users, item]);
       }
     });
   };
 
   const searchUserByUsername = (username) => {
-    console.log(users);
-
     if (username.length == 0) {
       setShowFilterdUser(false);
     }
@@ -88,11 +87,15 @@ const SearchPersonnel = () => {
       service.personnel
         .searchUser(username, userToken)
         .then((data) => {
-          // if (data.data.status != 200) throw new Error();
-          setFilterUser(data.data);
+          console.log(data);
+           showFilteredUser(true);
+          data.data.map((item) => {
+            console.log(item);
+          });
+          // setFilterUser(data.data);
         })
         .catch((err) => {
-          // toastAlert("کاربر یافت نشد");
+          toastAlert("کاربر یافت نشد");
         });
     }
   };
@@ -106,43 +109,51 @@ const SearchPersonnel = () => {
             <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
 
             <div className="w-full relative  h-auto bg-white/20 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
-              <div className="flex items-center justify-between gap-4 max-lg:flex-wrap">
-                {/* <div className="flex items-center">
+              <div className="flex items-center w-full justify-between gap-4 max-lg:flex-wrap">
+                <div className="flex items-center w-2/6 justify-start gap-4">
                   <button
-                    className="bg-red-500 w-full p-2 rounded-sm text-white mx-4"
+                    className="bg-transparent border-l-2 border-white shadow-sm pl-4  rounded-sm flex items-center  text-white"
+                    onClick={() => {
+                      setShowFilterdUser(false);
+                    }}
+                  >
+                    <span> همه</span>
+                  </button>
+                  <button
+                    className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                     onClick={() => {
                       filterUsers("administrator");
                     }}
                   >
-                    مدیر کل
+                    <span> مدیر کل</span>
                   </button>
                   <button
-                    className="bg-red-500 w-full p-2 rounded-sm text-white mx-4"
+                    className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                     onClick={() => {
                       filterUsers("moshaver");
                     }}
                   >
-                    مشاور املاک
+                    <span> مشاور املاک</span>
                   </button>
                   <button
-                    className="bg-red-500 w-full p-2 rounded-sm text-white mx-4"
+                    className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                     onClick={() => {
                       filterUsers("karmand");
                     }}
                   >
-                    کارمند
+                    <span> کارمند</span>
                   </button>
                   <button
-                    className="bg-red-500 w-full p-2 rounded-sm text-white mx-4"
+                    className="bg-transparent  shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                     onClick={() => {
                       filterUsers("karbar");
                     }}
                   >
-                    کاربر عادی
+                    <span> کاربر عادی</span>
                   </button>
-                </div> */}
+                </div>
 
-                <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
+                <div className="w-3/6 flex items-center justify-between max-lg:flex-col gap-4">
                   <div className="w-full relative">
                     <label htmlFor="area" className="mb-3 text-white block">
                       جستجو بر اساس نام کاربری
@@ -160,55 +171,80 @@ const SearchPersonnel = () => {
                 </div>
               </div>
 
-              <div class="flex flex-col">
-                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                    <div class="overflow-hidden">
-                      <table class="min-w-full text-center text-sm font-light">
-                        <thead class="border-b bg- font-medium rounded-xl bg-white/20 backdrop-blur-md bg-opacity-50 ">
+              <div className="flex flex-col">
+                <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                  <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                    <div className="overflow-hidden">
+                      <table className="min-w-full text-center text-sm font-light">
+                        <thead className="border-b bg- font-medium rounded-xl bg-white/20 backdrop-blur-md bg-opacity-50 ">
                           <tr>
-                            <th scope="col" class=" px-6 py-4 text-gray-950">
+                            <th
+                              scope="col"
+                              className=" px-6 py-4 text-gray-950"
+                            >
                               #
                             </th>
-                            <th scope="col" class=" px-6 py-4 text-gray-950">
+                            <th
+                              scope="col"
+                              className=" px-6 py-4 text-gray-950"
+                            >
                               نام و نام خانوادگی
                             </th>
-                            <th scope="col" class=" px-6 py-4 text-gray-950">
+                            <th
+                              scope="col"
+                              className=" px-6 py-4 text-gray-950"
+                            >
                               نام کاربری
                             </th>
-                            <th scope="col" class=" px-6 py-4 text-gray-950">
+                            <th
+                              scope="col"
+                              className=" px-6 py-4 text-gray-950"
+                            >
                               شماره همراه
                             </th>
 
-                            <th scope="col" class=" px-6 py-4 text-gray-950">
+                            <th
+                              scope="col"
+                              className=" px-6 py-4 text-gray-950"
+                            >
                               سمت
                             </th>
-                            <th scope="col" class=" px-6 py-4 text-gray-950">
+                            <th
+                              scope="col"
+                              className=" px-6 py-4 text-gray-950"
+                            >
                               عملیات
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {showFilteredUser
-                            ? filterUser.map((item, index) => (
-                                <tr key={index} class="border-b ">
-                                  <td class="whitespace-nowrap text-white px-6 py-4 font-medium">
+                          {showFilteredUser ? (
+                            filterUser.length == 0 ? (
+                              <div className="w-full">
+                                <h4 className="text-white mt-10 text-2xl w-full">
+                                  موردی یافت نشد{" "}
+                                </h4>
+                              </div>
+                            ) : (
+                              filterUser.map((item, index) => (
+                                <tr key={index} className="border-b ">
+                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                     {index + 1}
                                   </td>
 
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
+                                  <td className="whitespace-nowrap  px-6 py-4 text-white">
                                     {item.name}
                                   </td>
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
+                                  <td className="whitespace-nowrap  px-6 py-4 text-white">
                                     {item.extra.username}
                                   </td>
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
+                                  <td className="whitespace-nowrap  px-6 py-4 text-white">
                                     {item.extra.phone[0] != ""
                                       ? item.extra.phone[0]
                                       : "ثبت نشده است"}
                                   </td>
 
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
+                                  <td className="whitespace-nowrap  px-6 py-4 text-white">
                                     {item.extra.role.length == 0
                                       ? "نقش یافت نشد"
                                       : item.extra.role[0].moshaver
@@ -221,7 +257,7 @@ const SearchPersonnel = () => {
                                       ? "کارمند"
                                       : "نقش یافت نشد"}
                                   </td>
-                                  <td class="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
+                                  <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
                                     <button
                                       className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
                                       onClick={() => {
@@ -236,52 +272,55 @@ const SearchPersonnel = () => {
                                   </td>
                                 </tr>
                               ))
-                            : users.map((item, index) => (
-                                <tr key={index} class="border-b ">
-                                  <td class="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                    {index + 1}
-                                  </td>
+                            )
+                          ) : (
+                            users.map((item, index) => (
+                              <tr key={index} className="border-b ">
+                                <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                  {index + 1}
+                                </td>
 
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
-                                    {item.name}
-                                  </td>
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
-                                    {item.extra.username}
-                                  </td>
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
-                                    {item.extra.phone[0] != ""
-                                      ? item.extra.phone[0]
-                                      : "ثبت نشده است"}
-                                  </td>
+                                <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                  {item.name}
+                                </td>
+                                <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                  {item.extra.username}
+                                </td>
+                                <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                  {item.extra.phone[0] != ""
+                                    ? item.extra.phone[0]
+                                    : "ثبت نشده است"}
+                                </td>
 
-                                  <td class="whitespace-nowrap  px-6 py-4 text-white">
-                                    {item.extra.role.length == 0
-                                      ? "نقش یافت نشد"
-                                      : item.extra.role[0].moshaver
-                                      ? " مشاور املاک"
-                                      : item.extra.role[0].administrator
-                                      ? "مدیرکل"
-                                      : item.extra.role[0].karbar
-                                      ? "کاربر عادی"
-                                      : item.extra.role[0].karmand
-                                      ? "کارمند"
-                                      : "نقش یافت نشد"}
-                                  </td>
-                                  <td class="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
-                                    <button
-                                      className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
-                                      onClick={() => {
-                                        handleDeleteUser(item.id, item.name);
-                                      }}
-                                    >
-                                      حذف
-                                    </button>
-                                    <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
-                                      ویرایش
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
+                                <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                  {item.extra.role.length == 0
+                                    ? "نقش یافت نشد"
+                                    : item.extra.role[0].moshaver
+                                    ? " مشاور املاک"
+                                    : item.extra.role[0].administrator
+                                    ? "مدیرکل"
+                                    : item.extra.role[0].karbar
+                                    ? "کاربر عادی"
+                                    : item.extra.role[0].karmand
+                                    ? "کارمند"
+                                    : "نقش یافت نشد"}
+                                </td>
+                                <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
+                                  <button
+                                    className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
+                                    onClick={() => {
+                                      handleDeleteUser(item.id, item.name);
+                                    }}
+                                  >
+                                    حذف
+                                  </button>
+                                  <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
+                                    ویرایش
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          )}
                         </tbody>
                       </table>
                     </div>
