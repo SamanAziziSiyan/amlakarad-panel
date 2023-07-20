@@ -13,6 +13,7 @@ const Settings = () => {
     }
     let userToken = getToken() 
     let userData = getUserDataOnLocalStorage()
+    
     service.personnel.changePassword(userData.ID ,userToken , values.password )
     .then(data =>{
         console.log(data);

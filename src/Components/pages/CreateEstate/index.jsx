@@ -1,7 +1,39 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginSchema } from "../../../validation/formikValidation";
+import service from "../../../server/service";
+import { getToken } from "../../helper";
 const CreateEstate = () => {
-  const handleCreateEstate = () => {};
+  const handleCreateEstate = (values) => {
+    let userToken = getToken();
+    let stateData = {
+      title: values.title,
+      content: values.content,
+      status: "publish",
+      postmeta: {
+        mantaghe: values.mantaghe,
+        name: values.name,
+        address: values.address,
+        mobile: values.mobile,
+        email: values.email,
+        moamele: values.moamele,
+        melk: values.melk,
+        // price-form:values.price,
+        metrazh: values.metrazh,
+        wg: values.wg,
+        saheli: values.saheli,
+        shahraki: values.shahraki,
+        kohpaye: values.kohpaye,
+      },
+    };
+    service.states
+      .createState(stateData, userToken)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -9,12 +41,25 @@ const CreateEstate = () => {
         <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
         <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
         <div className="w-full h-full rounded-2xl backdrop-blur-md bg-opacity-50 shadow-blue-800 shadow-sm bg-white/20 flex justify-around flex-col ">
-           <Formik
+          <Formik
             initialValues={{
+              title: "",
+              content: "",
+              mantaghe: "",
+              name: "",
+              address: "",
               mobile: "",
-              password: "",
+              email: "",
+              moamele: "",
+              melk: "",
+              price: "",
+              metrazh: "",
+              wg: "",
+              saheli: "",
+              shahraki: "",
+              kohpaye: "",
             }}
-            validationSchema={loginSchema}
+            // validationSchema={loginSchema}
             onSubmit={(values) => {
               handleCreateEstate(values);
             }}
@@ -30,13 +75,17 @@ const CreateEstate = () => {
                 placeholder=""
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
               />
+              <ErrorMessage
+                name="title"
+                render={(msg) => <div className="text-red-500">{msg}</div>}
+              />
 
               <label htmlFor="description" className="mb-3 text-white block">
                 توضیحات
               </label>
               <Field
-                id="description"
-                name="description"
+                id="content"
+                name="content"
                 as="textarea"
                 rows={10}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -46,8 +95,8 @@ const CreateEstate = () => {
                 منطقه
               </label>
               <Field
-                id="area"
-                name="area"
+                id="mantaghe"
+                name="mantaghe"
                 as="select"
                 rows={10}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -71,7 +120,7 @@ const CreateEstate = () => {
                 </div>
                 <div className="w-full">
                   <label htmlFor="address" className="mb-3 text-white block">
-                    آدرس
+                    آدرس دقیق ملک
                   </label>
                   <Field
                     id="address"
@@ -116,8 +165,8 @@ const CreateEstate = () => {
                       نوع معامله
                     </label>
                     <Field
-                      id="area"
-                      name="area"
+                      id="moamele"
+                      name="moamele"
                       as="select"
                       rows={10}
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -133,8 +182,8 @@ const CreateEstate = () => {
                       نوع ملک
                     </label>
                     <Field
-                      id="area"
-                      name="area"
+                      id="melk"
+                      name="melk"
                       as="select"
                       rows={10}
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -153,8 +202,8 @@ const CreateEstate = () => {
                       نوع نمایش قیمت
                     </label>
                     <Field
-                      id="area"
-                      name="area"
+                      id="price"
+                      name="price"
                       as="select"
                       rows={10}
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -166,11 +215,11 @@ const CreateEstate = () => {
                   </div>
                   <div className="w-full">
                     <label htmlFor="area" className="mb-3 text-white block">
-                      منطقه
+                      متراژ
                     </label>
                     <Field
-                      id="area"
-                      name="area"
+                      id="metrazh"
+                      name="metrazh"
                       type="text"
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                     />
@@ -183,22 +232,22 @@ const CreateEstate = () => {
               </label>
               <div className="flex items-center gap-7">
                 <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="wg[]" id="" />
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
 
                 <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="wg[]" id="" />
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
 
                 <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="wg[]" id="" />
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
 
                 <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="wg[]" id="" />
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
               </div>
@@ -209,35 +258,49 @@ const CreateEstate = () => {
                     ساحلی
                   </label>{" "}
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" class="sr-only peer" />
+                    <input
+                      type="checkbox"
+                      value=""
+                      name="saheli"
+                      class="sr-only peer"
+                    />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
 
                 <div className="mt-4">
                   <label htmlFor="area" className="mb-2 text-white block">
-                    ساحلی
+                    شهرکی
                   </label>{" "}
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" class="sr-only peer" />
+                    <input
+                      type="checkbox"
+                      name="shahraki"
+                      value=""
+                      class="sr-only peer"
+                    />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
 
                 <div className="mt-4">
                   <label htmlFor="area" className="mb-2 text-white block">
-                    ساحلی
+                    کوهپایه
                   </label>{" "}
                   <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" class="sr-only peer" />
+                    <input
+                      type="checkbox"
+                      value=""
+                      name="kohpaye"
+                      class="sr-only peer"
+                    />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
               </div>
 
-
               <label htmlFor="area" className="my-3 text-white block">
-               امکانات
+                امکانات
               </label>
               <div className="flex items-center gap-7 flex-wrap">
                 <div className="flex items-center">
@@ -280,6 +343,25 @@ const CreateEstate = () => {
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
 
+                <div className="flex items-center">
+                  <input type="checkbox" name="" id="" />
+                  <label className="mr-2 text-white block">شمالی</label>
+                </div>
+
+                <div className="flex items-center">
+                  <input type="checkbox" name="" id="" />
+                  <label className="mr-2 text-white block">شمالی</label>
+                </div>
+
+                <div className="flex items-center">
+                  <input type="checkbox" name="" id="" />
+                  <label className="mr-2 text-white block">شمالی</label>
+                </div>
+
+                <div className="flex items-center">
+                  <input type="checkbox" name="" id="" />
+                  <label className="mr-2 text-white block">شمالی</label>
+                </div>
 
                 <div className="flex items-center">
                   <input type="checkbox" name="" id="" />
@@ -301,8 +383,6 @@ const CreateEstate = () => {
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
 
-
-
                 <div className="flex items-center">
                   <input type="checkbox" name="" id="" />
                   <label className="mr-2 text-white block">شمالی</label>
@@ -322,29 +402,6 @@ const CreateEstate = () => {
                   <input type="checkbox" name="" id="" />
                   <label className="mr-2 text-white block">شمالی</label>
                 </div>
-
-
-
-                <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
-                  <label className="mr-2 text-white block">شمالی</label>
-                </div>
-
-                <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
-                  <label className="mr-2 text-white block">شمالی</label>
-                </div>
-
-                <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
-                  <label className="mr-2 text-white block">شمالی</label>
-                </div>
-
-                <div className="flex items-center">
-                  <input type="checkbox" name="" id="" />
-                  <label className="mr-2 text-white block">شمالی</label>
-                </div>
-
 
                 <div className="flex items-center">
                   <input type="checkbox" name="" id="" />

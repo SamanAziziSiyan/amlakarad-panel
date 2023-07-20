@@ -2,33 +2,33 @@ import config from "./config.json";
 import axios from "axios";
 
 const getAutherStates = (userId, token) => {
-  return axios.get(`${config.api}/wp-json/wp/v1/states/auther/${userId}`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/state?auther=${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 const getStates = (token) => {
-  return axios.get(`${config.api}/wp-json/wp/v1/states`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/state`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 const getState = (token, stateId) => {
-  return axios.get(`${config.api}/wp-json/wp/v1/states/${stateId}`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/state/${stateId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 const deleteState = (stateId, token) => {
-  return axios.delete(`${config.api}/wp-json/wp/v1/states/${stateId}`, {
+  return axios.delete(`${config.api}/wp-json/wp/v2/state/${stateId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
 const createState = (data, token) => {
-  return axios.post(`${config.api}/wp-json/wp/v1/states/`, data, {
+  return axios.post(`${config.api}/wp-json/wp/v2/state/`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 const filterStates = (data, token) => {
-  return axios.post(`${config.api}/wp-json/wp/v1/states/filter`, data, {
+  return axios.post(`${config.api}/wp-json/wp/v2/states/filter`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

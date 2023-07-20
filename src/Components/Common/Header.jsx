@@ -4,6 +4,11 @@ const Header = () => {
   const [userName, setUsername] = useState("");
   useEffect(() => {
     let userData = localStorage.getItem("user");
+    console.log(userData);
+    if (!userData) {
+      setUsername("نام کاربری");
+      return;
+    }
     userData = JSON.parse(userData);
     setUsername(userData.username);
   }, []);

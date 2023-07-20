@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginSchema } from "../../../validation/formikValidation";
 import service from "../../../server/service";
-import { toastAlert } from "../../helper";
+import { hashData, toastAlert } from "../../helper";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 const Login = () => {
@@ -26,8 +26,9 @@ const Login = () => {
             let userData = {
               username: user.data.extra.username,
               role: user.data.extra.role[0],
-              ID: user.data.user.id,
+              ID: decodeToken.data.user.id,
             };
+
             localStorage.setItem("user", JSON.stringify(userData));
           })
           .catch((err) => {

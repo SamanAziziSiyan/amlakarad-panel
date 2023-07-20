@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+// import bcrypt from "bcrypt";
 
 export const toastAlert = (msg, type = "error") => {
   toast(msg, {
@@ -21,3 +22,15 @@ export const getUserDataOnLocalStorage = () => {
   let userData = localStorage.getItem("user");
   return JSON.parse(userData);
 };
+
+// export const hashData = (data) => {
+//   const salt = bcrypt.genSaltSync(10);
+//   const hash = bcrypt.hashSync(data, salt);
+//   return hash;
+// };
+
+// export const unHashData = async (data) => {
+//   const unHash = await bcrypt.compare(password, hash);
+
+//   return unHash;
+// };

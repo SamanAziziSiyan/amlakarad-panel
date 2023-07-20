@@ -12,7 +12,7 @@ const getUser = (token, userId) => {
   });
 };
 
-const changePassword = (token, userId, password) => {
+const changePassword = (userId, token, password) => {
   return axios.post(
     `${config.api}/wp-json/wp/v2/users/${userId}?password=${password}`,
     {
@@ -46,5 +46,5 @@ export default {
   deleteUser,
   searchUser,
   creatUser,
-  changePassword
+  changePassword,
 };

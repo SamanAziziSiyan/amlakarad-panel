@@ -13,22 +13,22 @@ const SearchEstate = () => {
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
     console.log(userData);
-    if(userData.role.administrator) return navigate("/")
+    if(!userData.role.administrator) return navigate("/")
     let userToken = getToken();
-    service.states
-      .filterStates(
-        {
-          from: 1,
-          to: 1000000,
-        },
-        userToken
-      )
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // service.states
+    //   .filterStates(
+    //     {
+    //       from: 1,
+    //       to: 1000000,
+    //     },
+    //     userToken
+    //   )
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     if (userData.role.administrator) {
       service.states
         .getStates()
@@ -58,9 +58,8 @@ const SearchEstate = () => {
         service.states
           .deleteState(stateId, userToken)
           .then((data) => {
-            console.log(data.data);
-            // if (!data.data.deleted) throw new Error();
-            let filteredStates = states.filter((item) => item.ID != stateId);
+             // if (!data.data.deleted) throw new Error();
+            let filteredStates = states.filter((item) => item.id != stateId);
             setStates(filteredStates);
           })
           .catch((err) => {
@@ -161,7 +160,7 @@ const SearchEstate = () => {
                         />
 
                         <p className="mt-3 text-center text-gray-100">
-                          {item.post_content.substring(0, 100) + " ..."}
+                          {item.content.rendered.substring(0, 100) + " ..."}
                         </p>
 
                         <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
@@ -169,7 +168,7 @@ const SearchEstate = () => {
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
                               آسانسور
-                              {item.asansor[0] == "دارد" ? "دارد" : "ندارد"}
+                              {item.postmeta.asansor}
                             </span>
                           </div>
 
@@ -177,25 +176,22 @@ const SearchEstate = () => {
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
                               نوع کاربری
-                              {item.karbari}
+                               {item.postmeta.karbari}
                             </span>
                           </div>
 
                           <div className="flex ">
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
-                              پارکینگ{" "}
-                              {item.parking[0] == "دارد" ? "دارد" : "ندارد"}
+                              پارکینگ {" "}{item.postmeta.parking}
                             </span>
                           </div>
 
                           <div className="flex ">
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
-                              متراژ{" "}
-                              {item.metrazh[0] == ""
-                                ? "نامعلوم"
-                                : item.metrazh[0]}
+                              متراژ {item.postmeta.metrazh}
+                            
                             </span>
                           </div>
 
@@ -203,14 +199,14 @@ const SearchEstate = () => {
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
                               نوع ملک
-                              {item.karbari}
+                              {item.postmeta.melk}
                             </span>
                           </div>
 
                           <div className="flex ">
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
-                              معامله {item.moamele}
+                              معامله {item.postmeta.moamele}
                             </span>
                           </div>
                         </div>
@@ -218,7 +214,7 @@ const SearchEstate = () => {
                         <div className="flex items-center gap-4 mt-4 justify-center">
                           <button
                             onClick={() => {
-                              deleteState(item.ID, item.post_title);
+                              deleteState(item.id, item.post_title);
                             }}
                             type="button"
                             className="bg-red-500 p-2 rounded-3xl text-white text-sm "
