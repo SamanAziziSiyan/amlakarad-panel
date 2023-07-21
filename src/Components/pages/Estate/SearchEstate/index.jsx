@@ -1,7 +1,11 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../../helper";
+import {
+  getToken,
+  getUserDataOnLocalStorage,
+  toastAlert,
+} from "../../../helper";
 import service from "../../../../server/service";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -13,7 +17,7 @@ const SearchEstate = () => {
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
     console.log(userData);
-    if(!userData.role.administrator) return navigate("/")
+    if (!userData.role.administrator) return navigate("/");
     let userToken = getToken();
     // service.states
     //   .filterStates(
@@ -33,15 +37,32 @@ const SearchEstate = () => {
       service.states
         .getStates()
         .then((data) => {
-          // if (data.data.states != 200) throw new Error();
-          console.log(data.data);
-          setStates(data.data);
+          data.data.map((item) => {
+            service.states
+              .getStateImage(item.id, userToken)
+              .then((data) => {
+                let stateItem = { imageSrc: "", item: {} };
+                if (data.data[0]) {
+                  stateItem.imageSrc = data.data[0].media_details.file;
+                  stateItem.item = item;
+                } else {
+                  stateItem.imageSrc = "/assets/images/home-img.jpg";
+                  stateItem.item = item;
+                }
+                setStates((states) => [...states, stateItem]);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+          // setStates(data.data);
         })
         .catch((err) => {
           navigate("/");
           toastAlert("سرور مشغول است");
         });
     }
+    console.log(states);
   }, []);
   const deleteState = (stateId, stateTitle) => {
     let userToken = getToken();
@@ -58,7 +79,7 @@ const SearchEstate = () => {
         service.states
           .deleteState(stateId, userToken)
           .then((data) => {
-             // if (!data.data.deleted) throw new Error();
+            // if (!data.data.deleted) throw new Error();
             let filteredStates = states.filter((item) => item.id != stateId);
             setStates(filteredStates);
           })
@@ -155,12 +176,16 @@ const SearchEstate = () => {
                     <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
                       <div className="flex flex-col p-2">
                         <img
-                          src="/assets/images/home-img.jpg"
+                          src={
+                            "http://localhost/amlakarad/wp-content/uploads/" +
+                            item.imageSrc
+                          }
                           className="w-full rounded-md"
                         />
 
                         <p className="mt-3 text-center text-gray-100">
-                          {item.content.rendered.substring(0, 100) + " ..."}
+                          {item.item.content.rendered.substring(0, 100) +
+                            " ..."}
                         </p>
 
                         <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
@@ -168,7 +193,7 @@ const SearchEstate = () => {
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
                               آسانسور
-                              {item.postmeta.asansor}
+                              {item.item.postmeta.asansor}
                             </span>
                           </div>
 
@@ -176,22 +201,21 @@ const SearchEstate = () => {
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
                               نوع کاربری
-                               {item.postmeta.karbari}
+                              {item.item.postmeta.karbari}
                             </span>
                           </div>
 
                           <div className="flex ">
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
-                              پارکینگ {" "}{item.postmeta.parking}
+                              پارکینگ {item.item.postmeta.parking}
                             </span>
                           </div>
 
                           <div className="flex ">
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
-                              متراژ {item.postmeta.metrazh}
-                            
+                              متراژ {item.item.postmeta.metrazh}
                             </span>
                           </div>
 
@@ -199,14 +223,14 @@ const SearchEstate = () => {
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
                               نوع ملک
-                              {item.postmeta.melk}
+                              {item.item.postmeta.melk}
                             </span>
                           </div>
 
                           <div className="flex ">
                             <FaShower color="#fff" />
                             <span className="mr-2 text-sm ">
-                              معامله {item.postmeta.moamele}
+                              معامله {item.item.postmeta.moamele}
                             </span>
                           </div>
                         </div>
@@ -214,7 +238,7 @@ const SearchEstate = () => {
                         <div className="flex items-center gap-4 mt-4 justify-center">
                           <button
                             onClick={() => {
-                              deleteState(item.id, item.post_title);
+                              deleteState(item.item.id, item.item.post_title);
                             }}
                             type="button"
                             className="bg-red-500 p-2 rounded-3xl text-white text-sm "

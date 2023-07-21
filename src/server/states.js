@@ -6,6 +6,12 @@ const getAutherStates = (userId, token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+const getStateImage = (stateId, token) => {
+   return axios.get(`${config.api}/wp-json/wp/v2/media?parent=${stateId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 const getStates = (token) => {
   return axios.get(`${config.api}/wp-json/wp/v2/state`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -40,4 +46,5 @@ export default {
   deleteState,
   createState,
   filterStates,
+  getStateImage,
 };
