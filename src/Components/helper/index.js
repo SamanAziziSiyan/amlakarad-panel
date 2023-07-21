@@ -23,6 +23,17 @@ export const getUserDataOnLocalStorage = () => {
   return JSON.parse(userData);
 };
 
+export const modalStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
 // export const hashData = (data) => {
 //   const salt = bcrypt.genSaltSync(10);
 //   const hash = bcrypt.hashSync(data, salt);

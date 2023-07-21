@@ -1,13 +1,20 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import service from "../../../server/service";
-import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
+import service from "../../../../server/service";
+import {
+  getToken,
+  getUserDataOnLocalStorage,
+  modalStyles,
+  toastAlert,
+} from "../../../helper";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const SearchPersonnel = () => {
   const navigate = useNavigate();
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const [users, setUsers] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
@@ -16,19 +23,20 @@ const SearchPersonnel = () => {
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
 
-    if (
-      userData.role.administrator == undefined &&
-      userData.role.karmand == undefined
-    ) {
-      toastAlert("شما به این بخش دسترسی ندارید");
-      navigate("/");
-      return;
-    }
+    // if (
+    //   userData.role.administrator == undefined &&
+    //   userData.role.karmand == undefined
+    // ) {
+    //   toastAlert("شما به این بخش دسترسی ندارید");
+    //   navigate("/");
+    //   return;
+    // }
 
     let userToken = getToken();
     service.personnel
       .getUsers(userToken)
       .then((data) => {
+        console.log(data);
         if (data.data.status == 403) throw new Error();
         setUsers(data.data);
       })
@@ -65,12 +73,12 @@ const SearchPersonnel = () => {
       }
     });
   };
-  const filterUsers = (xx) => {
+  const filterUsers = (role) => {
     setFilterUser([]);
     setShowFilterdUser(true);
     users.map((item) => {
       let userRole = item.extra.role[0];
-      if (userRole[xx]) {
+      if (userRole[role]) {
         setFilterUser((users) => [...users, item]);
       }
     });
@@ -87,17 +95,22 @@ const SearchPersonnel = () => {
       service.personnel
         .searchUser(username, userToken)
         .then((data) => {
-          console.log(data);
-           showFilteredUser(true);
+          setShowFilterdUser(true);
           data.data.map((item) => {
-            console.log(item);
+            return setFilterUser((users) => [item]);
           });
-          // setFilterUser(data.data);
         })
         .catch((err) => {
           toastAlert("کاربر یافت نشد");
         });
     }
+  };
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
   };
   return (
     <>
@@ -266,9 +279,11 @@ const SearchPersonnel = () => {
                                     >
                                       حذف
                                     </button>
-                                    <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
-                                      ویرایش
-                                    </button>
+                                    <Link to={`/edit-personnel/${item.id}`}>
+                                      <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
+                                        ویرایش
+                                      </button>
+                                    </Link>
                                   </td>
                                 </tr>
                               ))
@@ -314,9 +329,11 @@ const SearchPersonnel = () => {
                                   >
                                     حذف
                                   </button>
-                                  <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
-                                    ویرایش
-                                  </button>
+                                  <Link to={`/edit-personnel/${item.id}`}>
+                                    <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
+                                      ویرایش
+                                    </button>
+                                  </Link>
                                 </td>
                               </tr>
                             ))

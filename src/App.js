@@ -2,10 +2,11 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./Components/pages/Auth/Login";
 import Home from "./Components/pages/Home";
 import Layout from "./Components/Layout";
-import CreateEstate from "./Components/pages/CreateEstate";
-import SearchEstate from "./Components/pages/SearchEstate";
-import CreatePersonnel from "./Components/pages/CreatePersonnel";
-import SearchPersonnel from "./Components/pages/SearchPersonnel";
+import CreateEstate from "./Components/pages/Estate/CreateEstate";
+import SearchEstate from "./Components/pages/Estate/SearchEstate";
+import CreatePersonnel from "./Components/pages/Personnel/CreatePersonnel";
+import EditPersonnel from "./Components/pages/Personnel/EditPersonnel";
+import SearchPersonnel from "./Components/pages/Personnel/SearchPersonnel";
 import Settings from "./Components/pages/Settings";
 import { ToastContainer } from "react-toastify";
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/create-estate" element={<CreateEstate />} />
           <Route path="/search-estate" element={<SearchEstate />} />
           <Route path="/create-personnel" element={<CreatePersonnel />} />
+          <Route path="/edit-personnel/:personnelId" element={<EditPersonnel />} />
           <Route path="/search-personnel" element={<SearchPersonnel />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

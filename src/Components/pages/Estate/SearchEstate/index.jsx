@@ -1,8 +1,8 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
-import service from "../../../server/service";
+import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../../helper";
+import service from "../../../../server/service";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 

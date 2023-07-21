@@ -2,7 +2,7 @@ import config from "./config.json";
 import axios from "axios";
 
 const getUsers = (token) => {
-  return axios.get(`${config.api}/wp-json/wp/v2/users`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/users?per_page=100`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -40,6 +40,12 @@ const creatUser = (data, token) => {
   });
 };
 
+const updateUser = (data, userId,  token) => {
+   return axios.post(`${config.api}/wp-json/wp/v2/users/${userId}`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 export default {
   getUsers,
   getUser,
@@ -47,4 +53,5 @@ export default {
   searchUser,
   creatUser,
   changePassword,
+  updateUser
 };

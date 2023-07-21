@@ -1,7 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { createUser } from "../../../validation/formikValidation";
-import service from "../../../server/service";
-import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
+import { createUser } from "../../../../validation/formikValidation";
+import service from "../../../../server/service";
+import {
+  getToken,
+  getUserDataOnLocalStorage,
+  toastAlert,
+} from "../../../helper";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const CreatePersonnel = () => {
@@ -17,13 +21,12 @@ const CreatePersonnel = () => {
     }
   }, []);
   const handleCreateUser = (value) => {
-    console.log(value);
     let data = {
       username: value.username,
       name: value.name,
       password: value.password,
       email: value.email,
-      meta: { phone: value.meta },
+      phone: value.phone,
       roles: value.roles,
     };
 
@@ -57,7 +60,7 @@ const CreatePersonnel = () => {
               name: "",
               password: "",
               email: "",
-              meta: "",
+              phone: "",
               roles: "",
             }}
             validationSchema={createUser}
@@ -169,7 +172,7 @@ const CreatePersonnel = () => {
                     </label>
                     <Field
                       id="meta"
-                      name="meta"
+                      name="phone"
                       type="text"
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                     />
@@ -182,7 +185,7 @@ const CreatePersonnel = () => {
                 className="bg-[#4a80bb] shadow-sm shadow-indigo-700 my-4 w-3/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
               >
                 {" "}
-                ارسال کد
+                ارسال
               </button>
             </Form>
           </Formik>
