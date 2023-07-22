@@ -1,6 +1,7 @@
 import { FaShower } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import config from "../../../../server/config.json";
 import {
   getToken,
   getUserDataOnLocalStorage,
@@ -9,6 +10,7 @@ import {
 import service from "../../../../server/service";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { RiDeleteBin6Line, RiEdit2Line, RiReplyAllLine } from "react-icons/ri";
 
 const SearchEstate = () => {
   const [states, setStates] = useState([]);
@@ -16,7 +18,6 @@ const SearchEstate = () => {
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
-    console.log(userData);
     if (!userData.role.administrator) return navigate("/");
     let userToken = getToken();
     // service.states
@@ -37,16 +38,17 @@ const SearchEstate = () => {
       service.states
         .getStates()
         .then((data) => {
-          data.data.map((item) => {
-            service.states
-              .getStateImage(item.id, userToken)
+          console.log(data);
+          data.data.map(async (item) => {
+            await service.states
+              .getStateImage(item.ID, userToken)
               .then((data) => {
                 let stateItem = { imageSrc: "", item: {} };
                 if (data.data[0]) {
                   stateItem.imageSrc = data.data[0].media_details.file;
                   stateItem.item = item;
                 } else {
-                  stateItem.imageSrc = "/assets/images/home-img.jpg";
+                  stateItem.imageSrc = "";
                   stateItem.item = item;
                 }
                 setStates((states) => [...states, stateItem]);
@@ -55,14 +57,12 @@ const SearchEstate = () => {
                 console.log(err);
               });
           });
-          // setStates(data.data);
         })
         .catch((err) => {
           navigate("/");
           toastAlert("سرور مشغول است");
         });
     }
-    console.log(states);
   }, []);
   const deleteState = (stateId, stateTitle) => {
     let userToken = getToken();
@@ -100,7 +100,7 @@ const SearchEstate = () => {
             <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>
             <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
 
-            <div className="w-full relative  h-auto bg-white/20 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
+            <div className="w-full relative  h-auto bg-white/5 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
               <div className="flex items-center justify-between gap-4 max-lg:flex-wrap">
                 <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
                   <div className="w-full">
@@ -173,64 +173,76 @@ const SearchEstate = () => {
               <div className="w-full h-auto ">
                 <div className="grid grid-cols-12 gap-4 px-2 mt-10">
                   {states.map((item) => (
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white/20  backdrop-blur-md rounded-2xl">
-                      <div className="flex flex-col p-2">
-                        <img
-                          src={
-                            "http://localhost/amlakarad/wp-content/uploads/" +
-                            item.imageSrc
-                          }
-                          className="w-full rounded-md"
-                        />
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl">
+                      <div className="flex flex-col  pb-4 relative">
+                        <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                          ویژه
+                        </button>
 
-                        <p className="mt-3 text-center text-gray-100">
-                          {item.item.content.rendered.substring(0, 100) +
-                            " ..."}
+                        <img
+                          src={`${
+                            item.imageSrc != ""
+                              ? config.uploadUrl + item.imageSrc
+                              : "/assets/images/default-state-image.png"
+                          }
+                           `}
+                          className="w-full rounded-md max-h-[264px] min-h-[264px]"
+                        />
+                        <div className="flex items-center justify-between w-full px-2 mt-2">
+                          <p className="mt-3 text-center text-gray-400 text-sm">
+                            {item.item.post_date}
+                          </p>
+                          <button className="bg-[#ffca28] p-1 text-xs text-gray-600 px-3 rounded-md">
+                            ویژه
+                          </button>
+                        </div>
+                        <p className="mt-3 text-center text-[#0c0a5a] ">
+                          {item.item.post_title}
                         </p>
 
-                        <div className="flex items-center gap-4 mt-4 justify-center bg-[#aba2b938] p-2 flex-wrap  ">
-                          <div className="flex ">
-                            <FaShower color="#fff" />
+                        <div className=" items-center gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
+                          <div className="flex mt-3">
+                            <FaShower color="#0c0a5a"  />
                             <span className="mr-2 text-sm ">
                               آسانسور
-                              {item.item.postmeta.asansor}
+                              {item.item.asansor}
                             </span>
                           </div>
 
-                          <div className="flex ">
-                            <FaShower color="#fff" />
+                          <div className="flex mt-3">
+                            <FaShower color="#0c0a5a"  />
                             <span className="mr-2 text-sm ">
                               نوع کاربری
-                              {item.item.postmeta.karbari}
+                              {item.item.karbari}
                             </span>
                           </div>
 
-                          <div className="flex ">
-                            <FaShower color="#fff" />
+                          <div className="flex mt-3">
+                            <FaShower color="#0c0a5a"  />
                             <span className="mr-2 text-sm ">
-                              پارکینگ {item.item.postmeta.parking}
+                              پارکینگ {item.item.parking}
                             </span>
                           </div>
 
-                          <div className="flex ">
-                            <FaShower color="#fff" />
+                          <div className="flex mt-3">
+                            <FaShower color="#0c0a5a"  />
                             <span className="mr-2 text-sm ">
-                              متراژ {item.item.postmeta.metrazh}
+                              متراژ {item.item.metrazh}
                             </span>
                           </div>
 
-                          <div className="flex ">
-                            <FaShower color="#fff" />
+                          <div className="flex mt-3">
+                            <FaShower color="#0c0a5a"  />
                             <span className="mr-2 text-sm ">
                               نوع ملک
-                              {item.item.postmeta.melk}
+                              {item.item.melk}
                             </span>
                           </div>
 
-                          <div className="flex ">
-                            <FaShower color="#fff" />
+                          <div className="flex mt-3">
+                            <FaShower color="#0c0a5a"  />
                             <span className="mr-2 text-sm ">
-                              معامله {item.item.postmeta.moamele}
+                              معامله {item.item.moamele}
                             </span>
                           </div>
                         </div>
@@ -241,16 +253,25 @@ const SearchEstate = () => {
                               deleteState(item.item.id, item.item.post_title);
                             }}
                             type="button"
-                            className="bg-red-500 p-2 rounded-3xl text-white text-sm "
+                            className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
                           >
+                            <RiDeleteBin6Line size={18} className="pl-1" />
                             حذف{" "}
                           </button>
 
                           <button
                             type="button"
-                            className="bg-sky-700 p-2 rounded-3xl text-white text-sm"
+                            className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
                           >
+                            <RiEdit2Line size={18} className="pl-1" />
                             ویرایش
+                          </button>
+                          <button
+                            type="button"
+                            className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
+                          >
+                            <RiReplyAllLine size={18} className="pl-1" />
+                            جزئیات
                           </button>
                         </div>
                       </div>

@@ -1,3 +1,4 @@
 {
-  "api": "http://localhost/amlakarad"
+  "api": "http://localhost/amlakarad",
+  "uploadUrl" : "http://localhost/amlakarad/wp-content/uploads/"
 }

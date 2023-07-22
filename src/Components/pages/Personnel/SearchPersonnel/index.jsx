@@ -11,6 +11,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import {
+  RiDeleteBin6Line,
+  RiEdit2Line,
+  RiHomeHeartLine,
+  RiReplyAllLine,
+} from "react-icons/ri";
 
 const SearchPersonnel = () => {
   const navigate = useNavigate();
@@ -121,7 +127,7 @@ const SearchPersonnel = () => {
             <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>
             <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
 
-            <div className="w-full relative  h-auto bg-white/20 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
+            <div className="w-full relative  h-auto bg-white/10 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
               <div className="flex items-center w-full justify-between gap-4 max-lg:flex-wrap">
                 <div className="flex items-center w-2/6 justify-start gap-4">
                   <button
@@ -280,7 +286,14 @@ const SearchPersonnel = () => {
                                       حذف
                                     </button>
                                     <Link to={`/edit-personnel/${item.id}`}>
-                                      <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
+                                      <button
+                                        type="button"
+                                        className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                      >
+                                        <RiEdit2Line
+                                          size={18}
+                                          className="pl-1"
+                                        />
                                         ویرایش
                                       </button>
                                     </Link>
@@ -322,18 +335,37 @@ const SearchPersonnel = () => {
                                 </td>
                                 <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
                                   <button
-                                    className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
                                     onClick={() => {
                                       handleDeleteUser(item.id, item.name);
                                     }}
                                   >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
                                     حذف
                                   </button>
                                   <Link to={`/edit-personnel/${item.id}`}>
-                                    <button className="bg-sky-600 p-2 text-white rounded-xl  shadow-sm shadow-sky-200-500 ">
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
                                       ویرایش
                                     </button>
                                   </Link>
+
+                                  <button
+                                    type="button"
+                                    className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
+                                  >
+                                    <RiHomeHeartLine
+                                      size={20}
+                                      className="pl-1"
+                                    />
+                                    مشاهده املاک
+                                  </button>
                                 </td>
                               </tr>
                             ))
