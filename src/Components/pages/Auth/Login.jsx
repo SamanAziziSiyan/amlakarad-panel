@@ -23,13 +23,13 @@ const Login = () => {
         service.personnel
           .getUser(data.data.token, decodeToken.data.user.id)
           .then((user) => {
-          
+            console.log(user);
             let userData = {
               username: user.data.extra.username,
               role: user.data.extra.role[0],
               ID: decodeToken.data.user.id,
             };
-
+            console.log(userData);
             localStorage.setItem("user", JSON.stringify(userData));
           })
           .catch((err) => {
