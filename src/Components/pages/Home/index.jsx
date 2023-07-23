@@ -11,13 +11,22 @@ import {
 import { FaSignOutAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { getToken, getUserDataOnLocalStorage, toastAlert } from "../../helper";
-
+import {
+  getToken,
+  getUserDataOnLocalStorage,
+  getUserSettinOnLocalStorage,
+  toastAlert,
+} from "../../helper";
+import service from "../../../server/service";
 const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
     let userToken = getToken();
-
+    let settingData = getUserSettinOnLocalStorage();
+    console.log(settingData);
+    let body = document.getElementsByName("body");
+    console.log(body);
+    // body.style.backgroundColor = settingData.from;
     if (userToken == null) {
       toastAlert("لطفا ابتدا وارد شوید");
       navigate("/login");
@@ -28,6 +37,23 @@ const Home = () => {
     localStorage.removeItem("user");
     toastAlert("از حساب کاربری خارج شدید", "success");
     navigate("/login");
+  };
+  const handleBackoupSQL = () => {
+    let userData = getUserDataOnLocalStorage();
+    let userToken = getToken();
+    console.log(userData.role.administrator);
+    if (userData.role.administrator == undefined) {
+      toastAlert("شما به این بخش دسترسی ندارید");
+    } else {
+      service.states
+        .getBackoup(userToken)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   return (
     <>
@@ -107,7 +133,10 @@ const Home = () => {
                   گزارش فعالیت کاربران
                 </span>
               </div>
-              <div className=" w-1/3  max-md:w-5/6 h-52 flex items-center gap-2 ">
+              <div
+                className=" w-1/3  max-md:w-5/6 h-52 flex items-center gap-2 "
+                onClick={handleBackoupSQL}
+              >
                 <div className="bg-white/10 backdrop-blur-md bg-opacity-50 w-3/6 h-full hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
                   <RiDownloadCloud2Fill
                     className="text-white max-md:w-10"

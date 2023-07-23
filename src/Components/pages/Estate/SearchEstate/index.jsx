@@ -37,26 +37,28 @@ const SearchEstate = () => {
     if (userData.role.administrator) {
       service.states
         .getStates()
-        .then((data) => {
-          console.log(data);
-          data.data.map(async (item) => {
+        .then(async (data) => {
+          for await (const state of data.data) {
             await service.states
-              .getStateImage(item.ID, userToken)
+              .getStateImage(state.ID, userToken)
               .then((data) => {
                 let stateItem = { imageSrc: "", item: {} };
                 if (data.data[0]) {
                   stateItem.imageSrc = data.data[0].media_details.file;
-                  stateItem.item = item;
+                  stateItem.item = state;
                 } else {
                   stateItem.imageSrc = "";
-                  stateItem.item = item;
+                  stateItem.item = state;
                 }
                 setStates((states) => [...states, stateItem]);
               })
               .catch((err) => {
                 console.log(err);
               });
-          });
+          }
+          // data.data.map(async (item) => {
+
+          // });
         })
         .catch((err) => {
           navigate("/");
@@ -202,7 +204,7 @@ const SearchEstate = () => {
 
                         <div className=" items-center gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a"  />
+                            <FaShower color="#0c0a5a" />
                             <span className="mr-2 text-sm ">
                               آسانسور
                               {item.item.asansor}
@@ -210,7 +212,7 @@ const SearchEstate = () => {
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a"  />
+                            <FaShower color="#0c0a5a" />
                             <span className="mr-2 text-sm ">
                               نوع کاربری
                               {item.item.karbari}
@@ -218,21 +220,21 @@ const SearchEstate = () => {
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a"  />
+                            <FaShower color="#0c0a5a" />
                             <span className="mr-2 text-sm ">
                               پارکینگ {item.item.parking}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a"  />
+                            <FaShower color="#0c0a5a" />
                             <span className="mr-2 text-sm ">
                               متراژ {item.item.metrazh}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a"  />
+                            <FaShower color="#0c0a5a" />
                             <span className="mr-2 text-sm ">
                               نوع ملک
                               {item.item.melk}
@@ -240,7 +242,7 @@ const SearchEstate = () => {
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a"  />
+                            <FaShower color="#0c0a5a" />
                             <span className="mr-2 text-sm ">
                               معامله {item.item.moamele}
                             </span>

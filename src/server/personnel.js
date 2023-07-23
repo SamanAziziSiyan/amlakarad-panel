@@ -46,6 +46,8 @@ const updateUser = (data, userId,  token) => {
   });
 };
 
+
+
 export default {
   getUsers,
   getUser,
