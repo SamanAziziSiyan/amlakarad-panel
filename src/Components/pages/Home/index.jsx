@@ -1,7 +1,6 @@
 import {
   RiAncientPavilionFill,
   RiDownloadCloud2Fill,
-  RiHomeHeartFill,
   RiMindMap,
   RiSearch2Fill,
   RiSettings3Fill,

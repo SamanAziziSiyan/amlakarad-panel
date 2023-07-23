@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
 import { FaUserTie } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { RiShutDownLine } from "react-icons/ri";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  RiAncientPavilionLine,
+  RiArrowLeftSLine,
+  RiHomeHeartLine,
+  RiSearch2Fill,
+  RiSettings3Fill,
+  RiShutDownLine,
+  RiUserSearchFill,
+} from "react-icons/ri";
 import { toastAlert } from "../helper";
 
 const Header = () => {
   const [userName, setUsername] = useState("");
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
+    console.log(pathname);
     let userData = localStorage.getItem("user");
     console.log(userData);
     if (!userData) {
@@ -27,9 +37,96 @@ const Header = () => {
   return (
     <>
       <div className="relative rounded-xl px-6 w-full h-max  mt-20 flex items-center justify-between bg-white/5 backdrop-blur-md bg-opacity-50">
-        <Link to={"/"}>
-          <img src="/assets/images/logo.png" alt="logo" className="w-16" />
-        </Link>
+        <div className="flex items-center gap-10">
+          <Link to={"/"}>
+            <img src="/assets/images/logo.png" alt="logo" className="w-16" />
+          </Link>
+          <div class="flex items-center py-4 overflow-x-auto whitespace-nowrap">
+            <Link to="/" class="text-gray-400 dark:text-gray-200">
+              <RiHomeHeartLine size={25} />
+            </Link>
+            {pathname == "/settings" && (
+              <>
+                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                >
+                  <RiSettings3Fill size={25} />
+
+                  <span class="mx-2">تنظیمات</span>
+                </Link>
+              </>
+            )}
+            {pathname == "/search-personnel" && (
+              <>
+                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                >
+                  <RiUserSearchFill size={25} />
+
+                  <span class="mx-2">جستجو اشخاص</span>
+                </Link>
+              </>
+            )}
+            {pathname == "/create-personnel" && (
+              <>
+                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                >
+                  <RiHomeHeartLine size={25} />
+
+                  <span class="mx-2"> ایجاد پرسنل</span>
+                </Link>
+              </>
+            )}
+            {pathname == "/create-estate" && (
+              <>
+                <span class="mx-3 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                >
+                  <RiAncientPavilionLine size={25} />
+
+                  <span class="mx-2 mt-1"> ثبت املاک</span>
+                </Link>
+              </>
+            )}
+            {pathname == "/search-estate" && (
+              <>
+                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                >
+                  <RiSearch2Fill size={25} />
+
+                  <span class="mx-2"> جستجو املاک</span>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
 
         <div className="flex items-center justify-center ">
           <div className="border-[1px] border-white rounded-[5px] flex items-end ml-4 justify-center p-1.5">
