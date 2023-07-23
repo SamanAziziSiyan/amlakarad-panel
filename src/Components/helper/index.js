@@ -22,6 +22,10 @@ export const getUserDataOnLocalStorage = () => {
   let userData = localStorage.getItem("user");
   return JSON.parse(userData);
 };
+export const getUserSettinOnLocalStorage = () => {
+  let userSetting = localStorage.getItem("Setting");
+  return JSON.parse(userSetting);
+};
 
 export const modalStyles = {
   content: {
