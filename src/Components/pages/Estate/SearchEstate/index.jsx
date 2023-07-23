@@ -96,7 +96,7 @@ const SearchEstate = () => {
   return (
     <>
       <div className="w-full text-center m-auto mt-20">
-        <div className=" primary-gradient grid grid-cols-12  lg:gap-10 px-2 justify-center items-center">
+        <div className=" bg-white/5 grid grid-cols-12  lg:gap-10 px-2 justify-center items-center">
           <div className="col-span-12 xl:col-span-12 relative ">
             <div className="w-20 h-20 bg-purple-800  rounded-full absolute  drop-shadow-md "></div>
             <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>

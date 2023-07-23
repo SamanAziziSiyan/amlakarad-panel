@@ -6,6 +6,22 @@
   font-family: "Yekan";
   src: local("Yekan"), url(./fonts/yekan.woff2) format("woff2");
 }
+@font-face {
+  font-family: "Vazir";
+  src: local("Vazir"), url(./fonts/Vazir.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Morabba";
+  src: local("Morabba"), url(./fonts/Morabba.woff2) format("woff2");
+}
+@font-face {
+  font-family: "IranSans";
+  src: local("IranSans"), url(./fonts/IranSans.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Changa";
+  src: local("YekChangaan"), url(./fonts/Changa.ttf) format("ttf");
+}
 body {
   font-family: "Yekan";
   direction: rtl;
