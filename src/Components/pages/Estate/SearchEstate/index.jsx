@@ -1,5 +1,5 @@
-import { FaShower } from "react-icons/fa6";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaRulerCombined, FaShower } from "react-icons/fa6";
+import { FaParking, FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import config from "../../../../server/config.json";
 import {
@@ -10,8 +10,18 @@ import {
 import service from "../../../../server/service";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { RiDeleteBin6Line, RiEdit2Line, RiReplyAllLine } from "react-icons/ri";
-
+import {
+  RiCalendarCheckFill,
+  RiDeleteBin6Line,
+  RiEdit2Line,
+  RiReplyAllLine,
+  RiSearch2Fill,
+} from "react-icons/ri";
+import { GiElevator } from "react-icons/gi";
+import { FaHospitalUser } from "react-icons/fa";
+import { MdRealEstateAgent } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
+import moment from "jalali-moment";
 const SearchEstate = () => {
   const [states, setStates] = useState([]);
   const navigate = useNavigate();
@@ -38,6 +48,7 @@ const SearchEstate = () => {
       service.states
         .getStates()
         .then(async (data) => {
+          console.log(data);
           for await (const state of data.data) {
             await service.states
               .getStateImage(state.ID, userToken)
@@ -163,23 +174,33 @@ const SearchEstate = () => {
                     <label htmlFor="area" className="mb-3 text-white block">
                       منطقه
                     </label>
-                    <input
-                      id="area"
-                      name="area"
-                      type="text"
-                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                    />
+                    <div className="relative">
+                      <RiSearch2Fill
+                        className="text-white absolute  top-[8%] max-md:w-[50px]"
+                        size={25}
+                      />
+                      <input
+                        id="area"
+                        name="area"
+                        type="text"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="w-full h-auto ">
                 <div className="grid grid-cols-12 gap-4 px-2 mt-10">
-                  {states.map((item) => (
+                  {states.map((item, index) => (
                     <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl">
                       <div className="flex flex-col  pb-4 relative">
-                        <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
-                          ویژه
-                        </button>
+                        {item.item.fast == "1" ? (
+                          <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                            فوری{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
 
                         <img
                           src={`${
@@ -187,16 +208,27 @@ const SearchEstate = () => {
                               ? config.uploadUrl + item.imageSrc
                               : "/assets/images/default-state-image.png"
                           }
-                           `}
+                             `}
                           className="w-full rounded-md max-h-[264px] min-h-[264px]"
                         />
                         <div className="flex items-center justify-between w-full px-2 mt-2">
-                          <p className="mt-3 text-center text-gray-400 text-sm">
-                            {item.item.post_date}
-                          </p>
-                          <button className="bg-[#ffca28] p-1 text-xs text-gray-600 px-3 rounded-md">
-                            ویژه
-                          </button>
+                          <div className="flex items-center">
+                            <RiCalendarCheckFill className="text-center text-gray-400 text-md" />
+                            <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
+                              {moment(item.item.post_date)
+                                .locale("fa")
+                                .format("DDD") + " روز پیش"}
+                            </p>
+                          </div>
+                          {item.item.special == "1" ? (
+                            <button className="bg-[#ffca28] p-1 text-xs text-gray-600 px-3 rounded-md">
+                              ویژه
+                            </button>
+                          ) : (
+                            <button className="bg-sky-200 p-1 text-xs text-gray-600 px-3 rounded-md">
+                              عادی{" "}
+                            </button>
+                          )}
                         </div>
                         <p className="mt-3 text-center text-[#0c0a5a] ">
                           {item.item.post_title}
@@ -204,47 +236,56 @@ const SearchEstate = () => {
 
                         <div className=" items-center gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a" />
+                            <GiElevator size={19} className="text-gray-600" />
                             <span className="mr-2 text-sm ">
-                              آسانسور
-                              {item.item.asansor}
+                              آسانسور : {item.item.asansor}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a" />
+                            <FaHospitalUser
+                              size={19}
+                              className="text-gray-600"
+                            />
                             <span className="mr-2 text-sm ">
-                              نوع کاربری
-                              {item.item.karbari}
+                              نوع کاربری : {item.item.karbari}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a" />
+                            <FaParking size={19} className="text-gray-600" />
                             <span className="mr-2 text-sm ">
-                              پارکینگ {item.item.parking}
+                              پارکینگ : {item.item.parking}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a" />
+                            <FaRulerCombined
+                              size={19}
+                              className="text-gray-600"
+                            />
                             <span className="mr-2 text-sm ">
-                              متراژ {item.item.metrazh}
+                              متراژ : {item.item.metrazh}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a" />
+                            <MdRealEstateAgent
+                              size={19}
+                              className="text-gray-600"
+                            />
                             <span className="mr-2 text-sm ">
-                              نوع ملک
-                              {item.item.melk}
+                              نوع ملک : {item.item.melk}
                             </span>
                           </div>
 
                           <div className="flex mt-3">
-                            <FaShower color="#0c0a5a" />
+                            <GrTransaction
+                              size={19}
+                              className="text-gray-600"
+                            />
                             <span className="mr-2 text-sm ">
-                              معامله {item.item.moamele}
+                              نوع معامله : {item.item.moamele}
                             </span>
                           </div>
                         </div>

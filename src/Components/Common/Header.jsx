@@ -18,9 +18,7 @@ const Header = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log(pathname);
     let userData = localStorage.getItem("user");
-    console.log(userData);
     if (!userData) {
       setUsername("نام کاربری");
       return;
@@ -42,8 +40,12 @@ const Header = () => {
             <img src="/assets/images/logo.png" alt="logo" className="w-16" />
           </Link>
           <div class="flex items-center py-4 overflow-x-auto whitespace-nowrap">
-            <Link to="/" class="text-gray-400 dark:text-gray-200">
+            <Link
+              to="/"
+              class="flex items-center text-gray-400 dark:text-gray-200"
+            >
               <RiHomeHeartLine size={25} />
+              <span class="mx-2">صفحه اصلی</span>
             </Link>
             {pathname == "/settings" && (
               <>
@@ -53,7 +55,7 @@ const Header = () => {
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiSettings3Fill size={25} />
 
@@ -69,7 +71,7 @@ const Header = () => {
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiUserSearchFill size={25} />
 
@@ -85,7 +87,7 @@ const Header = () => {
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiHomeHeartLine size={25} />
 
@@ -101,7 +103,7 @@ const Header = () => {
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiAncientPavilionLine size={25} />
 
@@ -117,7 +119,7 @@ const Header = () => {
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400 hover:underline"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiSearch2Fill size={25} />
 
@@ -129,8 +131,8 @@ const Header = () => {
         </div>
 
         <div className="flex items-center justify-center ">
-          <div className="border-[1px] border-white rounded-[5px] flex items-end ml-4 justify-center p-1.5">
-            <FaUserTie className="text-[30px] text-white " />
+          <div className="shadow shadow-sm shadow-sky-600 rounded-[5px] flex items-center ml-4 justify-center p-1.5">
+            <FaUserTie className="text-[25px] text-white " />
             <span className="text-white mr-2">{userName}</span>
           </div>
           <div
