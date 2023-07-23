@@ -18,6 +18,7 @@ import {
   toastAlert,
 } from "../../helper";
 import service from "../../../server/service";
+import config from "../../../server/config.json";
 const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -40,19 +41,17 @@ const Home = () => {
   };
   const handleBackoupSQL = () => {
     let userData = getUserDataOnLocalStorage();
-    let userToken = getToken();
-    console.log(userData.role.administrator);
     if (userData.role.administrator == undefined) {
       toastAlert("شما به این بخش دسترسی ندارید");
     } else {
-      service.states
-        .getBackoup(userToken)
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        window.location.href = `${config.api}/wp-json/wp/v1/backup/`;
+        toastAlert("فایل پشتیبان کل املاک با موفقیت دانلود شد", "success");
+      } catch (err) {
+        toastAlert(
+          "دانلود فایل پشتیبان با مشکل مواجه شد لطفا دوباره امتحان کنید"
+        );
+      }
     }
   };
   return (
