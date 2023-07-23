@@ -8,7 +8,7 @@ import {
   toastAlert,
 } from "../../../helper";
 import service from "../../../../server/service";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   RiCalendarCheckFill,
@@ -309,13 +309,15 @@ const SearchEstate = () => {
                             <RiEdit2Line size={18} className="pl-1" />
                             ویرایش
                           </button>
-                          <button
-                            type="button"
-                            className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
-                          >
-                            <RiReplyAllLine size={18} className="pl-1" />
-                            جزئیات
-                          </button>
+                          <Link to={`/EstateDetails/${item.item.ID}`}>
+                            <button
+                              type="button"
+                              className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
+                            >
+                              <RiReplyAllLine size={18} className="pl-1" />
+                              جزئیات
+                            </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

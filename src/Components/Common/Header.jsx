@@ -19,6 +19,7 @@ const Header = () => {
 
   useEffect(() => {
     let userData = localStorage.getItem("user");
+    console.log(pathname.search("EstateDetails"));
     if (!userData) {
       setUsername("نام کاربری");
       return;
@@ -126,6 +127,42 @@ const Header = () => {
                   <span class="mx-2"> جستجو املاک</span>
                 </Link>
               </>
+            )}
+            {pathname.search("EstateDetails") != -1 ? (
+              <>
+                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                >
+                  <RiSearch2Fill size={25} />
+
+                  <span class="mx-2">جزئیات ملک</span>
+                </Link>
+              </>
+            ) : (
+              ""
+            )}
+            {pathname.search("edit-personnel") != -1 ? (
+              <>
+                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                >
+                  <RiSearch2Fill size={25} />
+
+                  <span class="mx-2">جزئیات کاربر</span>
+                </Link>
+              </>
+            ) : (
+              ""
             )}
           </div>
         </div>
