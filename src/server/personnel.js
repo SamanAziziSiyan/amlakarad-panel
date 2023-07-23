@@ -40,13 +40,11 @@ const creatUser = (data, token) => {
   });
 };
 
-const updateUser = (data, userId,  token) => {
-   return axios.post(`${config.api}/wp-json/wp/v2/users/${userId}`, data, {
+const updateUser = (data, userId, token) => {
+  return axios.post(`${config.api}/wp-json/wp/v2/users/${userId}`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
-
-
 
 export default {
   getUsers,
@@ -55,5 +53,5 @@ export default {
   searchUser,
   creatUser,
   changePassword,
-  updateUser
+  updateUser,
 };

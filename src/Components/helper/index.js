@@ -23,7 +23,7 @@ export const getUserDataOnLocalStorage = () => {
   return JSON.parse(userData);
 };
 export const getUserSettinOnLocalStorage = () => {
-  let userSetting = localStorage.getItem("Setting");
+  let userSetting = localStorage.getItem("Settings");
   return JSON.parse(userSetting);
 };
 
