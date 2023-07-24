@@ -49,7 +49,7 @@ const SearchEstate = () => {
       service.states
         .getStates()
         .then(async (data) => {
-          console.log(data);
+          let stateItems = [];
           for await (const state of data.data) {
             await service.states
               .getStateImage(state.ID, userToken)
@@ -62,15 +62,16 @@ const SearchEstate = () => {
                   stateItem.imageSrc = "";
                   stateItem.item = state;
                 }
-                setStates((states) => [...states, stateItem]);
+                stateItems.push(stateItem);
               })
               .catch((err) => {
                 console.log(err);
               });
           }
-          // data.data.map(async (item) => {
-
-          // });
+          stateItems.map((item) => {
+            console.log(item);
+            setStates(stateItems);
+          });
         })
         .catch((err) => {
           navigate("/");
@@ -191,14 +192,69 @@ const SearchEstate = () => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full h-auto ">
-                  <div className="grid grid-cols-12 gap-4 px-2 mt-10">
-                    {states.map((item, index) => (
-                      <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl">
-                        <div className="flex flex-col  pb-4 relative">
-                          {item.item.fast == "1" ? (
-                            <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
-                              فوری{" "}
+              </div>
+              <div className="w-full h-auto ">
+                <div className="grid grid-cols-12 gap-4 px-2 mt-10">
+                  {states.map((item, index) => (
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl">
+                      <div className="flex flex-col  pb-4 relative">
+                        {item.item.fast == "1" ? (
+                          <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                            فوری{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "expired" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                            منقضی شده{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "pending" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-orange-300 p-1 text-xs text-white   px-3 rounded-md">
+                            در انتظار بررسی{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "publish" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-green-400 p-1 text-xs text-white   px-3 rounded-md">
+                            منتشر شده{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "trash" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                            زباله دان{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+
+                        <img
+                          src={`${
+                            item.imageSrc != ""
+                              ? config.uploadUrl + item.imageSrc
+                              : "/assets/images/default-state-image.png"
+                          }
+                             `}
+                          className="w-full rounded-md max-h-[264px] min-h-[264px]"
+                        />
+                        <div className="flex items-center justify-between w-full px-2 mt-2">
+                          <div className="flex items-center">
+                            <RiCalendarCheckFill className="text-center text-gray-400 text-md" />
+                            <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
+                              {moment(item.item.post_date)
+                                .locale("fa")
+                                .format("DDD") + " روز پیش"}
+                            </p>
+                          </div>
+                          {item.item.special == "1" ? (
+                            <button className="bg-[#ffca28] p-1 text-xs text-gray-600 px-3 rounded-md">
+                              ویژه
                             </button>
                           ) : (
                             ""

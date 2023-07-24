@@ -16,12 +16,14 @@ const EstateDetails = () => {
       .getState(token, stateId)
       .then((data) => {
         console.log(data);
-        setStateData(data);
+        setStateData(data.data);
+
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+    console.log(stateData);
+  }, []);
   return (
     <>
       <Layout>
@@ -57,14 +59,15 @@ const EstateDetails = () => {
                           />
                         </SwiperSlide>
 
-                        <SwiperSlide>
-                          <img
-                            className="!w-full !h-[400px] rounded-lg"
-                            src="https://swiperjs.com/demos/images/nature-2.jpg"
-                            alt=""
-                          />
-                        </SwiperSlide>
-                      </Swiper>
+                 
+                    </Swiper>
+                  </div>
+                  <div className="col-span-2  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
+                    <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                      {/* <span>نام مالک : {stateData.postmeta.name} </span> */}
+                    </div>
+                    <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                      <span>نام مالک : سلیمان نادری </span>
                     </div>
                     <div className="col-span-2  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
                       <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
