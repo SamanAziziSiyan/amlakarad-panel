@@ -15,12 +15,13 @@ const EstateDetails = () => {
       .getState(token, stateId)
       .then((data) => {
         console.log(data);
-        setStateData(data)
+        setStateData(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+    console.log(stateData);
+  }, []);
   return (
     <>
       <div className="w-full text-center m-auto mt-20">
@@ -66,7 +67,7 @@ const EstateDetails = () => {
                   </div>
                   <div className="col-span-2  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
                     <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                      <span>نام مالک : سلیمان نادری </span>
+                      {/* <span>نام مالک : {stateData.postmeta.name} </span> */}
                     </div>
                     <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
                       <span>نام مالک : سلیمان نادری </span>

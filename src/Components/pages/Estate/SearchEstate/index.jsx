@@ -48,7 +48,7 @@ const SearchEstate = () => {
       service.states
         .getStates()
         .then(async (data) => {
-          console.log(data);
+          let stateItems = [];
           for await (const state of data.data) {
             await service.states
               .getStateImage(state.ID, userToken)
@@ -61,15 +61,16 @@ const SearchEstate = () => {
                   stateItem.imageSrc = "";
                   stateItem.item = state;
                 }
-                setStates((states) => [...states, stateItem]);
+                stateItems.push(stateItem);
               })
               .catch((err) => {
                 console.log(err);
               });
           }
-          // data.data.map(async (item) => {
-
-          // });
+          stateItems.map((item) => {
+            console.log(item);
+            setStates(stateItems);
+          });
         })
         .catch((err) => {
           navigate("/");
@@ -197,6 +198,34 @@ const SearchEstate = () => {
                         {item.item.fast == "1" ? (
                           <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
                             فوری{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "expired" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                            منقضی شده{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "pending" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-orange-300 p-1 text-xs text-white   px-3 rounded-md">
+                            در انتظار بررسی{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "publish" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-green-400 p-1 text-xs text-white   px-3 rounded-md">
+                            منتشر شده{" "}
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                        {item.item.post_status == "trash" ? (
+                          <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
+                            زباله دان{" "}
                           </button>
                         ) : (
                           ""
