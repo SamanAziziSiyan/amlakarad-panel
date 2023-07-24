@@ -17,6 +17,7 @@ import {
   RiHomeHeartLine,
   RiReplyAllLine,
 } from "react-icons/ri";
+import Layout from "../../../Layout";
 
 const SearchPersonnel = () => {
   const navigate = useNavigate();
@@ -120,132 +121,190 @@ const SearchPersonnel = () => {
   };
   return (
     <>
-      <div className="w-full text-center m-auto mt-20">
-        <div className=" bg-white/5 grid grid-cols-12  lg:gap-10 px-2 justify-center items-center">
-          <div className="col-span-12 xl:col-span-12 relative ">
-            <div className="w-20 h-20 bg-purple-800  rounded-full absolute  drop-shadow-md "></div>
-            <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>
-            <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
+      <Layout>
+        <div className="w-full text-center m-auto mt-20">
+          <div className=" bg-white/5 grid grid-cols-12  lg:gap-10 px-2 justify-center items-center">
+            <div className="col-span-12 xl:col-span-12 relative ">
+              <div className="w-20 h-20 bg-purple-800  rounded-full absolute  drop-shadow-md "></div>
+              <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>
+              <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
 
-            <div className="w-full relative  h-auto bg-white/10 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
-              <div className="flex items-center w-full justify-between gap-4 max-lg:flex-wrap">
-                <div className="flex items-center w-2/6 justify-start gap-4">
-                  <button
-                    className="bg-transparent border-l-2 border-white shadow-sm pl-4  rounded-sm flex items-center  text-white"
-                    onClick={() => {
-                      setShowFilterdUser(false);
-                    }}
-                  >
-                    <span> همه</span>
-                  </button>
-                  <button
-                    className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
-                    onClick={() => {
-                      filterUsers("administrator");
-                    }}
-                  >
-                    <span> مدیر کل</span>
-                  </button>
-                  <button
-                    className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
-                    onClick={() => {
-                      filterUsers("moshaver");
-                    }}
-                  >
-                    <span> مشاور املاک</span>
-                  </button>
-                  <button
-                    className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
-                    onClick={() => {
-                      filterUsers("karmand");
-                    }}
-                  >
-                    <span> کارمند</span>
-                  </button>
-                  <button
-                    className="bg-transparent  shadow-sm  pl-4  rounded-sm flex items-center  text-white"
-                    onClick={() => {
-                      filterUsers("karbar");
-                    }}
-                  >
-                    <span> کاربر عادی</span>
-                  </button>
-                </div>
-
-                <div className="w-3/6 flex items-center justify-between max-lg:flex-col gap-4">
-                  <div className="w-full relative">
-                    <label htmlFor="area" className="mb-3 text-white block">
-                      جستجو بر اساس نام کاربری
-                    </label>
-                    <input
-                      onChange={(e) => {
-                        searchUserByUsername(e.target.value);
+              <div className="w-full relative  h-auto bg-white/10 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
+                <div className="flex items-center w-full justify-between gap-4 max-lg:flex-wrap">
+                  <div className="flex items-center w-2/6 justify-start gap-4">
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        setShowFilterdUser(false);
                       }}
-                      id="area"
-                      name="area"
-                      type="text"
-                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                    />
+                    >
+                      <span> همه</span>
+                    </button>
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterUsers("administrator");
+                      }}
+                    >
+                      <span> مدیر کل</span>
+                    </button>
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterUsers("moshaver");
+                      }}
+                    >
+                      <span> مشاور املاک</span>
+                    </button>
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterUsers("karmand");
+                      }}
+                    >
+                      <span> کارمند</span>
+                    </button>
+                    <button
+                      className="bg-transparent  shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterUsers("karbar");
+                      }}
+                    >
+                      <span> کاربر عادی</span>
+                    </button>
+                  </div>
+
+                  <div className="w-3/6 flex items-center justify-between max-lg:flex-col gap-4">
+                    <div className="w-full relative">
+                      <label htmlFor="area" className="mb-3 text-white block">
+                        جستجو بر اساس نام کاربری
+                      </label>
+                      <input
+                        onChange={(e) => {
+                          searchUserByUsername(e.target.value);
+                        }}
+                        id="area"
+                        name="area"
+                        type="text"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col">
-                <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                    <div className="overflow-hidden">
-                      <table className="min-w-full text-center text-sm font-light">
-                        <thead className="border-b bg- font-medium rounded-xl bg-white/20 backdrop-blur-md bg-opacity-50 ">
-                          <tr>
-                            <th
-                              scope="col"
-                              className=" px-6 py-4 text-gray-950"
-                            >
-                              #
-                            </th>
-                            <th
-                              scope="col"
-                              className=" px-6 py-4 text-gray-950"
-                            >
-                              نام و نام خانوادگی
-                            </th>
-                            <th
-                              scope="col"
-                              className=" px-6 py-4 text-gray-950"
-                            >
-                              نام کاربری
-                            </th>
-                            <th
-                              scope="col"
-                              className=" px-6 py-4 text-gray-950"
-                            >
-                              شماره همراه
-                            </th>
+                <div className="flex flex-col">
+                  <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                      <div className="overflow-hidden">
+                        <table className="min-w-full text-center text-sm font-light">
+                          <thead className="border-b bg- font-medium rounded-xl bg-white/20 backdrop-blur-md bg-opacity-50 ">
+                            <tr>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                #
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                نام و نام خانوادگی
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                نام کاربری
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                شماره همراه
+                              </th>
 
-                            <th
-                              scope="col"
-                              className=" px-6 py-4 text-gray-950"
-                            >
-                              سمت
-                            </th>
-                            <th
-                              scope="col"
-                              className=" px-6 py-4 text-gray-950"
-                            >
-                              عملیات
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {showFilteredUser ? (
-                            filterUser.length == 0 ? (
-                              <div className="w-full">
-                                <h4 className="text-white mt-10 text-2xl w-full">
-                                  موردی یافت نشد{" "}
-                                </h4>
-                              </div>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                سمت
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                عملیات
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {showFilteredUser ? (
+                              filterUser.length == 0 ? (
+                                <div className="w-full">
+                                  <h4 className="text-white mt-10 text-2xl w-full">
+                                    موردی یافت نشد{" "}
+                                  </h4>
+                                </div>
+                              ) : (
+                                filterUser.map((item, index) => (
+                                  <tr key={index} className="border-b ">
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {index + 1}
+                                    </td>
+
+                                    <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                      {item.name}
+                                    </td>
+                                    <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                      {item.extra.username}
+                                    </td>
+                                    <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                      {item.extra.phone[0] != ""
+                                        ? item.extra.phone[0]
+                                        : "ثبت نشده است"}
+                                    </td>
+
+                                    <td className="whitespace-nowrap  px-6 py-4 text-white">
+                                      {item.extra.role.length == 0
+                                        ? "نقش یافت نشد"
+                                        : item.extra.role[0].moshaver
+                                        ? " مشاور املاک"
+                                        : item.extra.role[0].administrator
+                                        ? "مدیرکل"
+                                        : item.extra.role[0].karbar
+                                        ? "کاربر عادی"
+                                        : item.extra.role[0].karmand
+                                        ? "کارمند"
+                                        : "نقش یافت نشد"}
+                                    </td>
+                                    <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
+                                      <button
+                                        className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
+                                        onClick={() => {
+                                          handleDeleteUser(item.id, item.name);
+                                        }}
+                                      >
+                                        حذف
+                                      </button>
+                                      <Link to={`/edit-personnel/${item.id}`}>
+                                        <button
+                                          type="button"
+                                          className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                        >
+                                          <RiEdit2Line
+                                            size={18}
+                                            className="pl-1"
+                                          />
+                                          ویرایش
+                                        </button>
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                ))
+                              )
                             ) : (
-                              filterUser.map((item, index) => (
+                              users.map((item, index) => (
                                 <tr key={index} className="border-b ">
                                   <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                     {index + 1}
@@ -278,11 +337,15 @@ const SearchPersonnel = () => {
                                   </td>
                                   <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
                                     <button
-                                      className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
+                                      className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
                                       onClick={() => {
                                         handleDeleteUser(item.id, item.name);
                                       }}
                                     >
+                                      <RiDeleteBin6Line
+                                        size={18}
+                                        className="pl-1"
+                                      />
                                       حذف
                                     </button>
                                     <Link to={`/edit-personnel/${item.id}`}>
@@ -297,94 +360,37 @@ const SearchPersonnel = () => {
                                         ویرایش
                                       </button>
                                     </Link>
+
+                                    <button
+                                      type="button"
+                                      className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiHomeHeartLine
+                                        size={20}
+                                        className="pl-1"
+                                      />
+                                      مشاهده املاک
+                                    </button>
                                   </td>
                                 </tr>
                               ))
-                            )
-                          ) : (
-                            users.map((item, index) => (
-                              <tr key={index} className="border-b ">
-                                <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                  {index + 1}
-                                </td>
-
-                                <td className="whitespace-nowrap  px-6 py-4 text-white">
-                                  {item.name}
-                                </td>
-                                <td className="whitespace-nowrap  px-6 py-4 text-white">
-                                  {item.extra.username}
-                                </td>
-                                <td className="whitespace-nowrap  px-6 py-4 text-white">
-                                  {item.extra.phone[0] != ""
-                                    ? item.extra.phone[0]
-                                    : "ثبت نشده است"}
-                                </td>
-
-                                <td className="whitespace-nowrap  px-6 py-4 text-white">
-                                  {item.extra.role.length == 0
-                                    ? "نقش یافت نشد"
-                                    : item.extra.role[0].moshaver
-                                    ? " مشاور املاک"
-                                    : item.extra.role[0].administrator
-                                    ? "مدیرکل"
-                                    : item.extra.role[0].karbar
-                                    ? "کاربر عادی"
-                                    : item.extra.role[0].karmand
-                                    ? "کارمند"
-                                    : "نقش یافت نشد"}
-                                </td>
-                                <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
-                                  <button
-                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
-                                    onClick={() => {
-                                      handleDeleteUser(item.id, item.name);
-                                    }}
-                                  >
-                                    <RiDeleteBin6Line
-                                      size={18}
-                                      className="pl-1"
-                                    />
-                                    حذف
-                                  </button>
-                                  <Link to={`/edit-personnel/${item.id}`}>
-                                    <button
-                                      type="button"
-                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
-                                    >
-                                      <RiEdit2Line size={18} className="pl-1" />
-                                      ویرایش
-                                    </button>
-                                  </Link>
-
-                                  <button
-                                    type="button"
-                                    className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
-                                  >
-                                    <RiHomeHeartLine
-                                      size={20}
-                                      className="pl-1"
-                                    />
-                                    مشاهده املاک
-                                  </button>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* <div className="flex items-center justify-center gap-4">
+                {/* <div className="flex items-center justify-center gap-4">
                 <div className="w-3/6 h-10 bg-red-100 rounded-lg  bg-white/20 backdrop-blur-md bg-opacity-50 "></div>
                 <div className="w-3/6 h-10 bg-red-100"></div>
               </div> */}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     </>
   );
 };

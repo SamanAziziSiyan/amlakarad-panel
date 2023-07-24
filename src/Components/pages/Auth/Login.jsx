@@ -4,6 +4,8 @@ import service from "../../../server/service";
 import { hashData, toastAlert } from "../../helper";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import AuthLayout from "../../Layout/AuthLayout";
+import { RiLoginCircleLine } from "react-icons/ri";
 const Login = () => {
   const navigate = useNavigate();
 
@@ -44,57 +46,59 @@ const Login = () => {
   };
   return (
     <>
-      <div className="h-screen  primary-gradient flex items-center justify-center relative  ">
-        <div className="relative">
-          <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
-          <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
-          <div className="w-[430px] h-[490px] rounded-2xl backdrop-blur-md bg-opacity-50 shadow-blue-800 shadow-sm bg-white/10 flex justify-around flex-col items-center">
-            <div>
-              <h3 className="mb-5 text-2xl font-medium text-gray-300">
-                ورود به پنل{" "}
-              </h3>
-              <img src="/assets/images/logo.png" className="w-16 h-16 " />
+      <AuthLayout>
+        <div className=" flex items-center justify-center relative  ">
+          <div className="relative">
+            <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
+            <div className="w-20 h-20 bg-[#9b3ed3]  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
+            <div className="w-[430px] h-[490px] rounded-2xl backdrop-blur-md bg-opacity-50 shadow-[#7a2fae] shadow-md bg-white/10 flex justify-around flex-col items-center">
+              <div className="flex items-center flex-col gap-2">
+                <h3 className="mb-5 text-2xl font-medium text-gray-400">
+                  صفحه ورود پرسنل
+                </h3>
+                <h3 className="text-[#7a2fae]">خوش آمدید</h3>
+              </div>
+
+              <Formik
+                initialValues={{
+                  username: "",
+                  password: "",
+                }}
+                validationSchema={loginSchema}
+                onSubmit={(values) => {
+                  handleLogin(values);
+                }}
+              >
+                <Form className=" px-4 text-center">
+                  <Field
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="نام کاربری یا موبایل"
+                    className="w-full placeholder:text-[#7a2fae] text-[#7a2fae] border-[#7a2fae] mb-4   bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-b-[1px]  border-solid p-3   placeholder-slate-300 focus:border-[#9b3ed2] focus:scale-[1.01]   shadow-sm  shadow-purple-400  sm:text-sm"
+                  />
+
+                  <Field
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="رمز عبور"
+                    className="w-full placeholder:text-[#7a2fae] border-[#7a2fae] mb-4 text-[#7a2fae]   bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-b-[1px]  border-solid p-3   placeholder-slate-300 focus:border-[#9b3ed2] focus:scale-[1.01]   shadow-sm  shadow-purple-400  sm:text-sm"
+                  />
+
+                  <button
+                    type="submit"
+                    className=" flex items-center justify-center gap-2 m-auto  bg-gradient-light-primary shadow-sm shadow-indigo-700 my-4 w-3/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  >
+                    <RiLoginCircleLine size={24} color={"#fff"} />
+                    <span>ورود</span>
+                  </button>
+                </Form>
+              </Formik>
             </div>
-
-            <Formik
-              initialValues={{
-                username: "",
-                password: "",
-              }}
-              validationSchema={loginSchema}
-              onSubmit={(values) => {
-                handleLogin(values);
-              }}
-            >
-              <Form className=" px-4 text-center">
-                <Field
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="نام کاربری یا موبایل"
-                  className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
-                />
-
-                <Field
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="رمز عبور"
-                  className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                />
-
-                <button
-                  type="submit"
-                  className="bg-[#4a80bb] shadow-sm shadow-indigo-700 my-4 w-3/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
-                >
-                  {" "}
-                  ورود
-                </button>
-              </Form>
-            </Formik>
           </div>
         </div>
-      </div>
+      </AuthLayout>
     </>
   );
 };
