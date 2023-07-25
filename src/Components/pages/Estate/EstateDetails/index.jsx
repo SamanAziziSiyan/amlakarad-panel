@@ -57,272 +57,287 @@ const EstateDetails = () => {
                             alt=""
                           />
                         </SwiperSlide>
+
+                        <SwiperSlide>
+                          <img
+                            className="!w-full !h-[400px] rounded-lg"
+                            src="https://swiperjs.com/demos/images/nature-2.jpg"
+                            alt=""
+                          />
+                        </SwiperSlide>
                       </Swiper>
                     </div>
                     <div className="col-span-2  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
                       <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                        {/* <span>نام مالک : {stateData.postmeta.name} </span> */}
+                        <span>
+                          نام مالک :
+                          {/* {stateData.postmeta.name == "undefined"
+                            ? ""
+                            : stateData.postmeta.name} */}
+                        </span>
                       </div>
                       <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                        <span>نام مالک : سلیمان نادری </span>
+                        <span>
+                          {" "}
+                          شماره تماس مالک:
+                          {/* {stateData.postmeta.mobile}{" "} */}
+                        </span>
                       </div>
-                      <div className="col-span-2  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
-                        <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                          <span>نام مالک : سلیمان نادری </span>
-                        </div>
-                        <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                          <span>نام مالک : سلیمان نادری </span>
-                        </div>
 
-                        <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                          <span>نام مالک : سلیمان نادری </span>
-                        </div>
+                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                        <span>نام مشاور : {} </span>
+                      </div>
 
-                        <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                          <span>نام مالک : سلیمان نادری </span>
-                        </div>
+                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                        <span>
+                          قیمت کل :{/* {stateData.postmeta.pricekol} */}
+                        </span>
+                      </div>
 
-                        <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                          <span>نام مالک : سلیمان نادری </span>
-                        </div>
-
-                        <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                          <span>نام مالک : سلیمان نادری </span>
-                        </div>
+                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                        <span>آدرس ملک :{} </span>
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-12 gap-4 mt-10">
-                      <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-1 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                        <span className="mb-2 text-[25px]">متراژ</span>
-                        <hr className="px-12" />
-                        <span className="mt-3">1000</span>
-                      </div>
-
-                      <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-1 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                        <span className="mb-2 text-[25px]">متراژ</span>
-                        <hr className="px-12" />
-                        <span className="mt-3">1000</span>
-                      </div>
-
-                      <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-1 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                        <span className="mb-2 text-[25px]">متراژ</span>
-                        <hr className="px-12" />
-                        <span className="mt-3">1000</span>
-                      </div>
-
-                      <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-1 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                        <span className="mb-2 text-[25px]">متراژ</span>
-                        <hr className="px-12" />
-                        <span className="mt-3">1000</span>
-                      </div>
-
-                      <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-1 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                        <span className="mb-2 text-[25px]">متراژ</span>
-                        <hr className="px-12" />
-                        <span className="mt-3">1000</span>
-                      </div>
-
-                      <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-1 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                        <span className="mb-2 text-[25px]">متراژ</span>
-                        <hr className="px-12" />
-                        <span className="mt-3">1000</span>
-                      </div>
+                  </div>
+                  <div className="grid grid-cols-12 gap-4 mt-10">
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col  col-span-12 md:col-span-10 lg:col-span-10 w-full p-3 bg-white">
+                      <span className="mb-2 text-right relative text-[25px]">
+                        عنوان آگهی
+                      </span>
                     </div>
-
-                    <div className="flex flex-col items-start mt-10 ">
-                      <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
-                        توضیحات{" "}
-                      </h3>
-                      <p className="w-5/6 text-white">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Repellendus quidem dignissimos eligendi reprehenderit,
-                        inventore iste vitae illum saepe, id, nesciunt
-                        repudiandae ab. Aut earum natus labore magnam repellat
-                        fuga voluptates.
-                      </p>
+                  </div>
+                  <div className="grid grid-cols-12 gap-4 mt-10">
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">متراژ</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">1000</span>
                     </div>
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">جهت ساختمان</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">1000</span>
+                    </div>
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">سال ساخت</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">1000</span>
+                    </div>
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">نوع معامله</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">خرید و فروش</span>
+                    </div>{" "}
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">نوع کاربری</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">اداری تجاری</span>
+                    </div>
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">نوع ملک</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">آپارتمان</span>
+                    </div>
+                  </div>
 
-                    <div className="flex flex-col items-start mt-10 ">
-                      <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
-                        مشخصات املاک{" "}
-                      </h3>
-                      <div className="grid grid-cols-12 w-full gap-2 ">
-                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                          <div className="flex items-center w-full gap-4 mb-4  ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                          <div className="flex items-center w-full gap-4 mb-4  ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
-                          </div>
-                        </div>
+                  <div className="flex flex-col items-start mt-10 ">
+                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                      توضیحات{" "}
+                    </h3>
+                    <p className="w-5/6 text-white">
+                      {/* {stateData.content.rendered} */}
+                    </p>
+                  </div>
 
-                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                          <div className="flex items-center w-full gap-4 mb-4  ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                  <div className="flex flex-col items-start mt-10 ">
+                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                      مشخصات املاک{" "}
+                    </h3>
+                    <div className="grid grid-cols-12 w-full gap-2 ">
+                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                        <div className="flex items-center w-full gap-4 mb-4  ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
                           </div>
-                          <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
                           </div>
                         </div>
-                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                          <div className="flex items-center w-full gap-4 mb-4  ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">تعداد واحد در هر طبقه</span>
                           </div>
-                          <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
                           </div>
                         </div>
+                      </div>
+                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                        <div className="flex items-center w-full gap-4 mb-4  ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">تعداد واحد کل ساختمان</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">تعداد اتاق</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                      </div>
 
-                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                          <div className="flex items-center w-full gap-4 mb-4  ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                        <div className="flex items-center w-full gap-4 mb-4  ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نمای ساختمان</span>
                           </div>
-                          <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
                           </div>
                         </div>
-                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                          <div className="flex items-center w-full gap-4 mb-4  ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
                           </div>
-                          <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                              <span className="text">نوع سند</span>
-                            </div>
-                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                              <span> عادی </span>
-                            </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                        <div className="flex items-center w-full gap-4 mb-4  ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                        <div className="flex items-center w-full gap-4 mb-4  ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                        <div className="flex items-center w-full gap-4 mb-4  ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                            <span className="text">نوع سند</span>
+                          </div>
+                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                            <span> عادی </span>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="flex flex-col items-start mt-10 ">
-                      <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
-                        سایر امکانات{" "}
-                      </h3>
-                      <div className="grid grid-cols-12 w-full  gap-4">
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                  <div className="flex flex-col items-start mt-10 ">
+                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                      سایر امکانات{" "}
+                    </h3>
+                    <div className="grid grid-cols-12 w-full  gap-4">
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
 
-                        <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                          <RiEdit2Line size={24} />
-                          <span className="text-lg mr-4">آسانسور</span>
-                        </div>
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start mt-10 ">
+                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                      دیگر امکانات{" "}
+                    </h3>
+                    <div className="grid grid-cols-12 w-full  gap-4">
+                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
+                        <RiEdit2Line size={24} />
+                        <span className="text-lg mr-4">آسانسور</span>
                       </div>
                     </div>
                   </div>
