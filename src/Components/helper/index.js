@@ -1,3 +1,4 @@
+import axios from "axios";
 import { toast } from "react-toastify";
 // import bcrypt from "bcrypt";
 
@@ -36,6 +37,73 @@ export const modalStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
+};
+
+export const sendSMSCode = async (mobile, code) => {
+  let data = {
+    mobile: mobile,
+    templateId: 100000,
+    parameters: [
+      {
+        name: "Code",
+        value: String(code),
+      },
+    ],
+  };
+  return axios.post(`https://api.sms.ir/v1/send/verify`, JSON.stringify(data), {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "text/plain",
+      "x-api-key":
+        "N4gqCCHLO3bvKbzipOG0ZxdZykJKfZKBIFrcnAcQwK8baftKgz5iu9fpxH4rAejb",
+    },
+  });
+};
+
+export const sendSMSAdminState = async (username, title) => {
+  let data = {
+    mobile: "09145618696",
+    templateId: 689397,
+    parameters: [
+      {
+        name: "username",
+        value: username,
+      },
+      {
+        name: "title",
+        value: title,
+      },
+    ],
+  };
+  return axios.post(`https://api.sms.ir/v1/send/verify`, JSON.stringify(data), {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "text/plain",
+      "x-api-key":
+        "N4gqCCHLO3bvKbzipOG0ZxdZykJKfZKBIFrcnAcQwK8baftKgz5iu9fpxH4rAejb",
+    },
+  });
+};
+
+export const sendSMSStateOwner = async (mobile, title) => {
+  let data = {
+    mobile: String(mobile),
+    templateId: 172091,
+    parameters: [
+      {
+        name: "title",
+        value: title,
+      },
+    ],
+  };
+  return axios.post(`https://api.sms.ir/v1/send/verify`, JSON.stringify(data), {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "text/plain",
+      "x-api-key":
+        "N4gqCCHLO3bvKbzipOG0ZxdZykJKfZKBIFrcnAcQwK8baftKgz5iu9fpxH4rAejb",
+    },
+  });
 };
 
 // export const hashData = (data) => {

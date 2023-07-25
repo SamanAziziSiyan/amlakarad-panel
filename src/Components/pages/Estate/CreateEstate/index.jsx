@@ -1,7 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginSchema } from "../../../../validation/formikValidation";
 import service from "../../../../server/service";
-import { getToken } from "../../../helper";
+import {
+  getToken,
+  sendSMSAdminState,
+  sendSMSStateOwner,
+} from "../../../helper";
 import Layout from "../../../Layout";
 const CreateEstate = () => {
   const handleCreateEstate = (values) => {
@@ -30,6 +34,20 @@ const CreateEstate = () => {
       .createState(stateData, userToken)
       .then((data) => {
         console.log(data);
+        sendSMSStateOwner(values.mobile, values.title)
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        sendSMSAdminState("solaiman", values.title)
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -430,7 +448,7 @@ const CreateEstate = () => {
                   className="bg-[#4a80bb] shadow-sm shadow-indigo-700 my-4 w-3/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                 >
                   {" "}
-                  ارسال کد
+                  ثبت ملک جدید
                 </button>
               </Form>
             </Formik>
