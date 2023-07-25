@@ -2,7 +2,7 @@ import config from "./config.json";
 import axios from "axios";
 
 const getAutherStates = (userId, token) => {
-  return axios.get(`${config.api}/wp-json/wp/v2/state?auther=${userId}`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/state/author/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
