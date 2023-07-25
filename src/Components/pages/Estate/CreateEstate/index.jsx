@@ -6,8 +6,15 @@ import {
   sendSMSAdminState,
   sendSMSStateOwner,
 } from "../../../helper";
+
 import Layout from "../../../Layout";
+import { useState } from "react";
+import { RiAncientPavilionFill, RiImageAddLine } from "react-icons/ri";
 const CreateEstate = () => {
+  const [showMantagha, setshowMantagha] = useState(false);
+  const [shoMoamele, setShoMoamele] = useState("");
+  const [shoMelk, setShowMelk] = useState("");
+
   const handleCreateEstate = (values) => {
     let userToken = getToken();
     let stateData = {
@@ -117,6 +124,9 @@ const CreateEstate = () => {
                 <Field
                   id="mantaghe"
                   name="mantaghe"
+                  onChange={(e) => {
+                    if (e.target.value != 0) setshowMantagha(true);
+                  }}
                   as="select"
                   rows={10}
                   className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -124,6 +134,18 @@ const CreateEstate = () => {
                   <option>منطقه را انتخاب کنید</option>
                   <option>بوکان</option>
                 </Field>
+                {showMantagha && (
+                  <Field
+                    id="ostan"
+                    name="ostan"
+                    as="select"
+                    rows={10}
+                    className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                  >
+                    <option>همه</option>
+                    <option>اسلام اباد</option>
+                  </Field>
+                )}
 
                 <div className="flex items-center justify-between gap-4">
                   <div className="w-full">
@@ -187,14 +209,45 @@ const CreateEstate = () => {
                       <Field
                         id="moamele"
                         name="moamele"
+                        onChange={(e) => {
+                          if (e.target.value == "") return setShoMoamele("");
+                          if (e.target.value == "خرید و فروش")
+                            return setShoMoamele("خرید و فروش");
+
+                          if (e.target.value == "رهن و اجاره")
+                            return setShoMoamele("رهن و اجاره");
+
+                          if (e.target.value == "اجاره روزانه")
+                            return setShoMoamele("اجاره روزانه");
+                        }}
                         as="select"
-                        rows={10}
+                        value={shoMoamele}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>خرید و فروش</option>
-                        <option>رهن و اجاره</option>
-                        <option>اجاره روزانه</option>
+                        <option
+                          value=""
+                          selected={shoMoamele == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          value="خرید و فروش"
+                          selected={shoMoamele == "خرید و فروش" ? true : false}
+                        >
+                          خرید و فروش
+                        </option>
+                        <option
+                          value="رهن و اجاره"
+                          selected={shoMoamele == "رهن و اجاره" ? true : false}
+                        >
+                          رهن و اجاره
+                        </option>
+                        <option
+                          value="اجاره روزانه"
+                          selected={shoMoamele == "اجاره روزانه" ? true : false}
+                        >
+                          اجاره روزانه
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -204,15 +257,54 @@ const CreateEstate = () => {
                       <Field
                         id="melk"
                         name="melk"
+                        onChange={(e) => {
+                          if (e.target.value == "") return setShowMelk("");
+                          if (e.target.value == "آپارتمان")
+                            return setShowMelk("آپارتمان");
+
+                          if (e.target.value == "خانه و ویلا")
+                            return setShowMelk("خانه و ویلا");
+
+                          if (e.target.value == "زمین و کلنگی")
+                            return setShowMelk("زمین و کلنگی");
+
+                          if (e.target.value == "اداری و تجاری")
+                            return setShowMelk("اداری و تجاری");
+                        }}
                         as="select"
                         rows={10}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>آپارتمان</option>
-                        <option>خانه و ویلا</option>
-                        <option>زمین و کلنگی</option>
-                        <option>اداری و تجاری</option>
+                        <option
+                          value=""
+                          selected={shoMelk == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          value="آپارتمان"
+                          selected={shoMelk == "آپارتمان" ? true : false}
+                        >
+                          آپارتمان
+                        </option>
+                        <option
+                          value="خانه و ویلا"
+                          selected={shoMelk == "خانه و ویلا" ? true : false}
+                        >
+                          خانه و ویلا
+                        </option>
+                        <option
+                          value="زمین و کلنگی"
+                          selected={shoMelk == "زمین و کلنگی" ? true : false}
+                        >
+                          زمین و کلنگی
+                        </option>
+                        <option
+                          value="اداری و تجاری"
+                          selected={shoMelk == "اداری و تجاری" ? true : false}
+                        >
+                          اداری و تجاری
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -228,9 +320,12 @@ const CreateEstate = () => {
                         rows={10}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option> انتخاب کنید</option>
+                        <option> نمایش قیمت</option>
+
                         <option>توافقی</option>
                         <option>تماس بگیرید</option>
+                        <option> حراجی</option>
+                        <option> بالاترین پیشنهاد</option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -240,15 +335,1215 @@ const CreateEstate = () => {
                       <Field
                         id="metrazh"
                         name="metrazh"
-                        type="text"
+                        type="number"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
                   </div>
                 </div>
 
-                <label htmlFor="area" className="mb-3 text-white block">
-                  جهت ملک
+                {shoMoamele == "خرید و فروش" ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            قیمت کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            قیمت متری
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            کاربری
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> مسکونی </option>
+                            <option> تجاری</option>
+                            <option>اداری </option>
+                            <option>زراعی </option>
+                            <option>باغات </option>
+                            <option>تفریحی </option>
+                            <option>ورزشی </option>
+                            <option>فضای سبر </option>
+                            <option> بدون کاربری </option>
+                            <option> خارج از بافت </option>
+                            <option> سایر </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            نوع سند
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>تگ برگ</option>
+                            <option>منگوله دار</option>
+                            <option>قولنامه ای</option>
+                            <option>اوقافی</option>
+                            <option>بنیادی</option>
+                            <option>سازمانی</option>
+                            <option>نسخ</option>
+                            <option>دردست اقدام</option>
+                            <option>سایر </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full flex items-center   gap-10">
+                      <div className="mt-4">
+                        <label htmlFor="area" className="mb-2 text-white block">
+                          امکان معاوضه
+                        </label>{" "}
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            name="shahraki"
+                            value=""
+                            class="sr-only peer"
+                          />
+                          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                      </div>
+                      <div className="mt-4">
+                        <label htmlFor="area" className="mb-2 text-white block">
+                          پیش فروش
+                        </label>{" "}
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            name="shahraki"
+                            value=""
+                            class="sr-only peer"
+                          />
+                          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                      </div>
+                    </div>
+                  </>
+                ) : shoMoamele == "رهن و اجاره" ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            ودیعه
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            اجاره
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            کاربری
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> مسکونی </option>
+                            <option> تجاری</option>
+                            <option>اداری </option>
+                            <option>زراعی </option>
+                            <option>باغات </option>
+                            <option>تفریحی </option>
+                            <option>ورزشی </option>
+                            <option>فضای سبر </option>
+                            <option> بدون کاربری </option>
+                            <option> خارج از بافت </option>
+                            <option> سایر </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            قابلیت تبدیل
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> دارد </option>
+                            <option> ندارد </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            حداکثر نفرات
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            قابلیت اجاره به
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> خانواده و مجرد </option>
+                            <option> خانواده </option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            حیوانات خانگی
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> مجاز است </option>
+                            <option> مجاز نیست </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            دربست
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> هست </option>
+                            <option> نیست </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : shoMoamele == "اجاره روزانه" ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            اجاره شبی (روزهای عادی)
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            اجاره شبی آخر هفته و تعطیلات
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            قابلیت اجاره به
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> خانواده و مجرد </option>
+                            <option> خانواده </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            برگذاری مراسمات
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> مجاز است </option>
+                            <option> مجاز نیست </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            حداکثر نفرات
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            حیوانات خانگی
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> مجاز است </option>
+                            <option> مجاز نیست </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            دربست
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> هست </option>
+                            <option> نیست </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+
+                {shoMelk == "آپارتمان" ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            طبقه چندم
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد طبقات کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد واحد در هر طبقه
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد واحد کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد اتاق
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>0 </option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                            <option value={0}>8 </option>
+                            <option value={0}>9 </option>
+                            <option value={0}>10 </option>
+                            <option value={0}>11 </option>
+                            <option value={0}>12 </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد حمام
+                          </label>
+
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد دستشویی
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            سن بنا
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>نوساز </option>
+                            <option> 1 تا 5 سال </option>
+                            <option> 5 تا 10 سال</option>
+                            <option>10 تا 20 سال</option>
+                            <option>20 تا 50 سال</option>
+                            <option>50 سال به بالا</option>
+                            <option>کلنگی</option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            وضعیت سکونت
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> تخلیه </option>
+                            <option> مستاجر ساکن</option>
+                            <option>مالک ساکن </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            نما
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> سنگ</option>
+                            <option>سیمان</option>
+                            <option>شیشه </option>
+                            <option> کامپوزیت</option>
+                            <option>کلاسیک</option>
+                            <option>آجر</option>
+                            <option>چوب</option>
+                            <option>مدرن</option>
+                            <option>ترکیبی</option>
+                            <option>رومی</option>
+                            <option>سایر</option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            نوع کابینت
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> کابینت MDF </option>
+                            <option>کابینت جزیره</option>
+                            <option>کابینت چوب</option>
+                            <option>کابینت فلزی</option>
+                            <option>کابینت ممبران</option>
+                            <option>کابینت هایگلس</option>
+                            <option>سایر</option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            کف پوش
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>پارکت </option>
+                            <option>سرامیک </option>
+                            <option>سنگ </option>
+                            <option>سیمان </option>
+                            <option>موزائیک </option>
+                            <option>موکت </option>
+                            <option>سایر </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : shoMelk == "خانه و ویلا" ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            مساحت زمین
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد طبقات کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            نوع کابینت
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> کابینت MDF </option>
+                            <option>کابینت جزیره</option>
+                            <option>کابینت چوب</option>
+                            <option>کابینت فلزی</option>
+                            <option>کابینت ممبران</option>
+                            <option>کابینت هایگلس</option>
+                            <option>سایر</option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد واحد کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد اتاق
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>0 </option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                            <option value={0}>8 </option>
+                            <option value={0}>9 </option>
+                            <option value={0}>10 </option>
+                            <option value={0}>11 </option>
+                            <option value={0}>12 </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد حمام
+                          </label>
+
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد دستشویی
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            سن بنا
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>نوساز </option>
+                            <option> 1 تا 5 سال </option>
+                            <option> 5 تا 10 سال</option>
+                            <option>10 تا 20 سال</option>
+                            <option>20 تا 50 سال</option>
+                            <option>50 سال به بالا</option>
+                            <option>کلنگی</option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            وضعیت سکونت
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> تخلیه </option>
+                            <option> مستاجر ساکن</option>
+                            <option>مالک ساکن </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            نما
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> سنگ</option>
+                            <option>سیمان</option>
+                            <option>شیشه </option>
+                            <option> کامپوزیت</option>
+                            <option>کلاسیک</option>
+                            <option>آجر</option>
+                            <option>چوب</option>
+                            <option>مدرن</option>
+                            <option>ترکیبی</option>
+                            <option>رومی</option>
+                            <option>سایر</option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            کف پوش
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>پارکت </option>
+                            <option>سرامیک </option>
+                            <option>سنگ </option>
+                            <option>سیمان </option>
+                            <option>موزائیک </option>
+                            <option>موکت </option>
+                            <option>سایر </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : shoMelk == "زمین و کلنگی" ? (
+                  ""
+                ) : shoMelk == "اداری و تجاری" ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            طبقه چندم
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد طبقات کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد واحد در هر طبقه
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد واحد کل
+                          </label>
+                          <Field
+                            id="metrazh"
+                            name="metrazh"
+                            type="number"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد اتاق
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>0 </option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                            <option value={0}>8 </option>
+                            <option value={0}>9 </option>
+                            <option value={0}>10 </option>
+                            <option value={0}>11 </option>
+                            <option value={0}>12 </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد حمام
+                          </label>
+
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            تعداد دستشویی
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option value={0}>1 </option>
+                            <option value={0}>2 </option>
+                            <option value={0}>3 </option>
+                            <option value={0}>4 </option>
+                            <option value={0}>5 </option>
+                            <option value={0}>6 </option>
+                            <option value={0}>7 </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            سن بنا
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>نوساز </option>
+                            <option> 1 تا 5 سال </option>
+                            <option> 5 تا 10 سال</option>
+                            <option>10 تا 20 سال</option>
+                            <option>20 تا 50 سال</option>
+                            <option>50 سال به بالا</option>
+                            <option>کلنگی</option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            وضعیت سکونت
+                          </label>
+                          <Field
+                            id="karbari"
+                            name="karbari"
+                            as="select"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value={0}>انتخاب کنید</option>
+                            <option> تخلیه </option>
+                            <option> مستاجر ساکن</option>
+                            <option>مالک ساکن </option>
+                          </Field>
+                        </div>
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            نما
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option> سنگ</option>
+                            <option>سیمان</option>
+                            <option>شیشه </option>
+                            <option> کامپوزیت</option>
+                            <option>کلاسیک</option>
+                            <option>آجر</option>
+                            <option>چوب</option>
+                            <option>مدرن</option>
+                            <option>ترکیبی</option>
+                            <option>رومی</option>
+                            <option>سایر</option>
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="w-full flex items-center justify-between gap-4">
+                        <div className="w-full">
+                          <label
+                            htmlFor="area"
+                            className="mb-3 text-white block"
+                          >
+                            کف پوش
+                          </label>
+                          <Field
+                            id="melk"
+                            name="melk"
+                            as="select"
+                            rows={10}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option>انتخاب کنید</option>
+                            <option>پارکت </option>
+                            <option>سرامیک </option>
+                            <option>سنگ </option>
+                            <option>سیمان </option>
+                            <option>موزائیک </option>
+                            <option>موکت </option>
+                            <option>سایر </option>
+                          </Field>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+
+                <label htmlFor="area" className="my-8 text-white block">
+                  <h2 className=" my-10 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white ">
+                    جهت ملک{" "}
+                  </h2>
                 </label>
                 <div className="flex items-center gap-7">
                   <div className="flex items-center">
@@ -258,21 +1553,21 @@ const CreateEstate = () => {
 
                   <div className="flex items-center">
                     <input type="checkbox" name="wg[]" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">جنوبی</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="wg[]" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">شرقی</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="wg[]" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">غربی</label>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-9">
+                <div className="flex items-center gap-9 mt-8">
                   <div className="mt-4">
                     <label htmlFor="area" className="mb-2 text-white block">
                       ساحلی
@@ -319,137 +1614,219 @@ const CreateEstate = () => {
                   </div>
                 </div>
 
-                <label htmlFor="area" className="my-3 text-white block">
-                  امکانات
+                <label htmlFor="area" className="my-8 text-white block">
+                  <h2 className=" my-10 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white ">
+                    امکانات{" "}
+                  </h2>
                 </label>
                 <div className="flex items-center gap-7 flex-wrap">
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">انتخاب همه</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">آب</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">برق</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">گاز</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">پارکینگ</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">آسانسور</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">انباری</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">درب ضد سرقت</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">تلفن</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">شوفاژ</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">شومینه</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">پکیج</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">کولر</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">سونا</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">استخر</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">جکوزی</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">
+                      آیفون نصویری
+                    </label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">
+                      دوربین مدار بسته
+                    </label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">درب ریموت</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">انتن مرکزی</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">پاسیو</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">باربیکیو</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">بالکن</label>
                   </div>
 
                   <div className="flex items-center">
                     <input type="checkbox" name="" id="" />
-                    <label className="mr-2 text-white block">شمالی</label>
+                    <label className="mr-2 text-white block">حیات</label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">لابی</label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">
+                      سالن اجتماعات
+                    </label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">سرایداری</label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">مبله</label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">اطفاء حریق</label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">وام</label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="" />
+                    <label className="mr-2 text-white block">آب چاه</label>
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className="bg-[#4a80bb] shadow-sm shadow-indigo-700 my-4 w-3/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
-                >
-                  {" "}
-                  ثبت ملک جدید
-                </button>
+
+                <label htmlFor="area" className="my-8 text-white block">
+                  <h2 className=" my-10 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white ">
+                    افزودن تصویر{" "}
+                  </h2>
+                </label>
+
+                <div className="grid grid-cols-12 gap-5 mt-10">
+                  <div className="col-span-2 border h-36 rounded-lg flex items-center justify-center w-36 border-dashed border-blue-500">
+                    <RiImageAddLine color="#fff" size={50} />
+                  </div>
+
+                  <div className="col-span-2 border h-36 rounded-lg flex items-center justify-center w-36 border-dashed border-blue-500">
+                    <RiImageAddLine color="#fff" size={50} />
+                  </div>
+
+                  <div className="col-span-2 border h-36 rounded-lg flex items-center justify-center w-36 border-dashed border-blue-500">
+                    <RiImageAddLine color="#fff" size={50} />
+                  </div>
+                </div>
+
+                <label htmlFor="area" className="my-8 text-white block">
+                  <h2 className=" my-10 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white ">
+                    افزودن فیلم{" "}
+                  </h2>
+                </label>
+
+                <div className="flex text-white gap-4 items-center">
+                  <span>هیچ پرونده ای انتخاب نشده است</span>
+                  <button
+                    type="submit"
+                    className="bg-blue-700 shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  >
+                    {" "}
+                    انتخاب فیلم
+                  </button>
+                </div>
+                <div className="w-full m-auto flex items-center justify-center">
+                  <button
+                    type="submit"
+                    className="bg-[#4a80bb] m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  >
+                    <RiAncientPavilionFill  size={24}/>
+                    ثبت ملک جدید
+                  </button>
+                </div>
               </Form>
             </Formik>
           </div>
