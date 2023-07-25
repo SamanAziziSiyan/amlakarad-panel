@@ -10,7 +10,12 @@ import {
   RiShutDownLine,
   RiUserSearchFill,
 } from "react-icons/ri";
-import { toastAlert } from "../helper";
+import {
+  sendSMS,
+  sendSMSAdminState,
+  sendSMSStateOwner,
+  toastAlert,
+} from "../helper";
 
 const Header = () => {
   const [userName, setUsername] = useState("");
@@ -35,12 +40,12 @@ const Header = () => {
   };
   return (
     <>
-      <div className="relative rounded-xl px-6 w-full h-max  mt-20 flex items-center justify-between bg-white/5 backdrop-blur-md bg-opacity-50">
-        <div className="flex items-center gap-10">
+      <div className="relative flex-nowrap max-[320px]:flex-wrap max-[320px]:w-full max-[320px]:justify-center p-3 gap-5 m-auto items-center justify-center rounded-xl px-6 w-full h-max  mt-20 flex items-center justify-between bg-white/5 backdrop-blur-md bg-opacity-50">
+        <div className="flex items-center gap-1 lg:gap-10 max-md:flex-col max-md:justify-center max-md:w-full max-sm:w-auto h-auto">
           <Link to={"/"}>
             <img src="/assets/images/logo.png" alt="logo" className="w-16" />
           </Link>
-          <div class="flex items-center py-4 overflow-x-auto whitespace-nowrap">
+          <div class="flex items-center max-md:hidden py-4 overflow-x-auto whitespace-nowrap">
             <Link
               to="/"
               class="flex items-center text-gray-400 dark:text-gray-200"
@@ -167,7 +172,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center ">
+        <div className="flex items-center max-md:w-full  justify-center ">
           <div className="shadow shadow-sm shadow-sky-600 rounded-[5px] flex items-center ml-4 justify-center p-1.5">
             <FaUserTie className="text-[25px] text-white " />
             <span className="text-white mr-2">{userName}</span>
