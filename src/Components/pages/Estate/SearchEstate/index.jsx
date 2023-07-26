@@ -227,7 +227,7 @@ const SearchEstate = () => {
                 <div className="w-full h-auto ">
                   <div className="grid grid-cols-12 gap-4 px-2 mt-10">
                     {states.map((item, index) => (
-                      <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl">
+                      <div key={index} className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl">
                         <div className="flex flex-col  pb-4 relative">
                           {item.item.fast == "1" ? (
                             <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">

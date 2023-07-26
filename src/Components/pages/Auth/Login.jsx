@@ -6,41 +6,44 @@ import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import AuthLayout from "../../Layout/AuthLayout";
 import { RiLoginCircleLine } from "react-icons/ri";
+import { BeatLoader } from "react-spinners";
+import { useState } from "react";
 const Login = () => {
   const navigate = useNavigate();
-
-  const handleLogin = (values) => {
+  const [showLoading, setShowLoading] = useState(false);
+  const handleLogin = async (values) => {
+    setShowLoading(true);
     let { username, password } = values;
-    service.auth
+    await service.auth
       .lgoin({
         username,
         password,
       })
-      .then((data) => {
+      .then(async (data) => {
         if (data.status == 403)
           throw new Error("نام کاربری یا رمز عبور اشتباه است.");
         localStorage.setItem("token", data.data.token);
         let decodeToken = jwtDecode(data.data.token);
-        console.log(decodeToken);
-        service.personnel
+        await service.personnel
           .getUser(data.data.token, decodeToken.data.user.id)
           .then((user) => {
-            console.log(user);
             let userData = {
               username: user.data.extra.username,
               role: user.data.extra.role[0],
               ID: decodeToken.data.user.id,
             };
-            console.log(userData);
             localStorage.setItem("user", JSON.stringify(userData));
+            toastAlert("با موفقیت وارد شدید ", "success");
+            navigate("/");
+            setShowLoading(false);
           })
           .catch((err) => {
-            console.log(err);
+            toastAlert("سرور مشغول است ", "error");
+            setShowLoading(false);
           });
-        toastAlert("با موفقیت وارد شدید ", "success");
-        navigate("/");
       })
       .catch((err) => {
+        setShowLoading(false);
         return toastAlert("نام کاربری یا رمز عبور اشتباه است", "error");
       });
   };
@@ -92,6 +95,7 @@ const Login = () => {
                   >
                     <RiLoginCircleLine size={24} color={"#fff"} />
                     <span>ورود</span>
+                    {showLoading && <BeatLoader size={10} color="#fff" />}
                   </button>
                 </Form>
               </Formik>

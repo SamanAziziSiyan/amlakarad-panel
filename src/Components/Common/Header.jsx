@@ -10,12 +10,8 @@ import {
   RiShutDownLine,
   RiUserSearchFill,
 } from "react-icons/ri";
-import {
-  sendSMS,
-  sendSMSAdminState,
-  sendSMSStateOwner,
-  toastAlert,
-} from "../helper";
+import { getToken, toastAlert } from "../helper";
+import service from "../../server/service";
 
 const Header = () => {
   const [userName, setUsername] = useState("");
@@ -24,13 +20,23 @@ const Header = () => {
 
   useEffect(() => {
     let userData = localStorage.getItem("user");
-    console.log(pathname.search("EstateDetails"));
+    let userToken = getToken();
     if (!userData) {
       setUsername("نام کاربری");
-      return;
+    } else {
+      userData = JSON.parse(userData);
+      setUsername(userData.username);
     }
-    userData = JSON.parse(userData);
-    setUsername(userData.username);
+    service.auth
+      .loginValidate(userToken)
+      .then((data) => {
+        if (data.data.data.status != 200) throw new Error();
+        return;
+      })
+      .catch((err) => {
+        toastAlert("لطفا ابتدا وارد شوید");
+        navigate("/login");
+      });
   }, []);
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -45,107 +51,107 @@ const Header = () => {
           <Link to={"/"}>
             <img src="/assets/images/logo.png" alt="logo" className="w-16" />
           </Link>
-          <div class="flex items-center max-md:hidden py-4 overflow-x-auto whitespace-nowrap">
+          <div className="flex items-center max-md:hidden py-4 overflow-x-auto whitespace-nowrap">
             <Link
               to="/"
-              class="flex items-center text-gray-400 dark:text-gray-200"
+              className="flex items-center text-gray-400 dark:text-gray-200"
             >
               <RiHomeHeartLine size={25} />
-              <span class="mx-2">صفحه اصلی</span>
+              <span className="mx-2">صفحه اصلی</span>
             </Link>
             {pathname == "/settings" && (
               <>
-                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiSettings3Fill size={25} />
 
-                  <span class="mx-2">تنظیمات</span>
+                  <span className="mx-2">تنظیمات</span>
                 </Link>
               </>
             )}
             {pathname == "/search-personnel" && (
               <>
-                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiUserSearchFill size={25} />
 
-                  <span class="mx-2">جستجو اشخاص</span>
+                  <span className="mx-2">جستجو اشخاص</span>
                 </Link>
               </>
             )}
             {pathname == "/create-personnel" && (
               <>
-                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiHomeHeartLine size={25} />
 
-                  <span class="mx-2"> ایجاد پرسنل</span>
+                  <span className="mx-2"> ایجاد پرسنل</span>
                 </Link>
               </>
             )}
             {pathname == "/create-estate" && (
               <>
-                <span class="mx-3 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-3 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiAncientPavilionLine size={25} />
 
-                  <span class="mx-2 mt-1"> ثبت املاک</span>
+                  <span className="mx-2 mt-1"> ثبت املاک</span>
                 </Link>
               </>
             )}
             {pathname == "/search-estate" && (
               <>
-                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiSearch2Fill size={25} />
 
-                  <span class="mx-2"> جستجو املاک</span>
+                  <span className="mx-2"> جستجو املاک</span>
                 </Link>
               </>
             )}
             {pathname.search("EstateDetails") != -1 ? (
               <>
-                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiSearch2Fill size={25} />
 
-                  <span class="mx-2">جزئیات ملک</span>
+                  <span className="mx-2">جزئیات ملک</span>
                 </Link>
               </>
             ) : (
@@ -153,17 +159,17 @@ const Header = () => {
             )}
             {pathname.search("edit-personnel") != -1 ? (
               <>
-                <span class="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
                   <RiArrowLeftSLine size={20} />
                 </span>
 
                 <Link
                   to="#"
-                  class="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
                 >
                   <RiSearch2Fill size={25} />
 
-                  <span class="mx-2">جزئیات کاربر</span>
+                  <span className="mx-2">جزئیات کاربر</span>
                 </Link>
               </>
             ) : (
