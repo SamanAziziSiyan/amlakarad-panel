@@ -13,6 +13,7 @@ import Layout from "../../../Layout";
 const CreatePersonnel = () => {
   const navigate = useNavigate();
   const [showMoshaverName, setShowMoshaverName] = useState(false);
+  const [showKarbarrole, setShowKarbarrole] = useState(false);
 
   useEffect(() => {
     let userToken = getToken();
@@ -161,7 +162,9 @@ const CreatePersonnel = () => {
                         id="roles"
                         name="roles"
                         as="select"
+                        value = {showKarbarrole}
                         onChange={(e) => {
+                          setShowKarbarrole(e.target.value)
                           if (e.target.value != "karbar") {
                             setShowMoshaverName(true);
                           } else {
@@ -203,7 +206,7 @@ const CreatePersonnel = () => {
                     <div className="w-full flex items-center justify-between gap-4">
                       <div className="w-full">
                         <label htmlFor="area" className="mb-3 text-white block">
-                          نوع کاربری
+                           نام مشاور املاک
                         </label>
                         <input
                           id="role"

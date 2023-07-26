@@ -203,7 +203,10 @@ const CreateEstate = () => {
                 <div className="flex items-center justify-between gap-4">
                   <div className="w-full flex items-center justify-between gap-4">
                     <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
+                      <label
+                        htmlFor="moamele"
+                        className="mb-3 text-white block"
+                      >
                         نوع معامله
                       </label>
                       <Field
@@ -251,7 +254,7 @@ const CreateEstate = () => {
                       </Field>
                     </div>
                     <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
+                      <label htmlFor="melk" className="mb-3 text-white block">
                         نوع ملک
                       </label>
                       <Field
@@ -272,6 +275,7 @@ const CreateEstate = () => {
                             return setShowMelk("اداری و تجاری");
                         }}
                         as="select"
+                        value={shoMelk}
                         rows={10}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
@@ -310,12 +314,15 @@ const CreateEstate = () => {
                   </div>
                   <div className="w-full flex items-center justify-between gap-4">
                     <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
+                      <label
+                        htmlFor="priceform"
+                        className="mb-3 text-white block"
+                      >
                         نوع نمایش قیمت
                       </label>
                       <Field
-                        id="price"
-                        name="price"
+                        id="priceform"
+                        name="priceform"
                         as="select"
                         rows={10}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -329,7 +336,10 @@ const CreateEstate = () => {
                       </Field>
                     </div>
                     <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
+                      <label
+                        htmlFor="metrazh"
+                        className="mb-3 text-white block"
+                      >
                         متراژ
                       </label>
                       <Field
@@ -341,6 +351,41 @@ const CreateEstate = () => {
                     </div>
                   </div>
                 </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="w-full">
+                    <label htmlFor="moshaver" className="mb-3 text-white block">
+                      مشاور مربوطه
+                    </label>
+                    <Field
+                      id="moshaver"
+                      name="moshaver"
+                      as="select"
+                      rows={10}
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    >
+                      <option>solix</option>
+                    </Field>
+                  </div>
+                  <div className="w-full">
+                    <label
+                      htmlFor="post_status"
+                      className="mb-3 text-white block"
+                    >
+                      وضعیت نوشته
+                    </label>
+                    <Field
+                      id="post_status"
+                      name="post_status"
+                      as="select"
+                      rows={10}
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    >
+                      <option value="pending"> در انتظار بررسی </option>
+                      <option value="publish"> انتشار </option>
+                      <option value="draft"> پیشنویس </option>
+                    </Field>
+                  </div>
+                </div>
 
                 {shoMoamele == "خرید و فروش" ? (
                   <>
@@ -348,28 +393,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="pricekol"
                             className="mb-3 text-white block"
                           >
                             قیمت کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="pricekol"
+                            name="pricekol"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="pricemeteri"
                             className="mb-3 text-white block"
                           >
                             قیمت متری
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="pricemeteri"
+                            name="pricemeteri"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -378,7 +423,7 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="karbari"
                             className="mb-3 text-white block"
                           >
                             کاربری
@@ -405,14 +450,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="sanad"
                             className="mb-3 text-white block"
                           >
                             نوع سند
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="sanad"
+                            name="sanad"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -433,13 +478,17 @@ const CreateEstate = () => {
                     </div>
                     <div className="w-full flex items-center   gap-10">
                       <div className="mt-4">
-                        <label htmlFor="area" className="mb-2 text-white block">
+                        <label
+                          htmlFor="moaveze"
+                          className="mb-2 text-white block"
+                        >
                           امکان معاوضه
                         </label>{" "}
                         <label class="relative inline-flex items-center cursor-pointer">
                           <input
                             type="checkbox"
-                            name="shahraki"
+                            id="moaveze"
+                            name="moaveze"
                             value=""
                             class="sr-only peer"
                           />
@@ -447,13 +496,17 @@ const CreateEstate = () => {
                         </label>
                       </div>
                       <div className="mt-4">
-                        <label htmlFor="area" className="mb-2 text-white block">
+                        <label
+                          htmlFor="pishforosh"
+                          className="mb-2 text-white block"
+                        >
                           پیش فروش
                         </label>{" "}
                         <label class="relative inline-flex items-center cursor-pointer">
                           <input
                             type="checkbox"
-                            name="shahraki"
+                            name="pishforosh"
+                            id="pishforosh"
                             value=""
                             class="sr-only peer"
                           />
@@ -468,28 +521,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="vadie"
                             className="mb-3 text-white block"
                           >
                             ودیعه
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="vadie"
+                            name="vadie"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="ejare"
                             className="mb-3 text-white block"
                           >
                             اجاره
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="ejare"
+                            name="ejare"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -498,7 +551,7 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="karbari"
                             className="mb-3 text-white block"
                           >
                             کاربری
@@ -525,14 +578,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tabdil"
                             className="mb-3 text-white block"
                           >
                             قابلیت تبدیل
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="tabdil"
+                            name="tabdil"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -548,28 +601,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="nafarat"
                             className="mb-3 text-white block"
                           >
                             حداکثر نفرات
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="nafarat"
+                            name="nafarat"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tahol"
                             className="mb-3 text-white block"
                           >
                             قابلیت اجاره به
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="tahol"
+                            name="tahol"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -582,14 +635,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="Pets"
                             className="mb-3 text-white block"
                           >
                             حیوانات خانگی
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="Pets"
+                            name="Pets"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -600,14 +653,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="darbast"
                             className="mb-3 text-white block"
                           >
                             دربست
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="darbast"
+                            name="darbast"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -626,28 +679,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="price-shabi"
                             className="mb-3 text-white block"
                           >
                             اجاره شبی (روزهای عادی)
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="price-shabi"
+                            name="priceshabi"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="price-tatilat"
                             className="mb-3 text-white block"
                           >
                             اجاره شبی آخر هفته و تعطیلات
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="price-tatilat"
+                            name="pricetatilat"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -656,14 +709,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tahol"
                             className="mb-3 text-white block"
                           >
                             قابلیت اجاره به
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="tahol"
+                            name="tahol"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -674,14 +727,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="celebrations"
                             className="mb-3 text-white block"
                           >
                             برگذاری مراسمات
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="celebrations"
+                            name="celebrations"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -697,14 +750,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="nafarat"
                             className="mb-3 text-white block"
                           >
                             حداکثر نفرات
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="nafarat"
+                            name="nafarat"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -713,14 +766,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="Pets"
                             className="mb-3 text-white block"
                           >
                             حیوانات خانگی
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="Pets"
+                            name="Pets"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -731,14 +784,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="darbast"
                             className="mb-3 text-white block"
                           >
                             دربست
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="darbast"
+                            name="darbast"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -761,28 +814,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tabaghe"
                             className="mb-3 text-white block"
                           >
                             طبقه چندم
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tabaghe"
+                            name="tabaghe"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-tabaghat"
                             className="mb-3 text-white block"
                           >
                             تعداد طبقات کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-tabaghat"
+                            name="tedad-tabaghat"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -791,28 +844,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-vahed-har-tabaghe"
                             className="mb-3 text-white block"
                           >
                             تعداد واحد در هر طبقه
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-vahed-har-tabaghe"
+                            name="tedad-vahed-har-tabaghe"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-vahed-kol"
                             className="mb-3 text-white block"
                           >
                             تعداد واحد کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-vahed-kol"
+                            name="tedad-vahed-kol"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -824,92 +877,92 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="otagh"
                             className="mb-3 text-white block"
                           >
                             تعداد اتاق
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="otagh"
+                            name="otagh"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
-                            <option value={0}>انتخاب کنید</option>
+                            <option value={13}>انتخاب کنید</option>
                             <option value={0}>0 </option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
-                            <option value={0}>8 </option>
-                            <option value={0}>9 </option>
-                            <option value={0}>10 </option>
-                            <option value={0}>11 </option>
-                            <option value={0}>12 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
+                            <option value={8}>8 </option>
+                            <option value={9}>9 </option>
+                            <option value={10}>10 </option>
+                            <option value={11}>11 </option>
+                            <option value={12}>12 </option>
                           </Field>
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="num-hamam"
                             className="mb-3 text-white block"
                           >
                             تعداد حمام
                           </label>
 
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="num-hamam"
+                            name="num-hamam"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value={0}>انتخاب کنید</option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
                           </Field>
                         </div>
                       </div>
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="num-wc"
                             className="mb-3 text-white block"
                           >
                             تعداد دستشویی
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="num-wc"
+                            name="num-wc"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value={0}>انتخاب کنید</option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
                           </Field>
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="senbana"
                             className="mb-3 text-white block"
                           >
                             سن بنا
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="senbana"
+                            name="senbana"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -930,14 +983,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="sokonat"
                             className="mb-3 text-white block"
                           >
                             وضعیت سکونت
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="sokonat"
+                            name="sokonat"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -949,14 +1002,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="nama"
                             className="mb-3 text-white block"
                           >
                             نما
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="nama"
+                            name="nama"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -979,14 +1032,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="kabinet"
                             className="mb-3 text-white block"
                           >
                             نوع کابینت
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="kabinet"
+                            name="kabinet"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -1008,8 +1061,8 @@ const CreateEstate = () => {
                             کف پوش
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="kafposh"
+                            name="kafposh"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1033,28 +1086,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="masahat-zamin"
                             className="mb-3 text-white block"
                           >
                             مساحت زمین
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="masahat-zamin"
+                            name="masahat-zamin"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-tabaghat"
                             className="mb-3 text-white block"
                           >
                             تعداد طبقات کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-tabaghat"
+                            name="tedad-tabaghat"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -1063,14 +1116,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="kabinet"
                             className="mb-3 text-white block"
                           >
                             نوع کابینت
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="kabinet"
+                            name="kabinet"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -1086,14 +1139,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-vahed-kol"
                             className="mb-3 text-white block"
                           >
                             تعداد واحد کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-vahed-kol"
+                            name="tedad-vahed-kol"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -1105,92 +1158,92 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="otagh"
                             className="mb-3 text-white block"
                           >
                             تعداد اتاق
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="otagh"
+                            name="otagh"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
-                            <option value={0}>انتخاب کنید</option>
+                            <option value={13}>انتخاب کنید</option>
                             <option value={0}>0 </option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
-                            <option value={0}>8 </option>
-                            <option value={0}>9 </option>
-                            <option value={0}>10 </option>
-                            <option value={0}>11 </option>
-                            <option value={0}>12 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
+                            <option value={8}>8 </option>
+                            <option value={9}>9 </option>
+                            <option value={10}>10 </option>
+                            <option value={11}>11 </option>
+                            <option value={12}>12 </option>
                           </Field>
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="num-hamam"
                             className="mb-3 text-white block"
                           >
                             تعداد حمام
                           </label>
 
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="num-hamam"
+                            name="num-hamam"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value={0}>انتخاب کنید</option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
                           </Field>
                         </div>
                       </div>
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="num-wc"
                             className="mb-3 text-white block"
                           >
                             تعداد دستشویی
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="num-wc"
+                            name="num-wc"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value={0}>انتخاب کنید</option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
                           </Field>
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="senbana"
                             className="mb-3 text-white block"
                           >
                             سن بنا
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="senbana"
+                            name="senbana"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1211,14 +1264,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="sokonat"
                             className="mb-3 text-white block"
                           >
                             وضعیت سکونت
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="sokonat"
+                            name="sokonat"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -1230,14 +1283,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="nama"
                             className="mb-3 text-white block"
                           >
                             نما
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="nama"
+                            name="nama"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1260,14 +1313,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="kafposh"
                             className="mb-3 text-white block"
                           >
                             کف پوش
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="kafposh"
+                            name="kafposh"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1293,28 +1346,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tabaghe"
                             className="mb-3 text-white block"
                           >
                             طبقه چندم
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tabaghe"
+                            name="tabaghe"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-tabaghat"
                             className="mb-3 text-white block"
                           >
                             تعداد طبقات کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-tabaghat"
+                            name="tedad-tabaghat"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -1323,28 +1376,28 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-vahed-har-tabaghe"
                             className="mb-3 text-white block"
                           >
                             تعداد واحد در هر طبقه
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-vahed-har-tabaghe"
+                            name="tedad-vahed-har-tabaghe"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="tedad-vahed-kol"
                             className="mb-3 text-white block"
                           >
                             تعداد واحد کل
                           </label>
                           <Field
-                            id="metrazh"
-                            name="metrazh"
+                            id="tedad-vahed-kol"
+                            name="tedad-vahed-kol"
                             type="number"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -1356,80 +1409,80 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="otagh"
                             className="mb-3 text-white block"
                           >
                             تعداد اتاق
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="otagh"
+                            name="otagh"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
-                            <option value={0}>انتخاب کنید</option>
+                            <option value={13}>انتخاب کنید</option>
                             <option value={0}>0 </option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
-                            <option value={0}>8 </option>
-                            <option value={0}>9 </option>
-                            <option value={0}>10 </option>
-                            <option value={0}>11 </option>
-                            <option value={0}>12 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
+                            <option value={8}>8 </option>
+                            <option value={9}>9 </option>
+                            <option value={10}>10 </option>
+                            <option value={11}>11 </option>
+                            <option value={12}>12 </option>
                           </Field>
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="num-hamam"
                             className="mb-3 text-white block"
                           >
                             تعداد حمام
                           </label>
 
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="num-hamam"
+                            name="numhamam"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value={0}>انتخاب کنید</option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
                           </Field>
                         </div>
                       </div>
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="num-wc"
                             className="mb-3 text-white block"
                           >
                             تعداد دستشویی
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="num-wc"
+                            name="numwc"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value={0}>انتخاب کنید</option>
-                            <option value={0}>1 </option>
-                            <option value={0}>2 </option>
-                            <option value={0}>3 </option>
-                            <option value={0}>4 </option>
-                            <option value={0}>5 </option>
-                            <option value={0}>6 </option>
-                            <option value={0}>7 </option>
+                            <option value={1}>1 </option>
+                            <option value={2}>2 </option>
+                            <option value={3}>3 </option>
+                            <option value={4}>4 </option>
+                            <option value={5}>5 </option>
+                            <option value={6}>6 </option>
+                            <option value={7}>7 </option>
                           </Field>
                         </div>
                         <div className="w-full">
@@ -1440,8 +1493,8 @@ const CreateEstate = () => {
                             سن بنا
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="senbana"
+                            name="senbana"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1462,14 +1515,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="sokonat"
                             className="mb-3 text-white block"
                           >
                             وضعیت سکونت
                           </label>
                           <Field
-                            id="karbari"
-                            name="karbari"
+                            id="sokonat"
+                            name="sokonat"
                             as="select"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
@@ -1481,14 +1534,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="nama"
                             className="mb-3 text-white block"
                           >
                             نما
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="nama"
+                            name="nama"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1511,14 +1564,14 @@ const CreateEstate = () => {
                       <div className="w-full flex items-center justify-between gap-4">
                         <div className="w-full">
                           <label
-                            htmlFor="area"
+                            htmlFor="kafposh"
                             className="mb-3 text-white block"
                           >
                             کف پوش
                           </label>
                           <Field
-                            id="melk"
-                            name="melk"
+                            id="kafposh"
+                            name="kafposh"
                             as="select"
                             rows={10}
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1569,11 +1622,12 @@ const CreateEstate = () => {
 
                 <div className="flex items-center gap-9 mt-8">
                   <div className="mt-4">
-                    <label htmlFor="area" className="mb-2 text-white block">
+                    <label htmlFor="saheli" className="mb-2 text-white block">
                       ساحلی
                     </label>{" "}
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
+                        id="saheli"
                         type="checkbox"
                         value=""
                         name="saheli"
@@ -1584,11 +1638,12 @@ const CreateEstate = () => {
                   </div>
 
                   <div className="mt-4">
-                    <label htmlFor="area" className="mb-2 text-white block">
+                    <label htmlFor="shahraki" className="mb-2 text-white block">
                       شهرکی
                     </label>{" "}
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
+                        id="shahraki"
                         type="checkbox"
                         name="shahraki"
                         value=""
@@ -1599,11 +1654,12 @@ const CreateEstate = () => {
                   </div>
 
                   <div className="mt-4">
-                    <label htmlFor="area" className="mb-2 text-white block">
+                    <label htmlFor="kohpaye" className="mb-2 text-white block">
                       کوهپایه
                     </label>{" "}
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
+                        id="kohpaye"
                         type="checkbox"
                         value=""
                         name="kohpaye"
@@ -1641,12 +1697,12 @@ const CreateEstate = () => {
                   </div>
 
                   <div className="flex items-center">
-                    <input type="checkbox" name="" id="" />
+                    <input type="checkbox" name="parking" id="" />
                     <label className="mr-2 text-white block">پارکینگ</label>
                   </div>
 
                   <div className="flex items-center">
-                    <input type="checkbox" name="" id="" />
+                    <input type="checkbox" name="asansor" id="" />
                     <label className="mr-2 text-white block">آسانسور</label>
                   </div>
 
@@ -1823,7 +1879,7 @@ const CreateEstate = () => {
                     type="submit"
                     className="bg-[#4a80bb] m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                   >
-                    <RiAncientPavilionFill  size={24}/>
+                    <RiAncientPavilionFill size={24} />
                     ثبت ملک جدید
                   </button>
                 </div>

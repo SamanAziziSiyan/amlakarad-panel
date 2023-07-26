@@ -17,6 +17,8 @@ import {
   RiHomeHeartLine,
   RiReplyAllLine,
 } from "react-icons/ri";
+import { BsInfoCircleFill } from "react-icons/bs";
+
 import Layout from "../../../Layout";
 
 const SearchPersonnel = () => {
@@ -241,10 +243,16 @@ const SearchPersonnel = () => {
                           <tbody>
                             {showFilteredUser ? (
                               filterUser.length == 0 ? (
-                                <div className="w-full">
-                                  <h4 className="text-white mt-10 text-2xl w-full">
-                                    موردی یافت نشد{" "}
-                                  </h4>
+                                <div className="w-full col-span-12 bg-sky-500 rounded-md p-5">
+                                  <h1 className="text-white flex items-center justify-between text-[22px] w-full text-center">
+                                    کاربری یافت نشد
+                                    <span>
+                                      <BsInfoCircleFill
+                                        className="justify-center items-center"
+                                        color={"#fff"}
+                                      />
+                                    </span>
+                                  </h1>
                                 </div>
                               ) : (
                                 filterUser.map((item, index) => (

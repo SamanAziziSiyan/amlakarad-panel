@@ -172,6 +172,8 @@ const CreatePersonnel = () => {
                       onChange={(e) => {
                         if (e.target.value != "karbar") {
                           setShowMoshaverName(true);
+                        } else {
+                          setShowMoshaverName(false);
                         }
                         setPersonnelData({
                           ...personnelData,
@@ -181,6 +183,7 @@ const CreatePersonnel = () => {
                       id="role"
                       name="role"
                       as="select"
+                      value={personnelData.role}
                       className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                     >
                       <option
@@ -249,54 +252,14 @@ const CreatePersonnel = () => {
                   <div className="w-full flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label htmlFor="area" className="mb-3 text-white block">
-                        نوع کاربری
+                        نام مشاور املاک{" "}
                       </label>
-                      <select
-                        onChange={(e) => {
-                          setPersonnelData({
-                            ...personnelData,
-                            role: e.target.value,
-                          });
-                        }}
+                      <input
                         id="role"
                         name="role"
                         as="select"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                      >
-                        <option
-                          value="administrator"
-                          selected={
-                            personnelData.role == "administrator" ? true : false
-                          }
-                        >
-                          مدیر کل{" "}
-                        </option>
-                        <option
-                          value="karmand"
-                          selected={
-                            personnelData.role == "karmand" ? true : false
-                          }
-                        >
-                          {" "}
-                          کارمند
-                        </option>
-                        <option
-                          value="moshaver"
-                          selected={
-                            personnelData.role == "moshaver" ? true : false
-                          }
-                        >
-                          مشاور املاک{" "}
-                        </option>
-                        <option
-                          value="karbar"
-                          selected={
-                            personnelData.role == "karbar" ? true : false
-                          }
-                        >
-                          کاربر عادی
-                        </option>
-                      </select>
+                      />
                       {/* <ErrorMessage
                               name="roles"
                               render={(msg) => (
