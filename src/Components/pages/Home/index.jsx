@@ -22,13 +22,6 @@ import config from "../../../server/config.json";
 
 const Home = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    let userToken = getToken();
-    if (userToken == null) {
-      toastAlert("لطفا ابتدا وارد شوید");
-      navigate("/login");
-    }
-  }, []);
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
