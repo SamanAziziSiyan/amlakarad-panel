@@ -29,7 +29,7 @@ const SearchEstate = () => {
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
-    if (!userData.role.administrator) return navigate("/");
+    if (userData.role.karbar) return navigate("/");
     let userToken = getToken();
     // service.states
     //   .filterStates(
@@ -47,7 +47,39 @@ const SearchEstate = () => {
     //   });
     if (userData.role.administrator) {
       service.states
-        .getStates()
+        .getStates(userToken)
+        .then(async (data) => {
+          let stateItems = [];
+          for await (const state of data.data) {
+            await service.states
+              .getStateImage(state.ID, userToken)
+              .then((data) => {
+                let stateItem = { imageSrc: "", item: {} };
+                if (data.data[0]) {
+                  stateItem.imageSrc = data.data[0].media_details.file;
+                  stateItem.item = state;
+                } else {
+                  stateItem.imageSrc = "";
+                  stateItem.item = state;
+                }
+                stateItems.push(stateItem);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          stateItems.map((item) => {
+            console.log(item);
+            setStates(stateItems);
+          });
+        })
+        .catch((err) => {
+          navigate("/");
+          toastAlert("سرور مشغول است");
+        });
+    } else {
+      service.states
+        .getAutherStates(userData.ID, userToken)
         .then(async (data) => {
           let stateItems = [];
           for await (const state of data.data) {
