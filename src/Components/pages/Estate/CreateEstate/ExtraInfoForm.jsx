@@ -10,8 +10,11 @@ import {
   toastAlert,
 } from "../../../helper";
 import service from "../../../../server/service";
+import { BeatLoader } from "react-spinners";
 const ExtraInfoForm = () => {
+  const [showLoading, setShowLoading] = useState(false);
   const [showMantagha, setshowMantagha] = useState(false);
+  const [showMantaghaData, setshowMantaghaData] = useState("");
   const [userRole, setUserRole] = useState(null);
   const [userID, setUserId] = useState(0);
   const [moshavers, setMoshavers] = useState([]);
@@ -37,12 +40,10 @@ const ExtraInfoForm = () => {
     service.personnel
       .getUsers(userToken)
       .then((data) => {
-        console.log(data);
         if (data.data.status == 403) throw new Error();
         let moshaverItems = [];
         data.data.map((item) => {
           if (!item.extra.role[0].karbar) {
-            console.log(item);
             moshaverItems.push(item);
           }
         });
@@ -53,6 +54,8 @@ const ExtraInfoForm = () => {
       });
   }, []);
   const handleCreateStateMeta = (values) => {
+    setShowLoading(true);
+
     let emkanatElements = document.getElementsByClassName("emkanat");
     let wgElements = document.getElementsByClassName("wg");
     let checkedEmkanat = [];
@@ -75,7 +78,7 @@ const ExtraInfoForm = () => {
       ID: stateId,
       meta: [
         {
-          mantaghe: values.mantaghe,
+          mantaghe: showMantaghaData,
           ostan: values.ostan,
           name: values.name,
           address: values.address,
@@ -99,11 +102,16 @@ const ExtraInfoForm = () => {
     service.states
       .insertMetaData(stateData, userToken)
       .then((data) => {
-        console.log(data);
+        if (data.status == 200) {
+          setShowLoading(false);
+          toastAlert("اطلاعات اضافی با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله رسانه کلیک کنید", "info");
+        } else throw new Error();
       })
       .catch((err) => {
         console.log(err);
         toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
   };
 
@@ -132,14 +140,16 @@ const ExtraInfoForm = () => {
             id="mantaghe"
             name="mantaghe"
             as="select"
+            value={showMantaghaData}
             onChange={(e) => {
               if (e.target.value != 0) setshowMantagha(true);
+              setshowMantaghaData(e.target.value);
             }}
             rows={10}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
           >
-            <option>منطقه را انتخاب کنید</option>
-            <option>بوکان</option>
+            <option value="">منطقه را انتخاب کنید</option>
+            <option value="بوکان">بوکان</option>
           </Field>
           {showMantagha && (
             <Field
@@ -150,7 +160,45 @@ const ExtraInfoForm = () => {
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
               <option>همه</option>
-              <option>اسلام اباد</option>
+              <option value="اسلام اباد">اسلام اباد</option>
+              <option value="آزادگان"> آزادگان</option>
+              <option value=" ابوذر"> ابوذر</option>
+              <option value="استاد حقیقی">استاد حقیقی</option>
+              <option value="اسکندری">اسکندری</option>
+              <option value="امیر آباد">امیر آباد</option>
+              <option value=" اینگیجه"> اینگیجه</option>
+              <option value="پارک ساحلی">پارک ساحلی</option>
+              <option value="جاده حصار">جاده حصار</option>
+              <option value="چهاراه اطلاعات">چهاراه اطلاعات</option>
+              <option value="چهاراه شهرداری">چهاراه شهرداری</option>
+              <option value="خیابان انقلاب">خیابان انقلاب</option>
+              <option value="خیابان زیتون">خیابان زیتون</option>
+              <option value="خیابان سقز">خیابان سقز</option>
+              <option value="خیابان ورزش">خیابان ورزش</option>
+              <option value="دانشگاه آزاد">دانشگاه آزاد</option>
+              <option value="زیبا کنار">زیبا کنار</option>
+              <option value="سه راه خاوران">سه راه خاوران</option>
+              <option value="سید شکره">سید شکره</option>
+              <option value="شهرک امام">شهرک امام</option>
+              <option value="شهرک برق">شهرک برق</option>
+              <option value="شهرک فرهنگیان">شهرک فرهنگیان</option>
+              <option value="شهرک گلستان">شهرک گلستان</option>
+              <option value="عشایر">عشایر</option>
+              <option value="علی آباد">علی آباد</option>
+              <option value="فرمانداری">فرمانداری</option>
+              <option value="فلکه قدس">فلکه قدس</option>
+              <option value="کشتارگاه">کشتارگاه</option>
+              <option value="کلتپه">کلتپه</option>
+              <option value="کمربندی">کمربندی</option>
+              <option value="کهریزه محمود آباد">کهریزه محمود آباد</option>
+              <option value="کوسه">کوسه</option>
+              <option value="کوی آفتاب">کوی آفتاب</option>
+              <option value="کوی اندیشه">کوی اندیشه</option>
+              <option value="کوی سپاه">کوی سپاه</option>
+              <option value="کوی محمدیه">کوی محمدیه</option>
+              <option value="مجسمه مادر">مجسمه مادر</option>
+              <option value="مسکن مهر">مسکن مهر</option>
+              <option value="ناچیت">ناچیت</option>
             </Field>
           )}
 
@@ -711,10 +759,11 @@ const ExtraInfoForm = () => {
           <div className="w-full m-auto flex items-center justify-center">
             <button
               type="submit"
-              className="bg-[#4a80bb] max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb] items-center justify-center max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات اضافی
+              {showLoading && <BeatLoader size={10} color="#fff" />}
             </button>
           </div>
         </Form>

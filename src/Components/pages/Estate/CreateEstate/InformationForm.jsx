@@ -7,12 +7,21 @@ import {
   getUserDataOnLocalStorage,
   toastAlert,
 } from "../../../helper";
+import { BeatLoader } from "react-spinners";
 import service from "../../../../server/service";
+import { useState } from "react";
 
-const InformationForm = ({setNextSection}) => {
+const InformationForm = ({ setNextSection }) => {
+  const [showLoading, setShowLoading] = useState(false);
   const handleCreateEstate = (values) => {
+    if (values.post_status == "0") {
+      toastAlert("لطفا وضعیت نوشته را وارد کنید ");
+      return;
+    }
+    setShowLoading(true);
     let userToken = getToken();
     let userData = getUserDataOnLocalStorage();
+
     let stateData = {
       title: values.post_title,
       content: values.post_content,
@@ -27,12 +36,16 @@ const InformationForm = ({setNextSection}) => {
         console.log(data);
         if (data.status == 201) {
           localStorage.setItem("stateId", data.data.id);
-          setNextSection(3)
+          toastAlert("اطلاعات اولیه با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله نوع معامله کلیک کنید", "info");
+          setNextSection(3);
+          setShowLoading(false);
         } else throw new Error();
       })
       .catch((err) => {
         console.log(err);
         toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
   };
 
@@ -75,6 +88,10 @@ const InformationForm = ({setNextSection}) => {
             rows={10}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
           />
+          <ErrorMessage
+            name="post_content"
+            render={(msg) => <div className="text-red-500">{msg}</div>}
+          />
 
           <div className="w-full">
             <label htmlFor="post_status" className="mb-3 text-white block">
@@ -85,21 +102,28 @@ const InformationForm = ({setNextSection}) => {
               name="post_status"
               as="select"
               rows={10}
+              required
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
+              <option value="0"> انتخاب کنید </option>
               <option value="pending"> در انتظار بررسی </option>
               <option value="publish"> انتشار </option>
               <option value="draft"> پیشنویس </option>
             </Field>
+            <ErrorMessage
+              name="post_status"
+              render={(msg) => <div className="text-red-500">{msg}</div>}
+            />
           </div>
 
           <div className="w-full m-auto flex items-center justify-center">
             <button
               type="submit"
-              className="bg-[#4a80bb] max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb] items-center justify-center max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات اولیه
+              {showLoading && <BeatLoader size={10} color="#fff" />}
             </button>
           </div>
         </Form>

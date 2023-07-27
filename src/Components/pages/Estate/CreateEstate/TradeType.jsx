@@ -9,16 +9,18 @@ import {
   toastAlert,
 } from "../../../helper";
 import service from "../../../../server/service";
+import { BeatLoader } from "react-spinners";
 
 const TradeType = () => {
+  const [showLoading, setShowLoading] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
   const moavezeRef = useRef();
   const pishforoshRef = useRef();
   const handleCreateStateMeta = (values) => {
+    setShowLoading(true);
     let userToken = getToken();
     let stateId = localStorage.getItem("stateId");
     if (shoMoamele == "خرید و فروش") {
-      console.log("خرید");
       let stateData = {
         ID: stateId,
         meta: [
@@ -37,11 +39,16 @@ const TradeType = () => {
       service.states
         .insertMetaData(stateData, userToken)
         .then((data) => {
-          console.log(data);
+          if (data.status == 200) {
+            setShowLoading(false);
+            toastAlert("اطلاعات نوع معامله با موفقیت ثبت شد", "success");
+            toastAlert("روی مرحله نوع ملک کلیک کنید", "info");
+          } else throw new Error();
         })
         .catch((err) => {
           console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
 
@@ -571,10 +578,11 @@ const TradeType = () => {
             )}
             <button
               type="submit"
-              className="bg-[#4a80bb] m-auto max-lg:w-full flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb] items-center justify-center m-auto max-lg:w-full flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات نوع معامله
+              {showLoading && <BeatLoader size={10} color="#fff" />}
             </button>
           </div>
         </Form>
