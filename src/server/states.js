@@ -33,6 +33,11 @@ const createState = (data, token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+const insertMetaData = (data, token) => {
+  return axios.post(`${config.api}/wp-json/wp/v2/statemeta/`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 const filterStates = (data, token) => {
   return axios.post(`${config.api}/wp-json/wp/v2/states/filter`, data, {
     headers: { Authorization: `Bearer ${token}` },
@@ -51,6 +56,7 @@ export default {
   getState,
   deleteState,
   createState,
+  insertMetaData,
   filterStates,
   getStateImage,
   getBackoup,

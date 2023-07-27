@@ -1,66 +1,33 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { loginSchema } from "../../../../validation/formikValidation";
+import {
+  createState,
+  loginSchema,
+} from "../../../../validation/formikValidation";
+import MultiStep from "react-multistep";
 import service from "../../../../server/service";
 import {
   getToken,
   sendSMSAdminState,
   sendSMSStateOwner,
+  toastAlert,
 } from "../../../helper";
 
 import Layout from "../../../Layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiAncientPavilionFill, RiImageAddLine } from "react-icons/ri";
+import InformationForm from "./InformationForm";
+import ExtraInfoForm from "./ExtraInfoForm";
+import MediaForm from "./MediaForm";
+import TradeType from "./TradeType";
+import PropertyType from "./PropertyType";
 const CreateEstate = () => {
   const [showMantagha, setshowMantagha] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
   const [shoMelk, setShowMelk] = useState("");
-
-  const handleCreateEstate = (values) => {
-    let userToken = getToken();
-    let stateData = {
-      title: values.title,
-      content: values.content,
-      status: "publish",
-      postmeta: {
-        mantaghe: values.mantaghe,
-        name: values.name,
-        address: values.address,
-        mobile: values.mobile,
-        email: values.email,
-        moamele: values.moamele,
-        melk: values.melk,
-        // price-form:values.price,
-        metrazh: values.metrazh,
-        wg: values.wg,
-        saheli: values.saheli,
-        shahraki: values.shahraki,
-        kohpaye: values.kohpaye,
-      },
-    };
-    service.states
-      .createState(stateData, userToken)
-      .then((data) => {
-        console.log(data);
-        sendSMSStateOwner(values.mobile, values.title)
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        sendSMSAdminState("solaiman", values.title)
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
+  const [nextSection, setNextSection] = useState(0);
+  useEffect(()=>{
+      console.log(nextSection);
+  } , [nextSection])
   return (
     <>
       <Layout>
@@ -68,27 +35,37 @@ const CreateEstate = () => {
           <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
           <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
           <div className="w-full h-full rounded-2xl backdrop-blur-md bg-opacity-50 shadow-blue-800 shadow-sm bg-white/10 flex justify-around flex-col ">
-            <Formik
+            <MultiStep activeStep={nextSection}>
+              <InformationForm
+                title="اطلاعات اولیه"
+                setNextSection={setNextSection}
+              />
+              <TradeType
+                title="اطلاعات  نوع معامله"
+                setNextSection={setNextSection}
+              />
+              <PropertyType
+                title="اطلاعات نوع ملک"
+                setNextSection={setNextSection}
+              />
+              <ExtraInfoForm
+                title="اطلاعات اضافه"
+                setNextSection={setNextSection}
+              />
+              <MediaForm title="رسانه" />
+            </MultiStep>
+
+            {/* <Formik
               initialValues={{
                 title: "",
                 content: "",
-                mantaghe: "",
-                name: "",
-                address: "",
-                mobile: "",
-                email: "",
-                moamele: "",
-                melk: "",
-                price: "",
-                metrazh: "",
-                wg: "",
-                saheli: "",
-                shahraki: "",
-                kohpaye: "",
+                content: "",
+               
+  
               }}
-              // validationSchema={loginSchema}
+              validationSchema={createState}
               onSubmit={(values) => {
-                handleCreateEstate(values);
+                // handleCreateEstate(values);
               }}
             >
               <Form className=" px-32 py-10">
@@ -124,10 +101,10 @@ const CreateEstate = () => {
                 <Field
                   id="mantaghe"
                   name="mantaghe"
+                  as="select"
                   onChange={(e) => {
                     if (e.target.value != 0) setshowMantagha(true);
                   }}
-                  as="select"
                   rows={10}
                   className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                 >
@@ -535,14 +512,14 @@ const CreateEstate = () => {
                         </div>
                         <div className="w-full">
                           <label
-                            htmlFor="ejare"
+                            htmlFor="priceejare"
                             className="mb-3 text-white block"
                           >
                             اجاره
                           </label>
                           <Field
-                            id="ejare"
-                            name="ejare"
+                            id="priceejare"
+                            name="priceejare"
                             type="text"
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           />
@@ -1884,7 +1861,7 @@ const CreateEstate = () => {
                   </button>
                 </div>
               </Form>
-            </Formik>
+            </Formik> */}
           </div>
         </div>
       </Layout>
