@@ -35,3 +35,12 @@ body {
 .bg-gradient-light-primary {
   background: linear-gradient(104.05deg, #9b3ed3 19.72%, #762daa 92.22%);
 }
+.go2392553372 {
+  justify-content: center !important;
+}
+
+@media screen and (max-width:1000px) {
+  .go2392553372{
+    flex-direction: column;
+  }
+}
