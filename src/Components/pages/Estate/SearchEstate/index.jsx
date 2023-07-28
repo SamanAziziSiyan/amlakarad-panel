@@ -287,6 +287,13 @@ const SearchEstate = () => {
                             ) : (
                               ""
                             )}
+                             {item.item.post_status == "draft" ? (
+                              <button className=" absolute top-[2%] left-[5%] bg-[#0369A1] p-1 text-xs text-white   px-3 rounded-md">
+                                 پیش نویس{" "}
+                              </button>
+                            ) : (
+                              ""
+                            )}
 
                             <img
                               src={`${
@@ -396,14 +403,15 @@ const SearchEstate = () => {
                                 <RiDeleteBin6Line size={18} className="pl-1" />
                                 حذف{" "}
                               </button>
-
-                              <button
-                                type="button"
-                                className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
-                              >
-                                <RiEdit2Line size={18} className="pl-1" />
-                                ویرایش
-                              </button>
+                              <Link to={`/edit-estate/${item.item.ID}`}>
+                                <button
+                                  type="button"
+                                  className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                >
+                                  <RiEdit2Line size={18} className="pl-1" />
+                                  ویرایش
+                                </button>
+                              </Link>
                               <Link to={`/EstateDetails/${item.item.ID}`}>
                                 <button
                                   type="button"

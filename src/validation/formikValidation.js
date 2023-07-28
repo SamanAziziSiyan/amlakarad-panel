@@ -17,13 +17,13 @@ export const createUser = Yup.object().shape({
 export const createStateInfo = Yup.object().shape({
   post_title: Yup.string().required("عنوان الزامی می باشد"),
   post_content: Yup.string().required("توضیحات الزامی می باشد"),
+  post_status: Yup.string().required("وضعیت نوشته را انتخاب کنید"),
 });
 
 export const createState = Yup.object().shape({
   post_title: Yup.string().required("عنوان الزامی می باشد"),
   post_content: Yup.string().required("توضیحات الزامی می باشد"),
 });
-
 
 export const changePasswordSchema = Yup.object().shape({
   confirmPassword: Yup.string().required(" تکرار رمز عبور الزامی می باشد"),

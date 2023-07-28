@@ -11,7 +11,7 @@ import {
 import service from "../../../../server/service";
 import { BeatLoader } from "react-spinners";
 
-const TradeType = () => {
+const TradeType = ({stateData}) => {
   const [showLoading, setShowLoading] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
   const moavezeRef = useRef();
@@ -64,7 +64,7 @@ const TradeType = () => {
             karbari: values.karbari,
             tabdil: values.tabdil,
             darbast: values.darbast,
-            pricerahn: values.pricerahn,
+            vadie: values.vadie,
             priceejare: values.priceejare,
           },
         ],
@@ -121,7 +121,7 @@ const TradeType = () => {
           karbari: "",
           tabdil: "",
           darbast: "",
-          pricerahn: "",
+          vadie: "",
           priceejare: "",
         }}
         onSubmit={(values) => {
@@ -307,15 +307,12 @@ const TradeType = () => {
                 <div className="flex max-md:flex-col items-center justify-between gap-4 w-full">
                   <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
-                      <label
-                        htmlFor="price-rahn"
-                        className="mb-3 text-white block"
-                      >
+                      <label htmlFor="vadie" className="mb-3 text-white block">
                         ودیعه
                       </label>
                       <Field
-                        id="price-rahn"
-                        name="pricerahn"
+                        id="vadie"
+                        name="vadie"
                         type="text"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />

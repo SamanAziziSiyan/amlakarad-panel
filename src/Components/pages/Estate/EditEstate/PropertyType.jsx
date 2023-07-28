@@ -481,9 +481,9 @@ const PropertyType = () => {
                       >
                         مساحت زمین
                       </label>
-                      <Field  
+                      <Field
                         id="masahat-zamin"
-                        name="masahatzamin"
+                        name="masahat-zamin"
                         type="text"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
