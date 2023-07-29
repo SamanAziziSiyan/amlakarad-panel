@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createState } from "../../../../validation/formikValidation";
 import Layout from "../../../Layout";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -10,12 +10,57 @@ import {
 } from "../../../helper";
 import service from "../../../../server/service";
 import { BeatLoader } from "react-spinners";
+import { useParams } from "react-router-dom";
 
-const TradeType = ({stateData}) => {
+const TradeType = ({ stateData }) => {
   const [showLoading, setShowLoading] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
   const moavezeRef = useRef();
   const pishforoshRef = useRef();
+  const { stateId } = useParams();
+
+  const [kharidData, setKharidData] = useState({
+    pricekol: "",
+    pricemeteri: "",
+    karbari: "",
+    sanad: "",
+    moaveze: "",
+    pishforosh: "",
+  });
+  const [rahanData, setRahnData] = useState({
+    nafarat: "",
+    tahol: "",
+    Pets: "",
+    karbari: "",
+    tabdil: "",
+    darbast: "",
+    pricerahn: "",
+    priceejare: "",
+  });
+  const [rozaneData, setRozaneData] = useState({
+    nafarat: "",
+    tahol: "",
+    Pets: "",
+    tabdil: "",
+    darbast: "",
+    celebrations: "",
+    priceshabi: "",
+    pricetatilat: "",
+  });
+
+  const [homeData, setHomeData] = useState({
+    masahatzamin: "",
+    tedadtabaghat: "",
+    tedadvahedkol: "",
+    otagh: "",
+    numhamam: "",
+    numwc: "",
+    senbana: "",
+    sokonat: "",
+    nama: "",
+    kabinet: "",
+    kafposh: "",
+  });
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
     let userToken = getToken();
@@ -110,6 +155,63 @@ const TradeType = ({stateData}) => {
         });
     }
   };
+
+  useEffect(() => {
+    let userToken = getToken();
+    let userData = getUserDataOnLocalStorage();
+
+    service.states
+      .getState(userToken, stateId)
+      .then((data) => {
+        setShoMoamele(data.data.postmeta.moamele);
+        setKharidData({
+          pricekol: data.data.postmeta["price-kol"],
+          pricemeteri: data.data.postmeta["price-meteri"],
+          karbari: data.data.postmeta.karbari,
+          sanad: data.data.postmeta.sanad,
+          moaveze: data.data.postmeta.moaveze,
+          pishforosh: data.data.postmeta.pishforosh,
+        });
+        setRahnData({
+          nafarat: data.data.postmeta.nafarat,
+          tahol: data.data.postmeta.tahol,
+          Pets: data.data.postmeta.Pets,
+          karbari: data.data.postmeta.karbari,
+          tabdil: data.data.postmeta.tabdil,
+          darbast: data.data.postmeta.darbast,
+          pricerahn: data.data.postmeta["price-rahn"],
+          priceejare: data.data.postmeta["price-ejare"],
+        });
+        setRozaneData({
+          nafarat: data.data.postmeta.nafarat,
+          tahol: data.data.postmeta.tahol,
+          Pets: data.data.postmeta.Pets,
+          tabdil: data.data.postmeta.tabdil,
+          darbast: data.data.postmeta.darbast,
+          pricerahn: data.data.postmeta["price-rahn"],
+          pricetatilat: data.data.postmeta["price-tatilat"],
+        });
+
+        setHomeData({
+          masahatzamin: data.data.postmeta["masahat-zamin"],
+          tedadtabaghat: data.data.postmeta["tedad-tabaghat"],
+          tedadvahedkol: data.data.postmeta["tedad-vahed-kol"],
+          otagh: data.data.postmeta.otagh,
+          numhamam: data.data.postmeta["num-hamam"],
+          numwc: data.data.postmeta["num-wc"],
+          senbana: data.data.postmeta.senbana,
+          sokonat: data.data.postmeta.sokonat,
+          nama: data.data.postmeta.nama,
+          kabinet: data.data.postmeta.kabinet,
+          kafposh: data.data.postmeta.kafposh,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // console.log(informationData);
+  }, []);
   return (
     <>
       <Formik
@@ -195,6 +297,8 @@ const TradeType = ({stateData}) => {
                         id="pricekol"
                         name="pricekol"
                         type="text"
+                        value={kharidData.pricekol}
+                        onChange={() => {}}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -209,6 +313,7 @@ const TradeType = ({stateData}) => {
                         id="pricemeteri"
                         name="pricemeteri"
                         type="text"
+                        value={kharidData.pricemeteri}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -228,17 +333,86 @@ const TradeType = ({stateData}) => {
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
-                        <option> مسکونی </option>
-                        <option> تجاری</option>
-                        <option>اداری </option>
-                        <option>زراعی </option>
-                        <option>باغات </option>
-                        <option>تفریحی </option>
-                        <option>ورزشی </option>
-                        <option>فضای سبر </option>
-                        <option> بدون کاربری </option>
-                        <option> خارج از بافت </option>
-                        <option> سایر </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "مسکونی" ? true : false
+                          }
+                        >
+                          {" "}
+                          مسکونی{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "تجاری" ? true : false
+                          }
+                        >
+                          {" "}
+                          تجاری
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "اداری" ? true : false
+                          }
+                        >
+                          اداری{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "زارعی" ? true : false
+                          }
+                        >
+                          زراعی{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "باغات" ? true : false
+                          }
+                        >
+                          باغات{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "تفریحی" ? true : false
+                          }
+                        >
+                          تفریحی{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "ورزشی" ? true : false
+                          }
+                        >
+                          ورزشی{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "فضای سبز" ? true : false
+                          }
+                        >
+                          فضای سبر{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "بدون کاربری" ? true : false
+                          }
+                        >
+                          {" "}
+                          بدون کاربری{" "}
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "خارج از بافت" ? true : false
+                          }
+                        >
+                          {" "}
+                          خارج از بافت{" "}
+                        </option>
+                        <option
+                          selected={kharidData.karbari == "سایر" ? true : false}
+                        >
+                          {" "}
+                          سایر{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -252,16 +426,64 @@ const TradeType = ({stateData}) => {
                         rows={10}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>تگ برگ</option>
-                        <option>منگوله دار</option>
-                        <option>قولنامه ای</option>
-                        <option>اوقافی</option>
-                        <option>بنیادی</option>
-                        <option>سازمانی</option>
-                        <option>نسخ</option>
-                        <option>دردست اقدام</option>
-                        <option>سایر </option>
+                        <option
+                          selected={kharidData.sanad == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={kharidData.sanad == "تک برگ" ? true : false}
+                        >
+                          تک برگ
+                        </option>
+                        <option
+                          selected={
+                            kharidData.sanad == "منگوله دار" ? true : false
+                          }
+                        >
+                          منگوله دار
+                        </option>
+                        <option
+                          selected={
+                            kharidData.sanad == "قولنامه ای" ? true : false
+                          }
+                        >
+                          قولنامه ای
+                        </option>
+                        <option
+                          selected={kharidData.sanad == "اوقافی" ? true : false}
+                        >
+                          اوقافی
+                        </option>
+                        <option
+                          selected={kharidData.sanad == "بنیادی" ? true : false}
+                        >
+                          بنیادی
+                        </option>
+                        <option
+                          selected={
+                            kharidData.sanad == "سازمانی" ? true : false
+                          }
+                        >
+                          سازمانی
+                        </option>
+                        <option
+                          selected={kharidData.sanad == "نسخ" ? true : false}
+                        >
+                          نسخ
+                        </option>
+                        <option
+                          selected={
+                            kharidData.sanad == "دردست اقدام" ? true : false
+                          }
+                        >
+                          دردست اقدام
+                        </option>
+                        <option
+                          selected={kharidData.sanad == "سایر" ? true : false}
+                        >
+                          سایر{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -276,6 +498,7 @@ const TradeType = ({stateData}) => {
                         type="checkbox"
                         id="moaveze"
                         name="moaveze"
+                        checked={kharidData.moaveze == "0" ? false : true}
                         ref={moavezeRef}
                         class="sr-only peer"
                       />
@@ -294,6 +517,7 @@ const TradeType = ({stateData}) => {
                         type="checkbox"
                         name="pishforosh"
                         ref={pishforoshRef}
+                        checked={kharidData.pishforosh == "0" ? false : true}
                         id="pishforosh"
                         class="sr-only peer"
                       />
@@ -328,6 +552,12 @@ const TradeType = ({stateData}) => {
                         id="priceejare"
                         name="priceejare"
                         type="text"
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            priceejare: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -346,18 +576,82 @@ const TradeType = ({stateData}) => {
                         as="select"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option> مسکونی </option>
-                        <option> تجاری</option>
-                        <option>اداری </option>
-                        <option>زراعی </option>
-                        <option>باغات </option>
-                        <option>تفریحی </option>
-                        <option>ورزشی </option>
-                        <option>فضای سبر </option>
-                        <option> بدون کاربری </option>
-                        <option> خارج از بافت </option>
-                        <option> سایر </option>
+                        <option
+                          value={0}
+                          selected={rahanData.karbari == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={
+                            rahanData.karbari == "مسکونی" ? true : false
+                          }
+                        >
+                          {" "}
+                          مسکونی{" "}
+                        </option>
+                        <option
+                          selected={rahanData.karbari == "تجاری" ? true : false}
+                        >
+                          {" "}
+                          تجاری
+                        </option>
+                        <option
+                          selected={rahanData.karbari == "اداری" ? true : false}
+                        >
+                          اداری{" "}
+                        </option>
+                        <option
+                          selected={rahanData.karbari == "زراعی" ? true : false}
+                        >
+                          زراعی{" "}
+                        </option>
+                        <option
+                          selected={rahanData.karbari == "باغات" ? true : false}
+                        >
+                          باغات{" "}
+                        </option>
+                        <option
+                          selected={
+                            rahanData.karbari == "تفریحی" ? true : false
+                          }
+                        >
+                          تفریحی{" "}
+                        </option>
+                        <option
+                          selected={rahanData.karbari == "ورزشی" ? true : false}
+                        >
+                          ورزشی{" "}
+                        </option>
+                        <option
+                          selected={
+                            rahanData.karbari == "فضای سبر" ? true : false
+                          }
+                        >
+                          فضای سبر{" "}
+                        </option>
+                        <option
+                          selected={
+                            rahanData.karbari == "بدون کاربری" ? true : false
+                          }
+                        >
+                          {" "}
+                          بدون کاربری{" "}
+                        </option>
+                        <option
+                          selected={
+                            rahanData.karbari == "خارج از بافت" ? true : false
+                          }
+                        >
+                          {" "}
+                          خارج از بافت{" "}
+                        </option>
+                        <option
+                          selected={rahanData.karbari == "سایر" ? true : false}
+                        >
+                          {" "}
+                          سایر{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -368,12 +662,31 @@ const TradeType = ({stateData}) => {
                         id="tabdil"
                         name="tabdil"
                         as="select"
-                        rows={10}
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            tabdil: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option> دارد </option>
-                        <option> ندارد </option>
+                        <option
+                          selected={rahanData.tabdil == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={rahanData.tabdil == "دارد" ? true : false}
+                        >
+                          {" "}
+                          دارد{" "}
+                        </option>
+                        <option
+                          selected={rahanData.tabdil == "ندارد" ? true : false}
+                        >
+                          {" "}
+                          ندارد{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -391,6 +704,13 @@ const TradeType = ({stateData}) => {
                         id="nafarat"
                         name="nafarat"
                         type="number"
+                        value={rahanData.nafarat}
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            nafarat: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -402,6 +722,12 @@ const TradeType = ({stateData}) => {
                         id="tahol"
                         name="tahol"
                         as="select"
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            nafarat: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
@@ -419,11 +745,34 @@ const TradeType = ({stateData}) => {
                         id="Pets"
                         name="Pets"
                         as="select"
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            Pets: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option> مجاز است </option>
-                        <option> مجاز نیست </option>
+                        <option
+                          value={0}
+                          selected={rahanData.Pets == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={rahanData.Pets == "مجاز است" ? true : false}
+                        >
+                          {" "}
+                          مجاز است{" "}
+                        </option>
+                        <option
+                          selected={
+                            rahanData.Pets == "مجاز نیست" ? true : false
+                          }
+                        >
+                          {" "}
+                          مجاز نیست{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -437,12 +786,31 @@ const TradeType = ({stateData}) => {
                         id="darbast"
                         name="darbast"
                         as="select"
-                        rows={10}
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            darbast: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option> هست </option>
-                        <option> نیست </option>
+                        <option
+                          selected={rahanData.darbast == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={rahanData.darbast == "هست" ? true : false}
+                        >
+                          {" "}
+                          هست{" "}
+                        </option>
+                        <option
+                          selected={rahanData.darbast == "نیست" ? true : false}
+                        >
+                          {" "}
+                          نیست{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -463,6 +831,13 @@ const TradeType = ({stateData}) => {
                         id="price-shabi"
                         name="priceshabi"
                         type="number"
+                        value={rozaneData.priceshabi}
+                        onChange={(e) => {
+                          setRozaneData({
+                            ...rozaneData,
+                            priceshabi: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -476,6 +851,13 @@ const TradeType = ({stateData}) => {
                       <Field
                         id="price-tatilat"
                         name="pricetatilat"
+                        value={rozaneData.pricetatilat}
+                        onChange={(e) => {
+                          setRozaneData({
+                            ...rozaneData,
+                            pricetatilat: e.target.value,
+                          });
+                        }}
                         type="number"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
@@ -508,12 +890,35 @@ const TradeType = ({stateData}) => {
                         id="celebrations"
                         name="celebrations"
                         as="select"
-                        rows={10}
+                        onChange={(e) => {
+                          setRozaneData({
+                            ...rozaneData,
+                            tahol: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option> مجاز است </option>
-                        <option> مجاز نیست </option>
+                        <option
+                          selected={rozaneData.tahol == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={
+                            rozaneData.tahol == "مجاز است" ? true : false
+                          }
+                        >
+                          {" "}
+                          مجاز است{" "}
+                        </option>
+                        <option
+                          selected={
+                            rozaneData.tahol == "مجاز نیست" ? true : false
+                          }
+                        >
+                          {" "}
+                          مجاز نیست{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -531,6 +936,13 @@ const TradeType = ({stateData}) => {
                         id="nafarat"
                         name="nafarat"
                         type="number"
+                        value={rozaneData.nafarat}
+                        onChange={(e) => {
+                          setRozaneData({
+                            ...rozaneData,
+                            nafarat: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -544,11 +956,36 @@ const TradeType = ({stateData}) => {
                         id="Pets"
                         name="Pets"
                         as="select"
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rozaneData,
+                            Pets: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option> مجاز است </option>
-                        <option> مجاز نیست </option>
+                        <option
+                          value={0}
+                          selected={rozaneData.Pets == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={
+                            rozaneData.Pets == "مجاز است" ? true : false
+                          }
+                        >
+                          {" "}
+                          مجاز است{" "}
+                        </option>
+                        <option
+                          selected={
+                            rozaneData.Pets == "مجاز نیست" ? true : false
+                          }
+                        >
+                          {" "}
+                          مجاز نیست{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -562,12 +999,31 @@ const TradeType = ({stateData}) => {
                         id="darbast"
                         name="darbast"
                         as="select"
-                        rows={10}
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rozaneData,
+                            darbast: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option> هست </option>
-                        <option> نیست </option>
+                        <option
+                          selected={rozaneData.darbast == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={rozaneData.darbast == "هست" ? true : false}
+                        >
+                          {" "}
+                          هست{" "}
+                        </option>
+                        <option
+                          selected={rozaneData.darbast == "نیست" ? true : false}
+                        >
+                          {" "}
+                          نیست{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -578,7 +1034,7 @@ const TradeType = ({stateData}) => {
             )}
             <button
               type="submit"
-              className="bg-[#4a80bb] items-center justify-center m-auto max-lg:w-full flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb] items-center  m-auto max-lg:w-full flex  justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات نوع معامله

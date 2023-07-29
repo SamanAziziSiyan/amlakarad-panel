@@ -69,8 +69,7 @@ const TradeType = () => {
           },
         ],
       };
-      console.log(stateData);
-      service.states
+       service.states
         .insertMetaData(stateData, userToken)
         .then((data) => {
           console.log(data);

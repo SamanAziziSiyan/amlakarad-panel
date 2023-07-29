@@ -29,6 +29,19 @@ const PropertyType = () => {
     kabinet: "",
     kafposh: "",
   });
+  const [edariData, setEdariData] = useState({
+    tabaghe: "",
+    tedadtabaghat: "",
+    tedadvahedhartabaghe: "",
+    tedadvahedkol: "",
+    otagh: "",
+    numhamam: "",
+    numwc: "",
+    senbana: "",
+    sokonat: "",
+    nama: "",
+    kafposh: "",
+  });
 
   const [homeData, setHomeData] = useState({
     masahatzamin: "",
@@ -53,33 +66,46 @@ const PropertyType = () => {
       .getState(userToken, stateId)
       .then((data) => {
         console.log(data);
-        setShowMelk(data.data.postmeta.melk);
+        setShowMelk(data.data[0].melk);
         setApartmentData({
-          tabaghe: data.data.postmeta.tabaghe,
-          tedadtabaghat: data.data.postmeta["tedad-tabaghat"],
-          tedadvahedhartabaghe: data.data.postmeta["tedad-vahed-har-tabaghe"],
-          tedadvahedkol: data.data.postmeta["tedad-vahed-kol"],
-          otagh: data.data.postmeta.otagh,
-          numhamam: data.data.postmeta["num-hamam"],
-          numwc: data.data.postmeta["num-wc"],
-          senbana: data.data.postmeta.senbana,
-          sokonat: data.data.postmeta.sokonat,
-          nama: data.data.postmeta.nama,
-          kabinet: data.data.postmeta.kabinet,
-          kafposh: data.data.postmeta.kafposh,
+          tabaghe: data.data[0].tabaghe,
+          tedadtabaghat: data.data[0]["tedad-tabaghat"],
+          tedadvahedhartabaghe: data.data[0]["tedad-vahed-har-tabaghe"],
+          tedadvahedkol: data.data[0]["tedad-vahed-kol"],
+          otagh: data.data[0].otagh,
+          numhamam: data.data[0]["num-hamam"],
+          numwc: data.data[0]["num-wc"],
+          senbana: data.data[0].senbana,
+          sokonat: data.data[0].sokonat,
+          nama: data.data[0].nama,
+          kabinet: data.data[0].kabinet,
+          kafposh: data.data[0].kafposh,
+        });
+        setEdariData({
+          tabaghe: data.data[0].tabaghe,
+          tedadtabaghat: data.data[0]["tedad-tabaghat"],
+          tedadvahedhartabaghe: data.data[0]["tedad-vahed-har-tabaghe"],
+          tedadvahedkol: data.data[0]["tedad-vahed-kol"],
+          otagh: data.data[0].otagh,
+          numhamam: data.data[0]["num-hamam"],
+          numwc: data.data[0]["num-wc"],
+          senbana: data.data[0].senbana,
+          sokonat: data.data[0].sokonat,
+          nama: data.data[0].nama,
+          kafposh: data.data[0].kafposh,
         });
         setHomeData({
-          masahatzamin: data.data.postmeta["masahat-zamin"],
-          tedadtabaghat: data.data.postmeta["tedad-tabaghat"],
-          tedadvahedkol: data.data.postmeta["tedad-vahed-kol"],
-          otagh: data.data.postmeta.otagh,
-          numhamam: data.data.postmeta["num-hamam"],
-          numwc: data.data.postmeta["num-wc"],
-          senbana: data.data.postmeta.senbana,
-          sokonat: data.data.postmeta.sokonat,
-          nama: data.data.postmeta.nama,
-          kabinet: data.data.postmeta.kabinet,
-          kafposh: data.data.postmeta.kafposh,
+          masahatzamin: data.data[0]["masahat-zamin"],
+          tedadtabaghat: data.data[0]["tedad-tabaghat"],
+          tedadvahedkol: data.data[0]["tedad-vahed-kol"],
+          otagh: data.data[0].otagh,
+          numhamam: data.data[0]["num-hamam"],
+          numwc: data.data[0]["num-wc"],
+          senbana: data.data[0].senbana,
+          sokonat: data.data[0].sokonat,
+          nama: data.data[0].nama,
+          kabinet: data.data[0].kabinet,
+          kafposh: data.data[0].kafposh,
         });
       })
       .catch((err) => {
@@ -115,7 +141,7 @@ const PropertyType = () => {
       };
 
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -493,17 +519,63 @@ const PropertyType = () => {
                         id="num-hamam"
                         name="numhamam"
                         as="select"
+                        value={apartmentData.numhamam}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            numhamam: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-
-                        <option value={1}>1 </option>
-                        <option value={2}>2 </option>
-                        <option value={3}>3 </option>
-                        <option value={4}>4 </option>
-                        <option value={5}>5 </option>
-                        <option value={6}>6 </option>
-                        <option value={7}>7 </option>
+                        <option
+                          value={0}
+                          selected={apartmentData.numhamam == 0 ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          value={1}
+                          selected={apartmentData.numhamam == 1 ? true : false}
+                        >
+                          1{" "}
+                        </option>
+                        <option
+                          value={2}
+                          selected={apartmentData.numhamam == 2 ? true : false}
+                        >
+                          2{" "}
+                        </option>
+                        <option
+                          value={3}
+                          selected={apartmentData.numhamam == 3 ? true : false}
+                        >
+                          3{" "}
+                        </option>
+                        <option
+                          value={4}
+                          selected={apartmentData.numhamam == 4 ? true : false}
+                        >
+                          4{" "}
+                        </option>
+                        <option
+                          value={5}
+                          selected={apartmentData.numhamam == 5 ? true : false}
+                        >
+                          5{" "}
+                        </option>
+                        <option
+                          value={6}
+                          selected={apartmentData.numhamam == 6 ? true : false}
+                        >
+                          6{" "}
+                        </option>
+                        <option
+                          value={7}
+                          selected={apartmentData.numhamam == 7 ? true : false}
+                        >
+                          7{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -516,16 +588,63 @@ const PropertyType = () => {
                         id="num-wc"
                         name="numwc"
                         as="select"
+                        value={apartmentData.numwc}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            numwc: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option value={1}>1 </option>
-                        <option value={2}>2 </option>
-                        <option value={3}>3 </option>
-                        <option value={4}>4 </option>
-                        <option value={5}>5 </option>
-                        <option value={6}>6 </option>
-                        <option value={7}>7 </option>
+                        <option
+                          value={0}
+                          selected={apartmentData.numwc == 0 ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          value={1}
+                          selected={apartmentData.numwc == 1 ? true : false}
+                        >
+                          1{" "}
+                        </option>
+                        <option
+                          value={2}
+                          selected={apartmentData.numwc == 2 ? true : false}
+                        >
+                          2{" "}
+                        </option>
+                        <option
+                          value={3}
+                          selected={apartmentData.numwc == 3 ? true : false}
+                        >
+                          3{" "}
+                        </option>
+                        <option
+                          value={4}
+                          selected={apartmentData.numwc == 4 ? true : false}
+                        >
+                          4{" "}
+                        </option>
+                        <option
+                          value={5}
+                          selected={apartmentData.numwc == 5 ? true : false}
+                        >
+                          5{" "}
+                        </option>
+                        <option
+                          value={6}
+                          selected={apartmentData.numwc == 6 ? true : false}
+                        >
+                          6{" "}
+                        </option>
+                        <option
+                          value={7}
+                          selected={apartmentData.numwc == 7 ? true : false}
+                        >
+                          7{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -539,17 +658,79 @@ const PropertyType = () => {
                         id="senbana"
                         name="senbana"
                         as="select"
-                        rows={10}
+                        value={apartmentData.senbana}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            senbana: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>نوساز </option>
-                        <option> 1 تا 5 سال </option>
-                        <option> 5 تا 10 سال</option>
-                        <option>10 تا 20 سال</option>
-                        <option>20 تا 50 سال</option>
-                        <option>50 سال به بالا</option>
-                        <option>کلنگی</option>
+                        <option
+                          selected={apartmentData.senbana == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "نوساز" ? true : false
+                          }
+                        >
+                          نوساز{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "1 تا 5 سال" ? true : false
+                          }
+                        >
+                          {" "}
+                          1 تا 5 سال{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "5 تا 10 سال"
+                              ? true
+                              : false
+                          }
+                        >
+                          {" "}
+                          5 تا 10 سال
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "10 تا 20 سال"
+                              ? true
+                              : false
+                          }
+                        >
+                          10 تا 20 سال
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "20 تا 50 سال"
+                              ? true
+                              : false
+                          }
+                        >
+                          20 تا 50 سال
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "50 سال به بالا"
+                              ? true
+                              : false
+                          }
+                        >
+                          50 سال به بالا
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.senbana == "کلنگی" ? true : false
+                          }
+                        >
+                          کلنگی
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -567,12 +748,46 @@ const PropertyType = () => {
                         id="sokonat"
                         name="sokonat"
                         as="select"
+                        value={apartmentData.sokonat}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            sokonat: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option> تخلیه </option>
-                        <option> مستاجر ساکن</option>
-                        <option>مالک ساکن </option>
+                        <option
+                          value={0}
+                          selected={apartmentData.sokonat == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.sokonat == "تخلیه" ? true : false
+                          }
+                        >
+                          {" "}
+                          تخلیه{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.sokonat == "مستاجر ساکن"
+                              ? true
+                              : false
+                          }
+                        >
+                          {" "}
+                          مستاجر ساکن
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.sokonat == "مالک ساکن" ? true : false
+                          }
+                        >
+                          مالک ساکن{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -583,21 +798,85 @@ const PropertyType = () => {
                         id="nama"
                         name="nama"
                         as="select"
-                        rows={10}
+                        value={apartmentData.nama}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            nama: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option> سنگ</option>
-                        <option>سیمان</option>
-                        <option>شیشه </option>
-                        <option> کامپوزیت</option>
-                        <option>کلاسیک</option>
-                        <option>آجر</option>
-                        <option>چوب</option>
-                        <option>مدرن</option>
-                        <option>ترکیبی</option>
-                        <option>رومی</option>
-                        <option>سایر</option>
+                        <option
+                          selected={apartmentData.nama == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "سنگ" ? true : false}
+                        >
+                          {" "}
+                          سنگ
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.nama == "سیمان" ? true : false
+                          }
+                        >
+                          سیمان
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "شیشه" ? true : false}
+                        >
+                          شیشه{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.nama == "کامپوزیت" ? true : false
+                          }
+                        >
+                          {" "}
+                          کامپوزیت
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.nama == "کلاسیک" ? true : false
+                          }
+                        >
+                          کلاسیک
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "آجر" ? true : false}
+                        >
+                          آجر
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "چوب" ? true : false}
+                        >
+                          چوب
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "مدرن" ? true : false}
+                        >
+                          مدرن
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.nama == "ترکیبی" ? true : false
+                          }
+                        >
+                          ترکیبی
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "رومی" ? true : false}
+                        >
+                          رومی
+                        </option>
+                        <option
+                          selected={apartmentData.nama == "سایر" ? true : false}
+                        >
+                          سایر
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -613,16 +892,76 @@ const PropertyType = () => {
                         id="kabinet"
                         name="kabinet"
                         as="select"
+                        value={apartmentData.kabinet}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            kabinet: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
-                        <option> کابینت MDF </option>
-                        <option>کابینت جزیره</option>
-                        <option>کابینت چوب</option>
-                        <option>کابینت فلزی</option>
-                        <option>کابینت ممبران</option>
-                        <option>کابینت هایگلس</option>
-                        <option>سایر</option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == " کابینت MDF"
+                              ? true
+                              : false
+                          }
+                        >
+                          {" "}
+                          کابینت MDF{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == "کابینت جزیره"
+                              ? true
+                              : false
+                          }
+                        >
+                          کابینت جزیره
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == "کابینت چوب" ? true : false
+                          }
+                        >
+                          کابینت چوب
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == "کابینت فلزی"
+                              ? true
+                              : false
+                          }
+                        >
+                          کابینت فلزی
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == "کابینت ممبران"
+                              ? true
+                              : false
+                          }
+                        >
+                          کابینت ممبران
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == "کابینت هایگلس"
+                              ? true
+                              : false
+                          }
+                        >
+                          کابینت هایگلس
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kabinet == "سایر" ? true : false
+                          }
+                        >
+                          سایر
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -633,17 +972,69 @@ const PropertyType = () => {
                         id="kafposh"
                         name="kafposh"
                         as="select"
-                        rows={10}
+                        value={apartmentData.kafposh}
+                        onChange={(e) => {
+                          setApartmentData({
+                            ...apartmentData,
+                            kafposh: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>پارکت </option>
-                        <option>سرامیک </option>
-                        <option>سنگ </option>
-                        <option>سیمان </option>
-                        <option>موزائیک </option>
-                        <option>موکت </option>
-                        <option>سایر </option>
+                        <option
+                          selected={apartmentData.kafposh == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "پارکت" ? true : false
+                          }
+                        >
+                          پارکت{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "سرامیک" ? true : false
+                          }
+                        >
+                          سرامیک{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "رومی" ? true : false
+                          }
+                        >
+                          رومی{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "سیمان" ? true : false
+                          }
+                        >
+                          سیمان{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "موزائیک" ? true : false
+                          }
+                        >
+                          موزائیک{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "موکت" ? true : false
+                          }
+                        >
+                          موکت{" "}
+                        </option>
+                        <option
+                          selected={
+                            apartmentData.kafposh == "سایر" ? true : false
+                          }
+                        >
+                          سایر{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -714,6 +1105,7 @@ const PropertyType = () => {
                             kabinet: e.target.value,
                           });
                         }}
+                        value={homeData.kabinet}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
@@ -801,6 +1193,7 @@ const PropertyType = () => {
                             otagh: e.target.value,
                           });
                         }}
+                        value={homeData.otagh}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={13}>انتخاب کنید</option>
@@ -902,6 +1295,7 @@ const PropertyType = () => {
                             numhamam: e.target.value,
                           });
                         }}
+                        value={homeData.numhamam}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -970,6 +1364,7 @@ const PropertyType = () => {
                             numwc: e.target.value,
                           });
                         }}
+                        value={homeData.numwc}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -1039,6 +1434,7 @@ const PropertyType = () => {
                             senbana: e.target.value,
                           });
                         }}
+                        value={homeData.senbana}
                         rows={10}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
@@ -1117,6 +1513,7 @@ const PropertyType = () => {
                             sokonat: e.target.value,
                           });
                         }}
+                        value={homeData.sokonat}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -1163,6 +1560,8 @@ const PropertyType = () => {
                             nama: e.target.value,
                           });
                         }}
+                        value={homeData.nama}
+
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option selected={homeData.nama == "" ? true : false}>
@@ -1247,6 +1646,8 @@ const PropertyType = () => {
                             kafposh: e.target.value,
                           });
                         }}
+                        value={homeData.kafposh}
+
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -1313,6 +1714,13 @@ const PropertyType = () => {
                         id="tabaghe"
                         name="tabaghe"
                         type="text"
+                        value={edariData.tabaghe}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            tabaghe: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -1325,8 +1733,15 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-tabaghat"
-                        name="tedad-tabaghat"
+                        name="tedadtabaghat"
                         type="text"
+                        value={edariData.tedadtabaghat}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            tedadtabaghat: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -1341,8 +1756,15 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-vahed-har-tabaghe"
-                        name="tedad-vahed-har-tabaghe"
+                        name="tedadvahedhartabaghe"
                         type="number"
+                        value={edariData.tedadvahedhartabaghe}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            tedadvahedhartabaghe: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -1355,8 +1777,15 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-vahed-kol"
-                        name="tedad-vahed-kol"
+                        name="tedadvahedkol"
                         type="number"
+                        value={edariData.tedadvahedkol}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            tedadvahedkol: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -1373,22 +1802,94 @@ const PropertyType = () => {
                         id="otagh"
                         name="otagh"
                         as="select"
+                        value={edariData.otagh}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            otagh: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={13}>انتخاب کنید</option>
-                        <option value={0}>0 </option>
-                        <option value={1}>1 </option>
-                        <option value={2}>2 </option>
-                        <option value={3}>3 </option>
-                        <option value={4}>4 </option>
-                        <option value={5}>5 </option>
-                        <option value={6}>6 </option>
-                        <option value={7}>7 </option>
-                        <option value={8}>8 </option>
-                        <option value={9}>9 </option>
-                        <option value={10}>10 </option>
-                        <option value={11}>11 </option>
-                        <option value={12}>12 </option>
+                        <option value={0}>انتخاب کنید</option>
+                        <option
+                          value={0}
+                          selected={edariData.otagh == 0 ? true : false}
+                        >
+                          0{" "}
+                        </option>
+                        <option
+                          value={1}
+                          selected={edariData.otagh == 1 ? true : false}
+                        >
+                          1{" "}
+                        </option>
+                        <option
+                          value={2}
+                          selected={edariData.otagh == 2 ? true : false}
+                        >
+                          2{" "}
+                        </option>
+                        <option
+                          value={3}
+                          selected={edariData.otagh == 3 ? true : false}
+                        >
+                          3{" "}
+                        </option>
+                        <option
+                          value={4}
+                          selected={edariData.otagh == 4 ? true : false}
+                        >
+                          4{" "}
+                        </option>
+                        <option
+                          value={5}
+                          selected={edariData.otagh == 5 ? true : false}
+                        >
+                          5{" "}
+                        </option>
+                        <option
+                          value={6}
+                          selected={edariData.otagh == 6 ? true : false}
+                        >
+                          6{" "}
+                        </option>
+                        <option
+                          value={7}
+                          selected={edariData.otagh == 7 ? true : false}
+                        >
+                          7{" "}
+                        </option>
+                        <option
+                          value={8}
+                          selected={edariData.otagh == 8 ? true : false}
+                        >
+                          8{" "}
+                        </option>
+                        <option
+                          value={9}
+                          selected={edariData.otagh == 9 ? true : false}
+                        >
+                          9{" "}
+                        </option>
+                        <option
+                          value={10}
+                          selected={edariData.otagh == 10 ? true : false}
+                        >
+                          10{" "}
+                        </option>
+                        <option
+                          value={11}
+                          selected={edariData.otagh == 11 ? true : false}
+                        >
+                          11{" "}
+                        </option>
+                        <option
+                          value={12}
+                          selected={edariData.otagh == 12 ? true : false}
+                        >
+                          12{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -1403,16 +1904,63 @@ const PropertyType = () => {
                         id="num-hamam"
                         name="numhamam"
                         as="select"
+                        value={edariData.numhamam}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            numhamam: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option value={1}>1 </option>
-                        <option value={2}>2 </option>
-                        <option value={3}>3 </option>
-                        <option value={4}>4 </option>
-                        <option value={5}>5 </option>
-                        <option value={6}>6 </option>
-                        <option value={7}>7 </option>
+                        <option
+                          value={0}
+                          selected={edariData.numhamam == 0 ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          value={1}
+                          selected={edariData.numhamam == 1 ? true : false}
+                        >
+                          1{" "}
+                        </option>
+                        <option
+                          value={2}
+                          selected={edariData.numhamam == 2 ? true : false}
+                        >
+                          2{" "}
+                        </option>
+                        <option
+                          value={3}
+                          selected={edariData.numhamam == 3 ? true : false}
+                        >
+                          3{" "}
+                        </option>
+                        <option
+                          value={4}
+                          selected={edariData.numhamam == 4 ? true : false}
+                        >
+                          4{" "}
+                        </option>
+                        <option
+                          value={5}
+                          selected={edariData.numhamam == 5 ? true : false}
+                        >
+                          5{" "}
+                        </option>
+                        <option
+                          value={6}
+                          selected={edariData.numhamam == 6 ? true : false}
+                        >
+                          6{" "}
+                        </option>
+                        <option
+                          value={7}
+                          selected={edariData.numhamam == 7 ? true : false}
+                        >
+                          7{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -1425,37 +1973,137 @@ const PropertyType = () => {
                         id="num-wc"
                         name="numwc"
                         as="select"
+                        value={edariData.numwc}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            numwc: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option value={1}>1 </option>
-                        <option value={2}>2 </option>
-                        <option value={3}>3 </option>
-                        <option value={4}>4 </option>
-                        <option value={5}>5 </option>
-                        <option value={6}>6 </option>
-                        <option value={7}>7 </option>
+                        <option
+                          value={0}
+                          selected={edariData.numwc == 0 ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          value={1}
+                          selected={edariData.numwc == 1 ? true : false}
+                        >
+                          1{" "}
+                        </option>
+                        <option
+                          value={2}
+                          selected={edariData.numwc == 2 ? true : false}
+                        >
+                          2{" "}
+                        </option>
+                        <option
+                          value={3}
+                          selected={edariData.numwc == 3 ? true : false}
+                        >
+                          3{" "}
+                        </option>
+                        <option
+                          value={4}
+                          selected={edariData.numwc == 4 ? true : false}
+                        >
+                          4{" "}
+                        </option>
+                        <option
+                          value={5}
+                          selected={edariData.numwc == 5 ? true : false}
+                        >
+                          5{" "}
+                        </option>
+                        <option
+                          value={6}
+                          selected={edariData.numwc == 6 ? true : false}
+                        >
+                          6{" "}
+                        </option>
+                        <option
+                          value={7}
+                          selected={edariData.numwc == 7 ? true : false}
+                        >
+                          7{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
+                      <label
+                        htmlFor="senbana"
+                        className="mb-3 text-white block"
+                      >
                         سن بنا
                       </label>
                       <Field
                         id="senbana"
                         name="senbana"
                         as="select"
-                        rows={10}
+                        value={edariData.senbana}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            senbana: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>نوساز </option>
-                        <option> 1 تا 5 سال </option>
-                        <option> 5 تا 10 سال</option>
-                        <option>10 تا 20 سال</option>
-                        <option>20 تا 50 سال</option>
-                        <option>50 سال به بالا</option>
-                        <option>کلنگی</option>
+                        <option
+                          selected={edariData.senbana == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={edariData.senbana == "نوساز" ? true : false}
+                        >
+                          نوساز{" "}
+                        </option>
+                        <option
+                          selected={
+                            edariData.senbana == "1 تا 5 سال" ? true : false
+                          }
+                        >
+                          {" "}
+                          1 تا 5 سال{" "}
+                        </option>
+                        <option
+                          selected={
+                            edariData.senbana == "5 تا 10 سال" ? true : false
+                          }
+                        >
+                          {" "}
+                          5 تا 10 سال
+                        </option>
+                        <option
+                          selected={
+                            edariData.senbana == "10 تا 20 سال" ? true : false
+                          }
+                        >
+                          10 تا 20 سال
+                        </option>
+                        <option
+                          selected={
+                            edariData.senbana == "20 تا 50 سال" ? true : false
+                          }
+                        >
+                          20 تا 50 سال
+                        </option>
+                        <option
+                          selected={
+                            edariData.senbana == "50 سال به بالا" ? true : false
+                          }
+                        >
+                          50 سال به بالا
+                        </option>
+                        <option
+                          selected={edariData.senbana == "کلنگی" ? true : false}
+                        >
+                          کلنگی
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -1473,12 +2121,42 @@ const PropertyType = () => {
                         id="sokonat"
                         name="sokonat"
                         as="select"
+                        value={edariData.sokonat}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            sokonat: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option value={0}>انتخاب کنید</option>
-                        <option> تخلیه </option>
-                        <option> مستاجر ساکن</option>
-                        <option>مالک ساکن </option>
+                        <option
+                          value={0}
+                          selected={edariData.sokonat == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={edariData.sokonat == "تخلیه" ? true : false}
+                        >
+                          {" "}
+                          تخلیه{" "}
+                        </option>
+                        <option
+                          selected={
+                            edariData.sokonat == "مستاجر ساکن" ? true : false
+                          }
+                        >
+                          {" "}
+                          مستاجر ساکن
+                        </option>
+                        <option
+                          selected={
+                            edariData.sokonat == "مالک ساکن" ? true : false
+                          }
+                        >
+                          مالک ساکن{" "}
+                        </option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -1489,47 +2167,140 @@ const PropertyType = () => {
                         id="nama"
                         name="nama"
                         as="select"
-                        rows={10}
+                        value={edariData.nama}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            nama: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option> سنگ</option>
-                        <option>سیمان</option>
-                        <option>شیشه </option>
-                        <option> کامپوزیت</option>
-                        <option>کلاسیک</option>
-                        <option>آجر</option>
-                        <option>چوب</option>
-                        <option>مدرن</option>
-                        <option>ترکیبی</option>
-                        <option>رومی</option>
-                        <option>سایر</option>
+                        <option selected={edariData.nama == "" ? true : false}>
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={edariData.nama == "سنگ" ? true : false}
+                        >
+                          {" "}
+                          سنگ
+                        </option>
+                        <option
+                          selected={edariData.nama == "سیمان" ? true : false}
+                        >
+                          سیمان
+                        </option>
+                        <option
+                          selected={edariData.nama == "شیشه" ? true : false}
+                        >
+                          شیشه{" "}
+                        </option>
+                        <option
+                          selected={edariData.nama == "کامپوزیت" ? true : false}
+                        >
+                          {" "}
+                          کامپوزیت
+                        </option>
+                        <option
+                          selected={edariData.nama == "کلاسیک" ? true : false}
+                        >
+                          کلاسیک
+                        </option>
+                        <option
+                          selected={edariData.nama == "آجر" ? true : false}
+                        >
+                          آجر
+                        </option>
+                        <option
+                          selected={edariData.nama == "چوب" ? true : false}
+                        >
+                          چوب
+                        </option>
+                        <option
+                          selected={edariData.nama == "مدرن" ? true : false}
+                        >
+                          مدرن
+                        </option>
+                        <option
+                          selected={edariData.nama == "ترکیبی" ? true : false}
+                        >
+                          ترکیبی
+                        </option>
+                        <option
+                          selected={edariData.nama == "رومی" ? true : false}
+                        >
+                          رومی
+                        </option>
+                        <option
+                          selected={edariData.nama == "سایر" ? true : false}
+                        >
+                          سایر
+                        </option>
                       </Field>
                     </div>
                   </div>
                   <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
                     <div className="w-full">
-                      <label
-                        htmlFor="kafposh"
-                        className="mb-3 text-white block"
-                      >
+                      <label htmlFor="area" className="mb-3 text-white block">
                         کف پوش
                       </label>
                       <Field
                         id="kafposh"
                         name="kafposh"
                         as="select"
-                        rows={10}
+                        value={edariData.kafposh}
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            kafposh: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
-                        <option>انتخاب کنید</option>
-                        <option>پارکت </option>
-                        <option>سرامیک </option>
-                        <option>سنگ </option>
-                        <option>سیمان </option>
-                        <option>موزائیک </option>
-                        <option>موکت </option>
-                        <option>سایر </option>
+                        <option
+                          selected={edariData.kafposh == "" ? true : false}
+                        >
+                          انتخاب کنید
+                        </option>
+                        <option
+                          selected={edariData.kafposh == "پارکت" ? true : false}
+                        >
+                          پارکت{" "}
+                        </option>
+                        <option
+                          selected={
+                            edariData.kafposh == "سرامیک" ? true : false
+                          }
+                        >
+                          سرامیک{" "}
+                        </option>
+                        <option
+                          selected={edariData.kafposh == "رومی" ? true : false}
+                        >
+                          رومی{" "}
+                        </option>
+                        <option
+                          selected={edariData.kafposh == "سیمان" ? true : false}
+                        >
+                          سیمان{" "}
+                        </option>
+                        <option
+                          selected={
+                            edariData.kafposh == "موزائیک" ? true : false
+                          }
+                        >
+                          موزائیک{" "}
+                        </option>
+                        <option
+                          selected={edariData.kafposh == "موکت" ? true : false}
+                        >
+                          موکت{" "}
+                        </option>
+                        <option
+                          selected={edariData.kafposh == "سایر" ? true : false}
+                        >
+                          سایر{" "}
+                        </option>
                       </Field>
                     </div>
                   </div>
@@ -1540,7 +2311,7 @@ const PropertyType = () => {
             )}
             <button
               type="submit"
-              className="bg-[#4a80bb] items-center justify-center max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb] items-center   max-lg:w-full m-auto flex   justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات نوع ملک

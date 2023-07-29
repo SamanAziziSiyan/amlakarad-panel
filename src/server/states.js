@@ -36,7 +36,7 @@ const editState = (token, stateId, data) => {
   });
 };
 
-const insertMetaData = (data, token) => {
+const insertMetaData = (token, data) => {
   return axios.post(`${config.api}/wp-json/wp/v2/statemeta/`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
