@@ -5,6 +5,9 @@ import { getToken } from "../../../helper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { RiEdit2Line } from "react-icons/ri";
+import { GiElevator } from "react-icons/gi";
+import { FaParking, FaSignOutAlt } from "react-icons/fa";
+
 import Layout from "../../../Layout";
 
 const EstateDetails = () => {
@@ -16,7 +19,7 @@ const EstateDetails = () => {
       .getState(token, stateId)
       .then((data) => {
         console.log(data);
-        setStateData(data.data);
+        setStateData(data.data[0]);
       })
       .catch((err) => {
         console.log(err);
@@ -36,7 +39,7 @@ const EstateDetails = () => {
                 <div className="flex items-center justify-between gap-4 max-lg:flex-wrap"></div>
                 <div className="w-full h-auto ">
                   <div className="grid grid-cols-12 gap-4">
-                    <div className="col-span-10 max-lg:col-span-12">
+                    <div className="col-span-9 max-lg:col-span-12">
                       <Swiper
                         rewind={true}
                         navigation={true}
@@ -67,42 +70,49 @@ const EstateDetails = () => {
                         </SwiperSlide>
                       </Swiper>
                     </div>
-                    <div className="col-span-2  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
+                    <div className="col-span-3  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
                       <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                        <span>
-                          نام مالک :
-                          {/* {stateData.postmeta.name == "undefined"
-                            ? ""
-                            : stateData.postmeta.name} */}
-                        </span>
+                        <span>نام مالک :{stateData.name}</span>
                       </div>
                       <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
                         <span>
                           {" "}
                           شماره تماس مالک:
-                          {/* {stateData.postmeta.mobile}{" "} */}
+                          {stateData.mobile}{" "}
                         </span>
                       </div>
 
-                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                        <span>نام مشاور : {} </span>
-                      </div>
+                      {stateData.moamele == "خرید و فروش" ? (
+                        <>
+                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                            <span>قیمت کل :{stateData["price-kol"]}</span>
+                          </div>
+                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                            <span>قیمت متری :{stateData["price-metri"]}</span>
+                          </div> 
+                        </>
+                      ) : stateData.moamele == "رهن و اجاره" ? (
+                        <>
+                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                            <span>قیمت رهن :{stateData["price-rahn"]}</span>
+                          </div>
+                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                            <span>قیمت اجاره :{stateData["price-ejare"]}</span>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
 
                       <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                        <span>
-                          قیمت کل :{/* {stateData.postmeta.pricekol} */}
-                        </span>
-                      </div>
-
-                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
-                        <span>آدرس ملک :{} </span>
+                        <span>آدرس ملک :{stateData.address} </span>
                       </div>
                     </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col  col-span-12 md:col-span-10 lg:col-span-10 w-full p-3 bg-white">
                       <span className="mb-2 text-right relative text-[25px]">
-                        عنوان آگهی
+                        {stateData.post_title}
                       </span>
                     </div>
                   </div>
@@ -110,12 +120,14 @@ const EstateDetails = () => {
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">متراژ</span>
                       <hr className="px-12" />
-                      <span className="mt-3">1000</span>
+                      <span className="mt-3">{stateData.metrazh}</span>
                     </div>
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                      <span className="mb-2 text-[25px]">جهت ساختمان</span>
+                      <span className="mb-2 text-[25px]">جهت</span>
                       <hr className="px-12" />
-                      <span className="mt-3">1000</span>
+                      <span className="mt-3">
+                        {/* {stateData.mg.map((item, index) => item + " - ")} */}
+                      </span>
                     </div>
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">سال ساخت</span>
@@ -125,17 +137,17 @@ const EstateDetails = () => {
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">نوع معامله</span>
                       <hr className="px-12" />
-                      <span className="mt-3">خرید و فروش</span>
+                      <span className="mt-3">{stateData.moamele}</span>
                     </div>{" "}
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">نوع کاربری</span>
                       <hr className="px-12" />
-                      <span className="mt-3">اداری تجاری</span>
+                      <span className="mt-3">{stateData.karbari}</span>
                     </div>
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">نوع ملک</span>
                       <hr className="px-12" />
-                      <span className="mt-3">آپارتمان</span>
+                      <span className="mt-3">{stateData.melk}</span>
                     </div>
                   </div>
 
@@ -143,8 +155,8 @@ const EstateDetails = () => {
                     <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       توضیحات{" "}
                     </h3>
-                    <p className="w-5/6 text-white">
-                      {/* {stateData.content.rendered} */}
+                    <p className="w-full text-justify text-white">
+                      {stateData.post_content}
                     </p>
                   </div>
 
@@ -153,116 +165,518 @@ const EstateDetails = () => {
                       مشخصات املاک{" "}
                     </h3>
                     <div className="grid grid-cols-12 w-full gap-2 ">
-                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                        <div className="flex items-center w-full gap-4 mb-4  ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
+                      {stateData.moamele == "خرید و فروش" ? (
+                        <>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">نوع سند</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.sanad} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">قیمت کل</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["price-kol"]} </span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">قیمت متری</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["price-metri"]} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">پیش فروش</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData.pishforosh == "0"
+                                    ? "ندارد"
+                                    : "دارد"}{" "}
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">تعداد واحد در هر طبقه</span>
-                          </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                        <div className="flex items-center w-full gap-4 mb-4  ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">تعداد واحد کل ساختمان</span>
-                          </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">تعداد اتاق</span>
-                          </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                        <div className="flex items-center w-full gap-4 mb-4  ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نمای ساختمان</span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">امکان معاوضه</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData.moaveze == "0"
+                                    ? "ندارد"
+                                    : "دارد"}{" "}
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
+                        </>
+                      ) : stateData.moamele == "رهن و اجاره" ? (
+                        <>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">قیمت رهن</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["price-rahn"]} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">قیمت اجاره</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["price-ejare"]} </span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">قابلیت تبدیل</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData.tabdil == "0"
+                                    ? "ندارد"
+                                    : "دارد"}{" "}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد نفرات</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.nafarat}</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                        <div className="flex items-center w-full gap-4 mb-4  ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
-                          </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
-                          </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                        <div className="flex items-center w-full gap-4 mb-4  ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">امکان اجاره به</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.tahol}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">حیوانات خانگی</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.Pets}</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">دربست</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.darbast}</span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
+                        </>
+                      ) : stateData.moamele == "اجاره روزانه" ? (
+                        <>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">اجاره شبی</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["price-shabi"]} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">
+                                  اجاره شبی روزهای تعطیل
+                                </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["price-tatilat"]} </span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">دربست</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.darbast}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد نفرات</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.nafarat}</span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className=" col-span-6 gap-4 max-lg:col-span-12">
-                        <div className="flex items-center w-full gap-4 mb-4  ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">امکان اجاره به</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.tahol}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">حیوانات خانگی</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.Pets}</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
+                        </>
+                      ) : (
+                        ""
+                      )}
+
+                      {stateData.melk == "آپارتمان" ? (
+                        <>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">طبقه چندم</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.tabaghe} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد طبقات</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["tedad-tabaghat"]} </span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
-                          <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                            <span className="text">نوع سند</span>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">
+                                  تعداد واحد در هر طبقه{" "}
+                                </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-vahed-har-tabaghe"]}{" "}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد واحد کل</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["tedad-vahed-kol"]}</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                            <span> عادی </span>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد اتاق</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.otagh}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد حمام</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["num-hamam"]}</span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد دستشویی</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["num-wc"]}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">سن بنا</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.senbana}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">نما </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.nama}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">کابینت</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.kabinet}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">کفپوش</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.kafposh}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : stateData.melk == "خانه و ویلا" ? (
+                        <>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">مساحت زمین</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["masahat-zamin"]} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد طبقات</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["tedad-tabaghat"]} </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد واحد کل </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["tedad-vahed-kol"]} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">سکونت</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.sokonat}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد اتاق</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.otagh}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد حمام</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["num-hamam"]}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد دستشویی</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["num-wc"]}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">سن بنا</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.senbana}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">نما </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.nama}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">کابینت</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.kabinet}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">کفپوش</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.kafposh}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : stateData.melk == "اداری و تجاری" ? (
+                        <>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد واحد هر طبقه</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-vahed-har-tabaghe"]}{" "}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد طبقات</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["tedad-tabaghat"]} </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد واحد کل </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["tedad-vahed-kol"]} </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">کفپوش</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.kafposh}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد اتاق</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.otagh}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد حمام</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["num-hamam"]}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">تعداد دستشویی</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData["num-wc"]}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">سن بنا</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.senbana}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">نما </span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.nama}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : stateData.melk == "زمین و کلنگی" ? (
+                        ""
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
 
@@ -272,61 +686,16 @@ const EstateDetails = () => {
                     </h3>
                     <div className="grid grid-cols-12 w-full  gap-4">
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
+                        <GiElevator size={24} />
+                        <span className="text-lg mr-4">
+                          آسانسور : {stateData.asansor}
+                        </span>
                       </div>
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
-                      </div>
-
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
+                        <FaParking size={24} />
+                        <span className="text-lg mr-4">
+                          پارکینگ : {stateData.parking}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -337,7 +706,11 @@ const EstateDetails = () => {
                     <div className="grid grid-cols-12 w-full  gap-4">
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
                         <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">آسانسور</span>
+                        <span className="text-lg mr-4">
+                          {/* {stateData["sayer-emkanat"].map(
+                            (item, index) => item + " - "
+                          )} */}
+                        </span>
                       </div>
                     </div>
                   </div>
