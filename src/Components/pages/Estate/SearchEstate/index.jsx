@@ -17,6 +17,7 @@ import {
   RiReplyAllLine,
   RiSearch2Fill,
 } from "react-icons/ri";
+import { AiFillFilter } from "react-icons/ai";
 import { GiElevator } from "react-icons/gi";
 import { FaHospitalUser } from "react-icons/fa";
 import { MdRealEstateAgent } from "react-icons/md";
@@ -27,6 +28,9 @@ import Layout from "../../../Layout";
 const SearchEstate = () => {
   const [states, setStates] = useState([]);
   const [empty, showEmpty] = useState(false);
+  const [FilteredState, setFilteredState] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -145,6 +149,25 @@ const SearchEstate = () => {
       }
     });
   };
+  const filterState = (values) => {
+    setShowLoading(true);
+    let userToken = getToken();
+    let stateData = {
+      moamele: "خرید و فروش",
+    };
+    console.log(stateData);
+    service.states
+      .filterStates(userToken, stateData)
+      .then((data) => {
+        console.log(data);
+        setShowLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toastAlert("سرور مشغول است");
+        setShowLoading(false);
+      });
+  };
   return (
     <>
       <Layout>
@@ -156,81 +179,131 @@ const SearchEstate = () => {
               <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
 
               <div className="w-full relative  h-auto bg-white/5 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
-                <div className="flex items-center justify-between gap-4 max-lg:flex-wrap">
-                  <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
-                    <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
-                        نوع معامله
-                      </label>
-                      <select
-                        id="area"
-                        name="area"
-                        as="select"
-                        rows={10}
-                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                      >
-                        <option>انتخاب کنید</option>
-                        <option>خرید و فروش</option>
-                        <option>رهن و اجاره</option>
-                        <option>اجاره روزانه</option>
-                      </select>
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="area" className="mb-3 text-white block">
-                        نوع ملک
-                      </label>
-                      <select
-                        id="area"
-                        name="area"
-                        as="select"
-                        rows={10}
-                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                      >
-                        <option>انتخاب کنید</option>
-                        <option>آپارتمان</option>
-                        <option>خانه و ویلا</option>
-                        <option>زمین و کلنگی</option>
-                        <option>اداری و تجاری</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
-                    <div className="w-full">
-                      <label htmlFor="area" className="mb-3  text-white block">
-                        نوع نمایش قیمت
-                      </label>
-                      <select
-                        id="area"
-                        name="area"
-                        as="select"
-                        rows={10}
-                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                      >
-                        <option> انتخاب کنید</option>
-                        <option>توافقی</option>
-                        <option>تماس بگیرید</option>
-                      </select>
-                    </div>
-                    <div className="w-full relative">
-                      <label htmlFor="area" className="mb-3 text-white block">
-                        منطقه
-                      </label>
-                      <div className="relative">
-                        <RiSearch2Fill
-                          className="text-white absolute  top-[8%] max-md:w-[50px]"
-                          size={25}
-                        />
-                        <input
+                <form
+                  className="bg-white p-5 rounded-md text-black shadow shadow-sky-500"
+                  onSubmit={(values) => {
+                    filterState(values);
+                  }}
+                >
+                  <div className="flex items-center justify-between gap-4 max-lg:flex-wrap">
+                    <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
+                      <div className="w-full">
+                        <label htmlFor="area" className="mb-3 block">
+                          نوع معامله
+                        </label>
+                        <select
                           id="area"
                           name="area"
-                          type="text"
+                          as="select"
+                          rows={10}
                           className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-                        />
+                        >
+                          <option>انتخاب کنید</option>
+                          <option>خرید و فروش</option>
+                          <option>رهن و اجاره</option>
+                          <option>اجاره روزانه</option>
+                        </select>
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="area" className="mb-3 block">
+                          نوع ملک
+                        </label>
+                        <select
+                          id="area"
+                          name="area"
+                          as="select"
+                          rows={10}
+                          className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                        >
+                          <option>انتخاب کنید</option>
+                          <option>آپارتمان</option>
+                          <option>خانه و ویلا</option>
+                          <option>زمین و کلنگی</option>
+                          <option>اداری و تجاری</option>
+                        </select>
                       </div>
                     </div>
+
+                    <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
+                      <div className="w-full">
+                        <label htmlFor="area" className="mb-3 block">
+                          کاربری
+                        </label>
+                        <select
+                          id="karbari"
+                          name="karbari"
+                          as="select"
+                          className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                        >
+                          <option value={0}>انتخاب کنید</option>
+                          <option value="مسکونی"> مسکونی </option>
+                          <option> تجاری</option>
+                          <option>اداری </option>
+                          <option>زراعی </option>
+                          <option>باغات </option>
+                          <option>تفریحی </option>
+                          <option>ورزشی </option>
+                          <option>فضای سبر </option>
+                          <option> بدون کاربری </option>
+                          <option> خارج از بافت </option>
+                          <option> سایر </option>
+                        </select>
+                      </div>
+                      <div className="w-full relative">
+                        <label htmlFor="area" className="mb-3 block">
+                          منطقه
+                        </label>
+                        <div className="relative">
+                          <input
+                            id="area"
+                            name="area"
+                            type="text"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
+                      <div className="w-full">
+                        <label htmlFor="area" className="mb-3 block">
+                          قیمت
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="range"
+                            id="vol"
+                            name="vol"
+                            min="0"
+                            max="50"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full relative">
+                        <label htmlFor="area" className="mb-3 block">
+                          متراژ
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="range"
+                            id="vol"
+                            name="vol"
+                            min="0"
+                            max="50"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="bg-sky-500 p-2 flex items-start  rounded-md text-white text-sm "
+                    >
+                      <AiFillFilter size={18} className="pl-1" />
+                      فیلتر{" "}
+                    </button>
                   </div>
-                </div>
+                </form>
                 <div className="w-full h-auto ">
                   <div className="grid grid-cols-12 gap-4 px-2 mt-10">
                     {empty == true ? (
@@ -287,9 +360,9 @@ const SearchEstate = () => {
                             ) : (
                               ""
                             )}
-                             {item.item.post_status == "draft" ? (
+                            {item.item.post_status == "draft" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-[#0369A1] p-1 text-xs text-white   px-3 rounded-md">
-                                 پیش نویس{" "}
+                                پیش نویس{" "}
                               </button>
                             ) : (
                               ""

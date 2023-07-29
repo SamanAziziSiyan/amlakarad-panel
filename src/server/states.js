@@ -38,7 +38,7 @@ const insertMetaData = (data, token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
-const filterStates = (data, token) => {
+const filterStates = (token, data) => {
   return axios.post(`${config.api}/wp-json/wp/v2/states/filter`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
