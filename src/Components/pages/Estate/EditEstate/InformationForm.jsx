@@ -60,9 +60,9 @@ const InformationForm = ({ setNextSection }) => {
       .then((data) => {
         console.log(data.data.status);
         setInformationData({
-          title: data.data.title.rendered,
-          content: data.data.content.rendered,
-          status: data.data.status,
+          title: data.data[0].post_title,
+          content: data.data[0].post_content,
+          status: data.data[0].post_status,
         });
       })
       .catch((err) => {

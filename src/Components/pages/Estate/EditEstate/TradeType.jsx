@@ -62,6 +62,7 @@ const TradeType = ({ stateData }) => {
     kafposh: "",
   });
   const handleCreateStateMeta = (values) => {
+   
     setShowLoading(true);
     let userToken = getToken();
     let stateId = localStorage.getItem("stateId");
@@ -71,7 +72,7 @@ const TradeType = ({ stateData }) => {
         meta: [
           {
             moamele: shoMoamele,
-            pricekol: values.pricekol,
+            pricekol:kharidData.pricekol,
             pricemeteri: values.pricemeteri,
             karbari: values.karbari,
             sanad: values.sanad,
@@ -80,7 +81,7 @@ const TradeType = ({ stateData }) => {
           },
         ],
       };
-
+      console.log(kharidData.pricekol);
       service.states
         .insertMetaData(stateData, userToken)
         .then((data) => {
@@ -158,52 +159,51 @@ const TradeType = ({ stateData }) => {
 
   useEffect(() => {
     let userToken = getToken();
-    let userData = getUserDataOnLocalStorage();
 
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        setShoMoamele(data.data.postmeta.moamele);
+        setShoMoamele(data.data[0].moamele);
         setKharidData({
-          pricekol: data.data.postmeta["price-kol"],
-          pricemeteri: data.data.postmeta["price-meteri"],
-          karbari: data.data.postmeta.karbari,
-          sanad: data.data.postmeta.sanad,
-          moaveze: data.data.postmeta.moaveze,
-          pishforosh: data.data.postmeta.pishforosh,
+          pricekol: data.data[0]["price-kol"],
+          pricemeteri: data.data[0]["price-meteri"],
+          karbari: data.data[0].karbari,
+          sanad: data.data[0].sanad,
+          moaveze: data.data[0].moaveze,
+          pishforosh: data.data[0].pishforosh,
         });
         setRahnData({
-          nafarat: data.data.postmeta.nafarat,
-          tahol: data.data.postmeta.tahol,
-          Pets: data.data.postmeta.Pets,
-          karbari: data.data.postmeta.karbari,
-          tabdil: data.data.postmeta.tabdil,
-          darbast: data.data.postmeta.darbast,
-          pricerahn: data.data.postmeta["price-rahn"],
-          priceejare: data.data.postmeta["price-ejare"],
+          nafarat: data.data[0].nafarat,
+          tahol: data.data[0].tahol,
+          Pets: data.data[0].Pets,
+          karbari: data.data[0].karbari,
+          tabdil: data.data[0].tabdil,
+          darbast: data.data[0].darbast,
+          pricerahn: data.data[0]["price-rahn"],
+          priceejare: data.data[0]["price-ejare"],
         });
         setRozaneData({
-          nafarat: data.data.postmeta.nafarat,
-          tahol: data.data.postmeta.tahol,
-          Pets: data.data.postmeta.Pets,
-          tabdil: data.data.postmeta.tabdil,
-          darbast: data.data.postmeta.darbast,
-          pricerahn: data.data.postmeta["price-rahn"],
-          pricetatilat: data.data.postmeta["price-tatilat"],
+          nafarat: data.data[0].nafarat,
+          tahol: data.data[0].tahol,
+          Pets: data.data[0].Pets,
+          tabdil: data.data[0].tabdil,
+          darbast: data.data[0].darbast,
+          pricerahn: data.data[0]["price-rahn"],
+          pricetatilat: data.data[0]["price-tatilat"],
         });
 
         setHomeData({
-          masahatzamin: data.data.postmeta["masahat-zamin"],
-          tedadtabaghat: data.data.postmeta["tedad-tabaghat"],
-          tedadvahedkol: data.data.postmeta["tedad-vahed-kol"],
-          otagh: data.data.postmeta.otagh,
-          numhamam: data.data.postmeta["num-hamam"],
-          numwc: data.data.postmeta["num-wc"],
-          senbana: data.data.postmeta.senbana,
-          sokonat: data.data.postmeta.sokonat,
-          nama: data.data.postmeta.nama,
-          kabinet: data.data.postmeta.kabinet,
-          kafposh: data.data.postmeta.kafposh,
+          masahatzamin: data.data[0]["masahat-zamin"],
+          tedadtabaghat: data.data[0]["tedad-tabaghat"],
+          tedadvahedkol: data.data[0]["tedad-vahed-kol"],
+          otagh: data.data[0].otagh,
+          numhamam: data.data[0]["num-hamam"],
+          numwc: data.data[0]["num-wc"],
+          senbana: data.data[0].senbana,
+          sokonat: data.data[0].sokonat,
+          nama: data.data[0].nama,
+          kabinet: data.data[0].kabinet,
+          kafposh: data.data[0].kafposh,
         });
       })
       .catch((err) => {
@@ -298,7 +298,12 @@ const TradeType = ({ stateData }) => {
                         name="pricekol"
                         type="text"
                         value={kharidData.pricekol}
-                        onChange={() => {}}
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            pricekol: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -313,7 +318,12 @@ const TradeType = ({ stateData }) => {
                         id="pricemeteri"
                         name="pricemeteri"
                         type="text"
-                        value={kharidData.pricemeteri}
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            pricemeteri: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -330,6 +340,12 @@ const TradeType = ({ stateData }) => {
                         id="karbari"
                         name="karbari"
                         as="select"
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            karbari: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
@@ -423,7 +439,12 @@ const TradeType = ({ stateData }) => {
                         id="sanad"
                         name="sanad"
                         as="select"
-                        rows={10}
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            sanad: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
