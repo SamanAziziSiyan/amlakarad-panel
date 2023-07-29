@@ -14,49 +14,15 @@ import {
 } from "../../../helper";
 
 import Layout from "../../../Layout";
-import { useEffect, useState } from "react";
-import { RiAncientPavilionFill, RiImageAddLine } from "react-icons/ri";
+import { useState } from "react";
 import InformationForm from "./InformationForm";
 import ExtraInfoForm from "./ExtraInfoForm";
 import MediaForm from "./MediaForm";
 import TradeType from "./TradeType";
 import PropertyType from "./PropertyType";
-import { useParams } from "react-router-dom";
 const EditEstate = () => {
-  const [showMantagha, setshowMantagha] = useState(false);
-  const [shoMoamele, setShoMoamele] = useState("");
-  const [shoMelk, setShowMelk] = useState("");
   const [nextSection, setNextSection] = useState(0);
-  const [stateData, setStateData] = useState({});
-  const { stateId } = useParams();
-  const [informationData, setInformationData] = useState({
-    title: "",
-    phone: "",
-    role: "",
-  });
 
-  useEffect(() => {
-    console.log(stateId);
-    let userToken = getToken();
-    let userData = getUserDataOnLocalStorage();
-    // if (userData.role.administrator == undefined) {
-    //   toastAlert("شما به این بخش دسترسی ندارید");
-    //   navigate("/");
-    //   return;
-    // }
-    service.states
-      .getState(userToken, stateId)
-      .then((data) => {
-        console.log(data);
-        setStateData(data.data);
-        setInformationData({
-          title: data.data.rendered.title,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
   return (
     <>
       <Layout>
@@ -68,22 +34,18 @@ const EditEstate = () => {
               <InformationForm
                 title="اطلاعات اولیه"
                 setNextSection={setNextSection}
-                stateData={informationData}
               />
               <TradeType
                 title="اطلاعات  نوع معامله"
                 setNextSection={setNextSection}
-                stateData={stateData}
               />
               <PropertyType
                 title="اطلاعات نوع ملک"
                 setNextSection={setNextSection}
-                stateData={stateData}
               />
               <ExtraInfoForm
                 title="اطلاعات اضافه"
                 setNextSection={setNextSection}
-                stateData={stateData}
               />
               <MediaForm title="رسانه" />
             </MultiStep>
