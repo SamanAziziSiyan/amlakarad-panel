@@ -9,12 +9,19 @@ import {
 } from "../../../helper";
 import { BeatLoader } from "react-spinners";
 import service from "../../../../server/service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const InformationForm = ({ setNextSection, stateData }) => {
-  console.log(stateData);
+const InformationForm = ({ setNextSection }) => {
   const [showLoading, setShowLoading] = useState(false);
-  const handleCreateEstate = (values) => {
+  const { stateId } = useParams();
+
+  const [informationData, setInformationData] = useState({
+    title: "",
+    content: "",
+    status: "",
+  });
+  const handleEditState = (values) => {
     if (values.post_status == "0") {
       toastAlert("لطفا وضعیت نوشته را وارد کنید ");
       return;
@@ -24,22 +31,18 @@ const InformationForm = ({ setNextSection, stateData }) => {
     let userData = getUserDataOnLocalStorage();
 
     let stateData = {
-      title: values.post_title,
-      content: values.post_content,
-      status: values.post_status,
-      author: userData.ID,
+      title: informationData.title,
+      content: informationData.content,
+      status: informationData.status,
       type: "state",
-      slug: values.post_title,
     };
     service.states
-      .createState(stateData, userToken)
+      .editState(stateData, stateId, userToken)
       .then((data) => {
         console.log(data);
-        if (data.status == 201) {
-          localStorage.setItem("stateId", data.data.id);
-          toastAlert("اطلاعات اولیه با موفقیت ثبت شد", "success");
+        if (data.status == 200) {
+          toastAlert("اطلاعات اولیه با موفقیت ویرایش شد", "success");
           toastAlert("روی مرحله نوع معامله کلیک کنید", "info");
-          setNextSection(3);
           setShowLoading(false);
         } else throw new Error();
       })
@@ -49,6 +52,25 @@ const InformationForm = ({ setNextSection, stateData }) => {
         setShowLoading(false);
       });
   };
+  useEffect(() => {
+    let userToken = getToken();
+    let userData = getUserDataOnLocalStorage();
+    service.states
+      .getState(userToken, stateId)
+      .then((data) => {
+        console.log(data.data.status);
+        setInformationData({
+          title: data.data.title.rendered,
+          content: data.data.content.rendered,
+          status: data.data.status,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // console.log(informationData);
+  }, []);
 
   return (
     <>
@@ -58,61 +80,92 @@ const InformationForm = ({ setNextSection, stateData }) => {
           post_content: "",
           post_status: "",
         }}
-        validationSchema={createStateInfo}
+        // validationSchema={createStateInfo}
         onSubmit={(values) => {
-          handleCreateEstate(values);
+          handleEditState(values);
         }}
       >
         <Form className=" px-32 max-xl:px-5 py-10">
           <label htmlFor="post_title" className="mb-3 text-white block">
             عنوان
           </label>
-          <Field
+          <input
             id="post_title"
             name="post_title"
             type="text"
             placeholder=""
-            // value={stateData.rendered.title}
-            value={stateData.title}
+            onChange={(e) => {
+              setInformationData({
+                ...informationData,
+                title: e.target.value,
+              });
+            }}
+            required
+            value={informationData.title}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
-          />
-          <ErrorMessage
-            name="post_title"
-            render={(msg) => <div className="text-red-500">{msg}</div>}
           />
 
           <label htmlFor="post_content" className="mb-3 text-white block">
             توضیحات
           </label>
-          <Field
+          <textarea
             id="post_content"
             name="post_content"
-            as="textarea"
             rows={10}
+            required
+            onChange={(e) => {
+              setInformationData({
+                ...informationData,
+                content: e.target.value,
+              });
+            }}
+            value={informationData.content}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
-          />
-          <ErrorMessage
-            name="post_content"
-            render={(msg) => <div className="text-red-500">{msg}</div>}
           />
 
           <div className="w-full">
             <label htmlFor="post_status" className="mb-3 text-white block">
               وضعیت نوشته
             </label>
-            <Field
+            <select
               id="post_status"
               name="post_status"
-              as="select"
               rows={10}
-              required
+              onChange={(e) => {
+                setInformationData({
+                  ...informationData,
+                  status: e.target.value,
+                });
+              }}
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
-              <option value="0"> انتخاب کنید </option>
-              <option value="pending"> در انتظار بررسی </option>
-              <option value="publish"> انتشار </option>
-              <option value="draft"> پیشنویس </option>
-            </Field>
+              <option
+                value="pending"
+                selected={informationData.status == "" ? true : false}
+              >
+                انتخاب کنید
+              </option>
+              <option
+                value="pending"
+                selected={informationData.status == "pending" ? true : false}
+              >
+                {" "}
+                در انتظار بررسی{" "}
+              </option>
+              <option
+                value="publish"
+                selected={informationData.status == "publish" ? true : false}
+              >
+                منتشر شده
+              </option>
+              <option
+                value="draft"
+                selected={informationData.status == "draft" ? true : false}
+              >
+                {" "}
+                پیشنویس{" "}
+              </option>
+            </select>
             <ErrorMessage
               name="post_status"
               render={(msg) => <div className="text-red-500">{msg}</div>}

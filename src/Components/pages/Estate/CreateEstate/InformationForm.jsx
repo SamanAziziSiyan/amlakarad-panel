@@ -13,6 +13,7 @@ import { useState } from "react";
 
 const InformationForm = ({ setNextSection }) => {
   const [showLoading, setShowLoading] = useState(false);
+  
   const handleCreateEstate = (values) => {
     if (values.post_status == "0") {
       toastAlert("لطفا وضعیت نوشته را وارد کنید ");
