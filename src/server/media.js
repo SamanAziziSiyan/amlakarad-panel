@@ -13,6 +13,13 @@ const uploadImage = (token, data, imageName) => {
   });
 };
 
+const deleteImage = (token , id) => {
+  return axios.delete(`${config.api}/wp-json/wp/v2/media/${id}?force=true`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 export default {
   uploadImage,
+  deleteImage,
 };
