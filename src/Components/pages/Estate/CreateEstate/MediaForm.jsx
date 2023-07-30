@@ -1,17 +1,23 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Layout from "../../../Layout";
 import { RiAncientPavilionFill, RiImageAddLine } from "react-icons/ri";
 import service from "../../../../server/service";
-import { getUserDataOnLocalStorage, getToken } from "../../../helper";
+import {
+  getUserDataOnLocalStorage,
+  getToken,
+  toastAlert,
+} from "../../../helper";
+import { Link } from "react-router-dom";
 
 const MediaForm = () => {
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedVideos, setUploadedVideos] = useState([]);
+  const [stateID, setStateID] = useState(0);
+
   const uploadImageRef = useRef();
   const handleUploadImage = (e) => {
     let userToken = getToken();
-    let formData = new FormData(); //formdata object
-
-    formData.append("image", e.target.files[0]);
-
+    console.log(e.target.files[0]);
     let userData = getUserDataOnLocalStorage();
     let imageData = {
       title: "ملک",
@@ -23,14 +29,70 @@ const MediaForm = () => {
     };
 
     service.media
-      .uploadImage(userToken, imageData, formData)
+      .uploadImage(userToken, imageData)
       .then((data) => {
-        console.log(data);
+        if (e.target.files[0].type != "video/mp4") {
+          console.log(1111);
+          setUploadedImages([
+            ...uploadedImages,
+            { src: data.data.source_url, id: data.data.id },
+          ]);
+          toastAlert("عکس با موفقیت ذخیره شد", "success");
+        } else {
+          let videoData = {
+            ID: localStorage.getItem("stateId"),
+            meta: [
+              {
+                video: data.data.id,
+              },
+            ],
+          };
+          service.states
+            .insertMetaData(userToken, videoData)
+            .then((data) => {
+              console.log(data);
+              setUploadedVideos([
+                ...uploadedVideos,
+                { src: data.data.source_url, id: data.data.id },
+              ]);
+              toastAlert("فیلم با موفقیت ذخیره شد", "success");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const deleteUploadedImage = (id, type) => {
+    let userToken = getToken();
+    service.media
+      .deleteImage(userToken, id)
+      .then((data) => {
+        if (type == 1) {
+          toastAlert("عکس با موفقیت حذف شد", "success");
+          let newUploadedImageItems = uploadedImages.filter(
+            (item) => item.id != id
+          );
+          setUploadedImages(newUploadedImageItems);
+        } else {
+          toastAlert("فیلم با موفقیت حذف شد", "success");
+          let newUploadedVideoItems = uploadedVideos.filter(
+            (item) => item.id != id
+          );
+          setUploadedVideos(newUploadedVideoItems);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log(id);
+  };
+  useEffect(() => {
+    setStateID(localStorage.getItem("stateId"));
+  }, []);
   return (
     <>
       <div className="w-full flex justify-center flex-col px-32 max-lg:px-5">
@@ -53,8 +115,26 @@ const MediaForm = () => {
             type="file"
             className="opacity-0 w-1"
             ref={uploadImageRef}
-            onChange={handleUploadImage}
+            onChange={(e) => {
+              handleUploadImage(e);
+            }}
           />
+        </div>
+
+        <div className="flex items-center gap-6 flex-wrap h-full  mt-10">
+          {uploadedImages.map((item) => (
+            <div className="flex items-center justify-between h-full flex-col">
+              <img src={item.src} className="max-w-xs" />
+              <button
+                onClick={() => {
+                  deleteUploadedImage(item.id, 1);
+                }}
+                className="bg-red-500 rounded-lg text-white p-2"
+              >
+                حذف
+              </button>
+            </div>
+          ))}
         </div>
 
         <label htmlFor="area" className="my-8 text-white block">
@@ -67,6 +147,9 @@ const MediaForm = () => {
           <span>هیچ پرونده ای انتخاب نشده است</span>
           <button
             type="submit"
+            onClick={() => {
+              uploadImageRef.current.click();
+            }}
             className="bg-blue-700 shadow-sm  shadow-indigo-700 my-4 w-1/6 cursor-pointer max-lg:w-full rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
           >
             {" "}
@@ -74,13 +157,30 @@ const MediaForm = () => {
           </button>
         </div>
 
-        <button
-          type="submit"
-          className="bg-[#4a80bb] max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
-        >
-          <RiAncientPavilionFill size={24} />
-          ثبت نهایی
-        </button>
+        <div className="flex items-center gap-6 flex-wrap h-full  mt-10">
+          {uploadedVideos.map((item) => (
+            <div className="flex items-center justify-between h-full flex-col">
+              <video src={item.src} className="max-w-xs" controls />
+              <button
+                onClick={() => {
+                  deleteUploadedImage(item.id, 2);
+                }}
+                className="bg-red-500 rounded-lg text-white p-2"
+              >
+                حذف
+              </button>
+            </div>
+          ))}
+        </div>
+        <Link to={`/EstateDetails/${stateID}`}>
+          <button
+            type="submit"
+            className="bg-[#4a80bb] max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+          >
+            <RiAncientPavilionFill size={24} />
+            ثبت نهایی
+          </button>
+        </Link>
       </div>
     </>
   );
