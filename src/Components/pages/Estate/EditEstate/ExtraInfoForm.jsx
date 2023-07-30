@@ -75,19 +75,19 @@ const ExtraInfoForm = () => {
       .then((data) => {
         console.log(data);
         setExtraInfo({
-          name: data.data.postmeta.name,
-          address: data.data.postmeta.address,
-          mobile: data.data.postmeta.mobile,
-          email: data.data.postmeta.email,
-          moshaver: data.data.postmeta.moshaver,
-          metrazh: data.data.postmeta.metrazh,
-          priceform: data.data.postmeta["price-form"],
-          fast: data.data.postmeta.fast,
-          special: data.data.postmeta.special,
-          shahraki: data.data.postmeta.shahraki,
-          kohpaye: data.data.postmeta.kohpaye,
-          saheli: data.data.postmeta.saheli,
-          mantaghe: data.data.postmeta.mantaghe,
+          name: data.data[0].name,
+          address: data.data[0].address,
+          mobile: data.data[0].mobile,
+          email: data.data[0].email,
+          moshaver: data.data[0].moshaver,
+          metrazh: data.data[0].metrazh,
+          priceform: data.data[0]["price-form"],
+          fast: data.data[0].fast,
+          special: data.data[0].special,
+          shahraki: data.data[0].shahraki,
+          kohpaye: data.data[0].kohpaye,
+          saheli: data.data[0].saheli,
+          mantaghe: data.data[0].mantaghe,
         });
       })
       .catch((err) => {
