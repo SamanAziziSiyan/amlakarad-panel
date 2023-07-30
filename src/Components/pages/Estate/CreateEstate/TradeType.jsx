@@ -37,7 +37,7 @@ const TradeType = () => {
       };
 
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -70,7 +70,7 @@ const TradeType = () => {
         ],
       };
        service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           console.log(data);
         })
@@ -99,7 +99,7 @@ const TradeType = () => {
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           console.log(data);
         })

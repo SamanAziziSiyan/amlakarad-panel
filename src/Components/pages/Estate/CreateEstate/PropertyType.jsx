@@ -38,7 +38,7 @@ const PropertyType = () => {
       };
 
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -75,7 +75,7 @@ const PropertyType = () => {
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           console.log(data);
         })
@@ -96,7 +96,7 @@ const PropertyType = () => {
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           console.log(data);
         })
@@ -127,7 +127,7 @@ const PropertyType = () => {
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken,stateData)
         .then((data) => {
           console.log(data);
         })
