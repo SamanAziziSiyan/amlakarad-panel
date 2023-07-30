@@ -8,6 +8,7 @@ import CreatePersonnel from "./Components/pages/Personnel/CreatePersonnel";
 import EditPersonnel from "./Components/pages/Personnel/EditPersonnel";
 import SearchPersonnel from "./Components/pages/Personnel/SearchPersonnel";
 import Settings from "./Components/pages/Settings";
+import Logger from "./Components/pages/Logger";
 import EstateDetails from "./Components/pages/Estate/EstateDetails";
 import { ToastContainer } from "react-toastify";
 
@@ -32,6 +33,7 @@ function App() {
         />
         <Route path="/edit-estate/:stateId" element={<EditEstate />} />
         <Route path="/search-personnel" element={<SearchPersonnel />} />
+        <Route path="/logger" element={<Logger />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/EstateDetails/:stateId" element={<EstateDetails />} />
       </Routes>

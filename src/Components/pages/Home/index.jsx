@@ -28,9 +28,6 @@ const Home = () => {
     toastAlert("از حساب کاربری خارج شدید", "success");
     navigate("/login");
   };
-  const handleLog = (e) => {
-    toastAlert("سیستم گزارش گیری در حال توسعه است", "info");
-  };
   const handleBackoupSQL = () => {
     let userData = getUserDataOnLocalStorage();
     if (userData.role.administrator == undefined) {
@@ -129,8 +126,7 @@ const Home = () => {
                   </div>
                 </Link>
                 <Link
-                  to={""}
-                  onClick={handleLog}
+                  to={"/logger"}
                   className="w-1/3 max-md:w-full max-lg:w-1/3 "
                 >
                   <div className="bg-white/10  h-52 max-md:w-full backdrop-blur-md bg-opacity-50 hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">

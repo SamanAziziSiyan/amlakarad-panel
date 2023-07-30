@@ -1,6 +1,12 @@
 import config from "./config.json";
 import axios from "axios";
 
+const getLogs = (token) => {
+  return axios.get(`${config.api}/wp-json/wp/v1/log`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 const getUsers = (token) => {
   return axios.get(`${config.api}/wp-json/wp/v2/users?per_page=100`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -47,6 +53,7 @@ const updateUser = (data, userId, token) => {
 };
 
 export default {
+  getLogs,
   getUsers,
   getUser,
   deleteUser,
