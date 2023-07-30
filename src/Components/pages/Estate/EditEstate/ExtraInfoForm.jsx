@@ -11,12 +11,28 @@ import {
 } from "../../../helper";
 import service from "../../../../server/service";
 import { BeatLoader } from "react-spinners";
+import { useParams } from "react-router-dom";
 const ExtraInfoForm = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [showMantagha, setshowMantagha] = useState(false);
   const [showMantaghaData, setshowMantaghaData] = useState("");
   const [userRole, setUserRole] = useState(null);
   const [userID, setUserId] = useState(0);
+  const [extraInfo, setExtraInfo] = useState({
+    name: "",
+    mantaghe: "",
+    address: "",
+    mobile: "",
+    email: "",
+    moshaver: "",
+    metrazh: "",
+    priceform: "",
+    fast: "",
+    special: "",
+    shahraki: "",
+    kohpaye: "",
+    saheli: "",
+  });
   const [moshavers, setMoshavers] = useState([]);
   const shahrakiRef = useRef();
   const kohpayeRef = useRef();
@@ -25,6 +41,7 @@ const ExtraInfoForm = () => {
   const specialRef = useRef();
   const parkingRef = useRef();
   const asansorRef = useRef();
+  const { stateId } = useParams();
 
   useEffect(() => {
     let moshaverRole = getUserDataOnLocalStorage();
@@ -51,6 +68,30 @@ const ExtraInfoForm = () => {
       })
       .catch((err) => {
         toastAlert("شما به بخش دسترسی ندارید");
+      });
+
+    service.states
+      .getState(userToken, stateId)
+      .then((data) => {
+        console.log(data);
+        setExtraInfo({
+          name: data.data[0].name,
+          address: data.data[0].address,
+          mobile: data.data[0].mobile,
+          email: data.data[0].email,
+          moshaver: data.data[0].moshaver,
+          metrazh: data.data[0].metrazh,
+          priceform: data.data[0]["price-form"],
+          fast: data.data[0].fast,
+          special: data.data[0].special,
+          shahraki: data.data[0].shahraki,
+          kohpaye: data.data[0].kohpaye,
+          saheli: data.data[0].saheli,
+          mantaghe: data.data[0].mantaghe,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
   const handleCreateStateMeta = (values) => {
@@ -149,7 +190,12 @@ const ExtraInfoForm = () => {
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
           >
             <option value="">منطقه را انتخاب کنید</option>
-            <option value="بوکان">بوکان</option>
+            <option
+              value="بوکان"
+              selected={extraInfo.mantaghe == "بوکان" ? true : false}
+            >
+              بوکان
+            </option>
           </Field>
           {showMantagha && (
             <Field
@@ -212,6 +258,13 @@ const ExtraInfoForm = () => {
                 name="name"
                 type="text"
                 placeholder=""
+                value={extraInfo.name}
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    name: e.target.value,
+                  });
+                }}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
               />
             </div>
@@ -223,6 +276,13 @@ const ExtraInfoForm = () => {
                 id="address"
                 name="address"
                 type="text"
+                value={extraInfo.address}
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    address: e.target.value,
+                  });
+                }}
                 placeholder=""
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
               />
@@ -237,6 +297,13 @@ const ExtraInfoForm = () => {
                 id="mobile"
                 name="mobile"
                 type="text"
+                value={extraInfo.mobile}
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    mobile: e.target.value,
+                  });
+                }}
                 placeholder=""
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
               />
@@ -248,6 +315,13 @@ const ExtraInfoForm = () => {
               <Field
                 id="email"
                 name="email"
+                value={extraInfo.email}
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    email: e.target.value,
+                  });
+                }}
                 type="text"
                 placeholder=""
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
@@ -265,15 +339,49 @@ const ExtraInfoForm = () => {
                   id="price-form"
                   name="priceform"
                   as="select"
-                  rows={10}
+                  onChange={(e) => {
+                    setExtraInfo({
+                      ...extraInfo,
+                      priceform: e.target.value,
+                    });
+                  }}
                   className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                 >
-                  <option> نمایش قیمت</option>
+                  <option
+                    selected={
+                      extraInfo.priceform == "نمایش قیمت" ? true : false
+                    }
+                  >
+                    {" "}
+                    نمایش قیمت
+                  </option>
 
-                  <option>توافقی</option>
-                  <option>تماس بگیرید</option>
-                  <option> حراجی</option>
-                  <option> بالاترین پیشنهاد</option>
+                  <option
+                    selected={extraInfo.priceform == "نمایش" ? true : false}
+                  >
+                    توافقی
+                  </option>
+                  <option
+                    selected={
+                      extraInfo.priceform == "تماس بگیرید" ? true : false
+                    }
+                  >
+                    تماس بگیرید
+                  </option>
+                  <option
+                    selected={extraInfo.priceform == "حراجی" ? true : false}
+                  >
+                    {" "}
+                    حراجی
+                  </option>
+                  <option
+                    selected={
+                      extraInfo.priceform == "بالاترین پیشنهاد" ? true : false
+                    }
+                  >
+                    {" "}
+                    بالاترین پیشنهاد
+                  </option>
                 </Field>
               </div>
               <div className="w-full">
@@ -284,6 +392,13 @@ const ExtraInfoForm = () => {
                   id="metrazh"
                   name="metrazh"
                   type="number"
+                  value={extraInfo.metrazh}
+                  onChange={(e) => {
+                    setExtraInfo({
+                      ...extraInfo,
+                      metrazh: e.target.value,
+                    });
+                  }}
                   className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                 />
               </div>
@@ -318,6 +433,7 @@ const ExtraInfoForm = () => {
                       id="saheli"
                       type="checkbox"
                       ref={fastRef}
+                      checked={extraInfo.fast == "1" ? true : false}
                       name="saheli"
                       className="sr-only peer"
                     />
@@ -335,6 +451,7 @@ const ExtraInfoForm = () => {
                       type="checkbox"
                       name="shahraki"
                       ref={specialRef}
+                      checked={extraInfo.special == "1" ? true : false}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -405,6 +522,7 @@ const ExtraInfoForm = () => {
                   id="saheli"
                   type="checkbox"
                   ref={saheliRef}
+                  checked={extraInfo.saheli == "1" ? true : false}
                   name="saheli"
                   className="sr-only peer"
                 />
@@ -421,6 +539,7 @@ const ExtraInfoForm = () => {
                   id="shahraki"
                   type="checkbox"
                   name="shahraki"
+                  checked={extraInfo.shahraki == "1" ? true : false}
                   ref={shahrakiRef}
                   className="sr-only peer"
                 />
@@ -437,6 +556,7 @@ const ExtraInfoForm = () => {
                   id="kohpaye"
                   type="checkbox"
                   ref={kohpayeRef}
+                  checked={extraInfo.kohpaye == "1" ? true : false}
                   name="kohpaye"
                   className="sr-only peer"
                 />
