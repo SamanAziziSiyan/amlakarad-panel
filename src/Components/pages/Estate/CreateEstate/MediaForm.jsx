@@ -7,12 +7,13 @@ import {
   getToken,
   toastAlert,
 } from "../../../helper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MediaForm = () => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedVideos, setUploadedVideos] = useState([]);
   const [stateID, setStateID] = useState(0);
+  const navigate = useNavigate();
 
   const uploadImageRef = useRef();
   const handleUploadImage = (e) => {
@@ -93,6 +94,10 @@ const MediaForm = () => {
   useEffect(() => {
     setStateID(localStorage.getItem("stateId"));
   }, []);
+  const redirectToDetails = () => {
+    localStorage.removeItem("stateId")
+    navigate(`/estateDetails/${stateID}`);
+  };
   return (
     <>
       <div className="w-full flex justify-center flex-col px-32 max-lg:px-5">
@@ -172,15 +177,15 @@ const MediaForm = () => {
             </div>
           ))}
         </div>
-        <Link to={`/EstateDetails/${stateID}`}>
-          <button
-            type="submit"
-            className="bg-[#4a80bb] max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
-          >
-            <RiAncientPavilionFill size={24} />
-            ثبت نهایی
-          </button>
-        </Link>
+
+        <button
+          onClick={redirectToDetails}
+          type="submit"
+          className="bg-[#4a80bb] max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+        >
+          <RiAncientPavilionFill size={24} />
+          ثبت نهایی
+        </button>
       </div>
     </>
   );

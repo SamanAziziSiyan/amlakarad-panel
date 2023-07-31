@@ -5,7 +5,6 @@ const uploadImage = (token, data, imageName) => {
   console.log(data);
   let headers = {
     Authorization: `Bearer ${token}`,
-    // "Content-disposition": `attachment; filename = "fff.png"`,
     "content-type": "multipart/form-data",
   };
   return axios.post(`${config.api}/wp-json/wp/v2/media`, data, {
@@ -13,7 +12,16 @@ const uploadImage = (token, data, imageName) => {
   });
 };
 
-const deleteImage = (token , id) => {
+const getStateImages = (token, stateId) => {
+   let headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return axios.get(`${config.api}/wp-json/wp/v2/media/${stateId}`, {
+    headers,
+  });
+};
+
+const deleteImage = (token, id) => {
   return axios.delete(`${config.api}/wp-json/wp/v2/media/${id}?force=true`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -22,4 +30,5 @@ const deleteImage = (token , id) => {
 export default {
   uploadImage,
   deleteImage,
+  getStateImages,
 };
