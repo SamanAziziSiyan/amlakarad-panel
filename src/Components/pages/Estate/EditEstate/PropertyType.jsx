@@ -124,24 +124,24 @@ const PropertyType = () => {
         meta: [
           {
             melk: shoMelk,
-            tabaghe: values.tabaghe,
-            tedadtabaghat: values.tedadtabaghat,
-            tedadvahedhartabaghe: values.tedadvahedhartabaghe,
-            tedadvahedkol: values.tedadvahedkol,
-            otagh: values.otagh,
-            numhamam: values.numhamam,
-            numwc: values.numwc,
-            senbana: values.senbana,
-            sokonat: values.sokonat,
-            nama: values.nama,
-            kabinet: values.kabinet,
-            kafposh: values.kafposh,
+            tabaghe: apartmentData.tabaghe,
+            tedadtabaghat: apartmentData.tedadtabaghat,
+            tedadvahedhartabaghe: apartmentData.tedadvahedhartabaghe,
+            tedadvahedkol: apartmentData.tedadvahedkol,
+            otagh: apartmentData.otagh,
+            numhamam: apartmentData.numhamam,
+            numwc: apartmentData.numwc,
+            senbana: apartmentData.senbana,
+            sokonat: apartmentData.sokonat,
+            nama: apartmentData.nama,
+            kabinet: apartmentData.kabinet,
+            kafposh: apartmentData.kafposh,
           },
         ],
       };
-
+      console.log(stateData);
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -181,11 +181,16 @@ const PropertyType = () => {
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          if (data.status == 200) {
+            setShowLoading(false);
+            toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+            toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
+          } else throw new Error();
         })
         .catch((err) => {
           console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
 
@@ -198,15 +203,19 @@ const PropertyType = () => {
           },
         ],
       };
-      console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          if (data.status == 200) {
+            setShowLoading(false);
+            toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+            toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
+          } else throw new Error();
         })
         .catch((err) => {
           console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
     if (shoMelk == "اداری و تجاری ") {
@@ -215,29 +224,34 @@ const PropertyType = () => {
         meta: [
           {
             melk: shoMelk,
-            tabaghe: values.tabaghe,
-            tedadtabaghat: values.tedadtabaghat,
-            tedadvahedhartabaghe: values.tedadvahedhartabaghe,
-            tedadvahedkol: values.tedadvahedkol,
-            otagh: values.otagh,
-            numhamam: values.numhamam,
-            numwc: values.numwc,
-            senbana: values.senbana,
-            sokonat: values.sokonat,
-            nama: values.nama,
-            kafposh: values.kafposh,
+            tabaghe: edariData.tabaghe,
+            tedadtabaghat: edariData.tedadtabaghat,
+            tedadvahedhartabaghe: edariData.tedadvahedhartabaghe,
+            tedadvahedkol: edariData.tedadvahedkol,
+            otagh: edariData.otagh,
+            numhamam: edariData.numhamam,
+            numwc: edariData.numwc,
+            senbana: edariData.senbana,
+            sokonat: edariData.sokonat,
+            nama: edariData.nama,
+            kafposh: edariData.kafposh,
           },
         ],
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          if (data.status == 200) {
+            setShowLoading(false);
+            toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+            toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
+          } else throw new Error();
         })
         .catch((err) => {
           console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
   };
@@ -348,7 +362,6 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-tabaghat"
-                        name="tedadtabaghat"
                         type="text"
                         value={apartmentData.tedadtabaghat}
                         onChange={(e) => {
@@ -1074,13 +1087,12 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-tabaghat"
-                        name="tedad-tabaghat"
                         type="text"
-                        value={homeData.tedadvahedkol}
+                        value={homeData.tedadtabaghat}
                         onChange={(e) => {
                           setHomeData({
                             ...homeData,
-                            tedadvahedkol: e.target.value,
+                            tedadtabaghat: e.target.value,
                           });
                         }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -1168,9 +1180,14 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-vahed-kol"
-                        name="tedad-vahed-kol"
                         type="number"
                         value={homeData.tedadvahedkol}
+                        onChange={(e) => {
+                          setHomeData({
+                            ...homeData,
+                            tedadvahedkol: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -1561,7 +1578,6 @@ const PropertyType = () => {
                           });
                         }}
                         value={homeData.nama}
-
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option selected={homeData.nama == "" ? true : false}>
@@ -1647,7 +1663,6 @@ const PropertyType = () => {
                           });
                         }}
                         value={homeData.kafposh}
-
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -1733,7 +1748,6 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-tabaghat"
-                        name="tedadtabaghat"
                         type="text"
                         value={edariData.tedadtabaghat}
                         onChange={(e) => {
@@ -1777,7 +1791,6 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-vahed-kol"
-                        name="tedadvahedkol"
                         type="number"
                         value={edariData.tedadvahedkol}
                         onChange={(e) => {

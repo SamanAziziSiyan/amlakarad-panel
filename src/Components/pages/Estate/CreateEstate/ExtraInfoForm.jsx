@@ -100,8 +100,9 @@ const ExtraInfoForm = () => {
       ],
     };
     service.states
-      .insertMetaData(stateData, userToken)
+      .insertMetaData(userToken ,stateData )
       .then((data) => {
+        console.log(data);
         if (data.status == 200) {
           setShowLoading(false);
           toastAlert("اطلاعات اضافی با موفقیت ثبت شد", "success");

@@ -24,7 +24,6 @@ const EstateDetails = () => {
       .catch((err) => {
         console.log(err);
       });
-    console.log(stateData);
   }, []);
   return (
     <>
@@ -35,7 +34,7 @@ const EstateDetails = () => {
               <div className="w-20 h-20 bg-purple-800  rounded-full absolute  drop-shadow-md "></div>
               <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>
               <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  left-[20%] top-[20%] drop-shadow-md"></div>
-              <div className="w-full relative  h-auto bg-white/5 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
+              <div className="w-full relative !pb-[100px] h-auto bg-white/5 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
                 <div className="flex items-center justify-between gap-4 max-lg:flex-wrap"></div>
                 <div className="w-full h-auto ">
                   <div className="grid grid-cols-12 gap-4">
@@ -46,28 +45,25 @@ const EstateDetails = () => {
                         modules={[Navigation]}
                         className="mySwiper"
                       >
-                        <SwiperSlide>
-                          <img
-                            className="!w-full !h-[400px] rounded-lg"
-                            src="https://swiperjs.com/demos/images/nature-2.jpg"
-                            alt=""
-                          />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                          <img
-                            className="!w-full !h-[400px] rounded-lg"
-                            src="https://swiperjs.com/demos/images/nature-2.jpg"
-                            alt=""
-                          />
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                          <img
-                            className="!w-full !h-[400px] rounded-lg"
-                            src="https://swiperjs.com/demos/images/nature-2.jpg"
-                            alt=""
-                          />
-                        </SwiperSlide>
+                        {stateData.img != 0 ? (
+                          stateData.img?.map((item, index) => (
+                            <SwiperSlide>
+                              <img
+                                className="!w-full !h-[400px] rounded-lg"
+                                src={item.img}
+                                alt=""
+                              />
+                            </SwiperSlide>
+                          ))
+                        ) : (
+                          <SwiperSlide>
+                            <img
+                              className="!w-full !h-[400px] rounded-lg"
+                              src="/assets/images/default-state-image.png"
+                              alt=""
+                            />
+                          </SwiperSlide>
+                        )}
                       </Swiper>
                     </div>
                     <div className="col-span-3  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
@@ -89,7 +85,7 @@ const EstateDetails = () => {
                           </div>
                           <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
                             <span>قیمت متری :{stateData["price-metri"]}</span>
-                          </div> 
+                          </div>
                         </>
                       ) : stateData.moamele == "رهن و اجاره" ? (
                         <>
@@ -126,7 +122,9 @@ const EstateDetails = () => {
                       <span className="mb-2 text-[25px]">جهت</span>
                       <hr className="px-12" />
                       <span className="mt-3">
-                        {/* {stateData.mg.map((item, index) => item + " - ")} */}
+                        {stateData.mg != 0
+                          ? stateData.mg?.map((item, index) => item + " - ")
+                          : ""}
                       </span>
                     </div>
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
@@ -703,15 +701,13 @@ const EstateDetails = () => {
                     <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       دیگر امکانات{" "}
                     </h3>
-                    <div className="grid grid-cols-12 w-full  gap-4">
-                      <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
-                        <RiEdit2Line size={24} />
-                        <span className="text-lg mr-4">
-                          {/* {stateData["sayer-emkanat"].map(
-                            (item, index) => item + " - "
-                          )} */}
-                        </span>
-                      </div>
+
+                    <div className=" bg-transparent h-10 flex flex-wrap items-center text-white ">
+                      {stateData["sayer-emkanat"] != 0
+                        ? stateData["sayer-emkanat"]?.map((item, index) => (
+                            <span className="text-lg mr-4">{item + " - "}</span>
+                          ))
+                        : ""}
                     </div>
                   </div>
                 </div>

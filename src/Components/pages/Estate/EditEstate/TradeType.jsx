@@ -41,7 +41,6 @@ const TradeType = ({ stateData }) => {
     nafarat: "",
     tahol: "",
     Pets: "",
-    tabdil: "",
     darbast: "",
     celebrations: "",
     priceshabi: "",
@@ -61,29 +60,27 @@ const TradeType = ({ stateData }) => {
     kabinet: "",
     kafposh: "",
   });
-  const handleCreateStateMeta = (values) => {
-   
+  const handleCreateStateMeta = () => {
     setShowLoading(true);
     let userToken = getToken();
-    let stateId = localStorage.getItem("stateId");
     if (shoMoamele == "خرید و فروش") {
       let stateData = {
         ID: stateId,
         meta: [
           {
             moamele: shoMoamele,
-            pricekol:kharidData.pricekol,
-            pricemeteri: values.pricemeteri,
-            karbari: values.karbari,
-            sanad: values.sanad,
+            pricekol: kharidData.pricekol,
+            pricemeteri: kharidData.pricemeteri,
+            karbari: kharidData.karbari,
+            sanad: kharidData.sanad,
             moaveze: moavezeRef.current.checked ? "1" : "0",
             pishforosh: pishforoshRef.current.checked ? "1" : "0",
           },
         ],
       };
-      console.log(kharidData.pricekol);
+      console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -104,26 +101,31 @@ const TradeType = ({ stateData }) => {
         meta: [
           {
             moamele: shoMoamele,
-            nafarat: values.nafarat,
-            tahol: values.tahol,
-            Pets: values.Pets,
-            karbari: values.karbari,
-            tabdil: values.tabdil,
-            darbast: values.darbast,
-            vadie: values.vadie,
-            priceejare: values.priceejare,
+            nafarat: rahanData.nafarat,
+            tahol: rahanData.tahol,
+            Pets: rahanData.Pets,
+            karbari: rahanData.karbari,
+            tabdil: rahanData.tabdil,
+            darbast: rahanData.darbast,
+            pricerahn: rahanData.pricerahn,
+            priceejare: rahanData.priceejare,
           },
         ],
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          if (data.status == 200) {
+            setShowLoading(false);
+            toastAlert("اطلاعات نوع معامله با موفقیت ثبت شد", "success");
+            toastAlert("روی مرحله نوع ملک کلیک کنید", "info");
+          } else throw new Error();
         })
         .catch((err) => {
           console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
 
@@ -133,26 +135,30 @@ const TradeType = ({ stateData }) => {
         meta: [
           {
             moamele: shoMoamele,
-            nafarat: values.nafarat,
-            tahol: values.tahol,
-            Pets: values.Pets,
-            tabdil: values.tabdil,
-            darbast: values.darbast,
-            celebrations: values.celebrations,
-            priceshabi: values.priceshabi,
-            pricetatilat: values.pricetatilat,
+            nafarat: rozaneData.nafarat,
+            tahol: rozaneData.tahol,
+            Pets: rozaneData.Pets,
+            darbast: rozaneData.darbast,
+            celebrations: rozaneData.celebrations,
+            priceshabi: rozaneData.priceshabi,
+            pricetatilat: rozaneData.pricetatilat,
           },
         ],
       };
       console.log(stateData);
       service.states
-        .insertMetaData(stateData, userToken)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          if (data.status == 200) {
+            setShowLoading(false);
+            toastAlert("اطلاعات نوع معامله با موفقیت ثبت شد", "success");
+            toastAlert("روی مرحله نوع ملک کلیک کنید", "info");
+          } else throw new Error();
         })
         .catch((err) => {
           console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
   };
@@ -163,6 +169,7 @@ const TradeType = ({ stateData }) => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
+        console.log(data);
         setShoMoamele(data.data[0].moamele);
         setKharidData({
           pricekol: data.data[0]["price-kol"],
@@ -188,7 +195,8 @@ const TradeType = ({ stateData }) => {
           Pets: data.data[0].Pets,
           tabdil: data.data[0].tabdil,
           darbast: data.data[0].darbast,
-          pricerahn: data.data[0]["price-rahn"],
+          celebrations: data.data[0].celebrations,
+          priceshabi: data.data[0]["price-shabi"],
           pricetatilat: data.data[0]["price-tatilat"],
         });
 
@@ -215,17 +223,7 @@ const TradeType = ({ stateData }) => {
   return (
     <>
       <Formik
-        initialValues={{
-          moamele: "",
-          nafarat: "",
-          tahol: "",
-          Pets: "",
-          karbari: "",
-          tabdil: "",
-          darbast: "",
-          vadie: "",
-          priceejare: "",
-        }}
+        initialValues={{}}
         onSubmit={(values) => {
           handleCreateStateMeta(values);
         }}
@@ -324,6 +322,7 @@ const TradeType = ({ stateData }) => {
                             pricemeteri: e.target.value,
                           });
                         }}
+                        value={kharidData.pricemeteri}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -346,6 +345,7 @@ const TradeType = ({ stateData }) => {
                             karbari: e.target.value,
                           });
                         }}
+                        value={kharidData.karbari}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
@@ -445,6 +445,7 @@ const TradeType = ({ stateData }) => {
                             sanad: e.target.value,
                           });
                         }}
+                        value={kharidData.sanad}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -557,8 +558,14 @@ const TradeType = ({ stateData }) => {
                       </label>
                       <Field
                         id="vadie"
-                        name="vadie"
                         type="text"
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            pricerahn: e.target.value,
+                          });
+                        }}
+                        value={rahanData.pricerahn}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -579,6 +586,7 @@ const TradeType = ({ stateData }) => {
                             priceejare: e.target.value,
                           });
                         }}
+                        value={rahanData.priceejare}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                     </div>
@@ -593,6 +601,13 @@ const TradeType = ({ stateData }) => {
                       </label>
                       <Field
                         id="karbari"
+                        onChange={(e) => {
+                          setRahnData({
+                            ...rahanData,
+                            karbari: e.target.value,
+                          });
+                        }}
+                        value={rahanData.karbari}
                         name="karbari"
                         as="select"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -689,6 +704,7 @@ const TradeType = ({ stateData }) => {
                             tabdil: e.target.value,
                           });
                         }}
+                        value={rahanData.tabdil}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -746,9 +762,10 @@ const TradeType = ({ stateData }) => {
                         onChange={(e) => {
                           setRahnData({
                             ...rahanData,
-                            nafarat: e.target.value,
+                            tahol: e.target.value,
                           });
                         }}
+                        value={rahanData.tahol}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
@@ -772,6 +789,7 @@ const TradeType = ({ stateData }) => {
                             Pets: e.target.value,
                           });
                         }}
+                        value={rahanData.Pets}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -813,6 +831,7 @@ const TradeType = ({ stateData }) => {
                             darbast: e.target.value,
                           });
                         }}
+                        value={rahanData.darbast}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
@@ -893,6 +912,13 @@ const TradeType = ({ stateData }) => {
                         id="tahol"
                         name="tahol"
                         as="select"
+                        value={rozaneData.tahol}
+                        onChange={(e) => {
+                          setRozaneData({
+                            ...rozaneData,
+                            tahol: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
@@ -911,22 +937,25 @@ const TradeType = ({ stateData }) => {
                         id="celebrations"
                         name="celebrations"
                         as="select"
+                        value={rozaneData.celebrations}
                         onChange={(e) => {
                           setRozaneData({
                             ...rozaneData,
-                            tahol: e.target.value,
+                            celebrations: e.target.value,
                           });
                         }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option
-                          selected={rozaneData.tahol == "" ? true : false}
+                          selected={
+                            rozaneData.celebrations == "" ? true : false
+                          }
                         >
                           انتخاب کنید
                         </option>
                         <option
                           selected={
-                            rozaneData.tahol == "مجاز است" ? true : false
+                            rozaneData.celebrations == "مجاز است" ? true : false
                           }
                         >
                           {" "}
@@ -934,7 +963,9 @@ const TradeType = ({ stateData }) => {
                         </option>
                         <option
                           selected={
-                            rozaneData.tahol == "مجاز نیست" ? true : false
+                            rozaneData.celebrations == "مجاز نیست"
+                              ? true
+                              : false
                           }
                         >
                           {" "}
@@ -976,9 +1007,10 @@ const TradeType = ({ stateData }) => {
                       <Field
                         id="Pets"
                         name="Pets"
-                        as="select"
+                          as="select"
+                          value={rozaneData.Pets}
                         onChange={(e) => {
-                          setRahnData({
+                          setRozaneData({
                             ...rozaneData,
                             Pets: e.target.value,
                           });
@@ -1018,14 +1050,14 @@ const TradeType = ({ stateData }) => {
                       </label>
                       <Field
                         id="darbast"
-                        name="darbast"
                         as="select"
-                        onChange={(e) => {
-                          setRahnData({
+                         onChange={(e) => {
+                          setRozaneData({
                             ...rozaneData,
                             darbast: e.target.value,
                           });
                         }}
+                        value={rozaneData.darbast}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option

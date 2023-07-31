@@ -48,6 +48,16 @@ const filterStates = (token, data) => {
   });
 };
 
+const filterStateAuthorID = (token, data) => {
+  return axios.post(
+    `${config.api}/wp-json/wp/v2/state/filterAuthorState`,
+    data,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+
 const getBackoup = (token) => {
   return axios.get(`${config.api}/wp-json/wp/v1/backup/`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -71,4 +81,5 @@ export default {
   filterStates,
   getStateImage,
   getBackoup,
+  filterStateAuthorID,
 };

@@ -39,8 +39,14 @@ body {
   justify-content: center !important;
 }
 
-@media screen and (max-width:1000px) {
-  .go2392553372{
+@media screen and (max-width: 1000px) {
+  .go2392553372 {
     flex-direction: column;
   }
+}
+.ReactModal__Content {
+  background: #ffffffe0 !important;
+  padding: 52px !important;
+  border-radius: 8px;
+  border: none !important;
 }
