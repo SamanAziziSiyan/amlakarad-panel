@@ -57,31 +57,7 @@ const SearchEstate = () => {
       service.states
         .getStates(userToken)
         .then(async (data) => {
-          let stateItems = [];
-          for await (const state of data.data) {
-            await service.states
-              .getStateImage(state.ID, userToken)
-              .then((data) => {
-                let stateItem = { imageSrc: "", item: {} };
-                if (data.data[0]) {
-                  stateItem.imageSrc = data.data[0].media_details.file;
-                  stateItem.item = state;
-                } else {
-                  stateItem.imageSrc = "";
-                  stateItem.item = state;
-                }
-                stateItems.push(stateItem);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-          if (stateItems.length == 0) {
-            showEmpty(true);
-          }
-          stateItems.map((item) => {
-            setStates(stateItems);
-          });
+          setStates(data.data);
         })
         .catch((err) => {
           navigate("/");
@@ -91,32 +67,12 @@ const SearchEstate = () => {
       service.states
         .getAutherStates(userData.ID, userToken)
         .then(async (data) => {
-          let stateItems = [];
-          for await (const state of data.data) {
-            await service.states
-              .getStateImage(state.ID, userToken)
-              .then((data) => {
-                let stateItem = { imageSrc: "", item: {} };
-                if (data.data[0]) {
-                  stateItem.imageSrc = data.data[0].media_details.file;
-                  stateItem.item = state;
-                } else {
-                  stateItem.imageSrc = "";
-                  stateItem.item = state;
-                }
-                stateItems.push(stateItem);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-          if (stateItems.length == 0) {
+          console.log(data);
+          if (data.data.length == 0) {
             showEmpty(true);
+          } else {
+            setStates(data.data);
           }
-          stateItems.map((item) => {
-            console.log(item);
-            setStates(stateItems);
-          });
         })
         .catch((err) => {
           navigate("/");
@@ -153,6 +109,8 @@ const SearchEstate = () => {
   };
   const filterState = (e) => {
     e.preventDefault();
+    let userData = getUserDataOnLocalStorage();
+
     let moamele = e.target[0].value;
     let melk = e.target[1].value;
     let karbari = e.target[2].value;
@@ -160,32 +118,61 @@ const SearchEstate = () => {
     // let price = e.target[0].value;
     // let metrazh = e.target[0].value;
     setShowLoading(true);
+
     let userToken = getToken();
-    let stateData = {
-      moamele,
-      melk,
-      karbari,
-    };
-    console.log(stateData);
-    service.states
-      .filterStates(userToken, stateData)
-      .then((data) => {
-        console.log(data);
-        if (data.data.length == 0) {
-          showFilterEmpty(true);
-        } else {
-          showFilterEmpty(false);
-        }
-        setShowLoading(false);
-        setShowFilteredState(true);
-        setFilteredState(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        toastAlert("سرور مشغول است");
-        setShowLoading(false);
-        setShowFilteredState(false);
-      });
+    if (userData.role.administrator) {
+      let stateData = {
+        moamele,
+        melk,
+        karbari,
+      };
+      console.log(stateData);
+      service.states
+        .filterStates(userToken, stateData)
+        .then((data) => {
+          console.log(data);
+          if (data.data.length == 0) {
+            showFilterEmpty(true);
+          } else {
+            showFilterEmpty(false);
+          }
+          setShowLoading(false);
+          setShowFilteredState(true);
+          setFilteredState(data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
+          setShowFilteredState(false);
+        });
+    } else {
+      let stateData = {
+        authorID: userData.ID,
+        moamele,
+        melk,
+        karbari,
+      };
+      service.states
+        .filterStateAuthorID(userToken, stateData)
+        .then((data) => {
+          console.log(data);
+          if (data.data.length == 0) {
+            showFilterEmpty(true);
+          } else {
+            showFilterEmpty(false);
+          }
+          setShowLoading(false);
+          setShowFilteredState(true);
+          setFilteredState(data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
+          setShowFilteredState(false);
+        });
+    }
   };
   return (
     <>
@@ -342,42 +329,42 @@ const SearchEstate = () => {
                           className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl"
                         >
                           <div className="flex flex-col  pb-4 relative">
-                            {item.item.fast == "1" ? (
+                            {item.fast == "1" ? (
                               <button className=" absolute top-[2%] right-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
                                 فوری{" "}
                               </button>
                             ) : (
                               ""
                             )}
-                            {item.item.post_status == "expired" ? (
+                            {item.post_status == "expired" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
                                 منقضی شده{" "}
                               </button>
                             ) : (
                               ""
                             )}
-                            {item.item.post_status == "pending" ? (
+                            {item.post_status == "pending" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-orange-300 p-1 text-xs text-white   px-3 rounded-md">
                                 در انتظار بررسی{" "}
                               </button>
                             ) : (
                               ""
                             )}
-                            {item.item.post_status == "publish" ? (
+                            {item.post_status == "publish" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-green-400 p-1 text-xs text-white   px-3 rounded-md">
                                 منتشر شده{" "}
                               </button>
                             ) : (
                               ""
                             )}
-                            {item.item.post_status == "trash" ? (
+                            {item.post_status == "trash" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
                                 زباله دان{" "}
                               </button>
                             ) : (
                               ""
                             )}
-                            {item.item.post_status == "draft" ? (
+                            {item.post_status == "draft" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-[#0369A1] p-1 text-xs text-white   px-3 rounded-md">
                                 پیش نویس{" "}
                               </button>
@@ -387,8 +374,8 @@ const SearchEstate = () => {
 
                             <img
                               src={`${
-                                item.imageSrc != ""
-                                  ? config.uploadUrl + item.imageSrc
+                                item.img != 0
+                                  ? item.img[0].img
                                   : "/assets/images/default-state-image.png"
                               }
                              `}
@@ -398,12 +385,12 @@ const SearchEstate = () => {
                               <div className="flex items-center">
                                 <RiCalendarCheckFill className="text-center text-gray-400 text-md" />
                                 <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
-                                  {moment(item.item.post_date)
+                                  {moment(item.post_date)
                                     .locale("fa")
                                     .format("DDD") + " روز پیش"}
                                 </p>
                               </div>
-                              {item.item.special == "1" ? (
+                              {item.special == "1" ? (
                                 <button className="bg-[#ffca28] p-1 text-xs text-gray-600 px-3 rounded-md">
                                   ویژه
                                 </button>
@@ -414,7 +401,7 @@ const SearchEstate = () => {
                               )}
                             </div>
                             <p className="mt-3 text-center text-[#0c0a5a] ">
-                              {item.item.post_title}
+                              {item.post_title}
                             </p>
 
                             <div className=" items-center gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
@@ -424,7 +411,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  آسانسور : {item.item.asansor}
+                                  آسانسور : {item.asansor}
                                 </span>
                               </div>
 
@@ -434,7 +421,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  نوع کاربری : {item.item.karbari}
+                                  نوع کاربری : {item.karbari}
                                 </span>
                               </div>
 
@@ -444,7 +431,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  پارکینگ : {item.item.parking}
+                                  پارکینگ : {item.parking}
                                 </span>
                               </div>
 
@@ -454,7 +441,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  متراژ : {item.item.metrazh}
+                                  متراژ : {item.metrazh}
                                 </span>
                               </div>
 
@@ -464,7 +451,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  نوع ملک : {item.item.melk}
+                                  نوع ملک : {item.melk}
                                 </span>
                               </div>
 
@@ -474,7 +461,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  نوع معامله : {item.item.moamele}
+                                  نوع معامله : {item.moamele}
                                 </span>
                               </div>
                             </div>
@@ -482,10 +469,7 @@ const SearchEstate = () => {
                             <div className="flex items-center gap-4 mt-4 justify-center">
                               <button
                                 onClick={() => {
-                                  deleteState(
-                                    item.item.ID,
-                                    item.item.post_title
-                                  );
+                                  deleteState(item.ID, item.post_title);
                                 }}
                                 type="button"
                                 className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
@@ -493,7 +477,7 @@ const SearchEstate = () => {
                                 <RiDeleteBin6Line size={18} className="pl-1" />
                                 حذف{" "}
                               </button>
-                              <Link to={`/edit-estate/${item.item.ID}`}>
+                              <Link to={`/edit-estate/${item.ID}`}>
                                 <button
                                   type="button"
                                   className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
@@ -502,7 +486,7 @@ const SearchEstate = () => {
                                   ویرایش
                                 </button>
                               </Link>
-                              <Link to={`/EstateDetails/${item.item.ID}`}>
+                              <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"
                                   className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
@@ -521,7 +505,7 @@ const SearchEstate = () => {
                     {FilterEmpty == true ? (
                       <div className="w-full col-span-12 bg-sky-500 rounded-md p-5">
                         <h1 className="text-white flex items-center justify-between text-[22px] w-full text-center">
-                          هنوز ملکی ثبت نکرده اید
+                          ملکی مطابق با فیلتر انتخابی یافت نشد
                           <span>
                             <BsInfoCircleFill
                               className="justify-center items-center"
@@ -582,11 +566,11 @@ const SearchEstate = () => {
 
                             <img
                               src={`${
-                                item.imageSrc != ""
-                                  ? config.uploadUrl + item.imageSrc
+                                item.img != 0
+                                  ? item.img[0].img
                                   : "/assets/images/default-state-image.png"
                               }
-                             `}
+                               `}
                               className="w-full rounded-md max-h-[264px] min-h-[264px]"
                             />
                             <div className="flex items-center justify-between w-full px-2 mt-2">
