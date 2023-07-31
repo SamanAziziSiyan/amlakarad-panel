@@ -34,11 +34,17 @@ const Settings = () => {
     }
     let userToken = getToken();
     let userData = getUserDataOnLocalStorage();
-
+    let userpassword = {
+      password: values.password,
+      userId: userData.ID,
+    };
     service.personnel
-      .changePassword(userData.ID, userToken, values.password)
+      .changePassword(userToken, userData.ID, userpassword)
       .then((data) => {
-        console.log(data);
+        toastAlert("رمز عبور با موفقیت ویرایش شد", "success");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err);

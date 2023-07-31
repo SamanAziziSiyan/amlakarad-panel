@@ -18,9 +18,10 @@ const getUser = (token, userId) => {
   });
 };
 
-const changePassword = (userId, token, password) => {
+const changePassword = (token, userId, password) => {
   return axios.post(
-    `${config.api}/wp-json/wp/v2/users/${userId}?password=${password}`,
+    `${config.api}/wp-json/wp/v2/user/password/${userId}`,
+    password,
     {
       headers: { Authorization: `Bearer ${token}` },
     }

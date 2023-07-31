@@ -20,6 +20,7 @@ import {
 import { BsInfoCircleFill } from "react-icons/bs";
 
 import Layout from "../../Layout";
+import moment from "jalali-moment";
 
 const Logger = () => {
   const navigate = useNavigate();
@@ -147,6 +148,24 @@ const Logger = () => {
                               >
                                 عنوان
                               </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                عملیات
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                زمان
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                آی پی کاربر
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -172,6 +191,15 @@ const Logger = () => {
                                     <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                       {item.object_name}
                                     </td>
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {item.action}
+                                    </td>
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {item.hist_time}
+                                    </td>
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {item.hist_ip}
+                                    </td>
                                   </tr>
                                 ))
                               )
@@ -183,6 +211,18 @@ const Logger = () => {
                                   </td>
                                   <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                     {item.object_name}
+                                  </td>
+                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                    {item.action}
+                                  </td>
+                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                    {moment
+                                      .unix(item.hist_time)
+                                      .locale("fa")
+                                      .format("MM/DD/YYYY  ساعت h:mm:ss")}
+                                  </td>
+                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                    {item.hist_ip}
                                   </td>
                                 </tr>
                               ))
