@@ -7,20 +7,32 @@ import {
   RiUserAddFill,
   RiUserSearchFill,
 } from "react-icons/ri";
+import { LuDatabaseBackup } from "react-icons/lu";
 import { FaSignOutAlt } from "react-icons/fa";
+import Modal from "react-modal";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   getToken,
   getUserDataOnLocalStorage,
   getUserSettinOnLocalStorage,
   toastAlert,
+  modalStyles,
 } from "../../helper";
 import Layout from "../../Layout";
 import service from "../../../server/service";
 import config from "../../../server/config.json";
 
 const Home = () => {
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = useState(false);
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -43,6 +55,7 @@ const Home = () => {
       }
     }
   };
+
   return (
     <>
       <Layout>
@@ -141,7 +154,7 @@ const Home = () => {
                 </Link>
                 <div
                   className=" w-1/3   max-md:w-full h-52 flex items-center gap-2 "
-                  onClick={handleBackoupSQL}
+                  onClick={openModal}
                 >
                   <div className="bg-white/10 backdrop-blur-md bg-opacity-50 w-3/6 h-full hover:scale-[1.02] cursor-pointer rounded-xl flex items-center flex-col justify-between py-8">
                     <RiDownloadCloud2Fill
@@ -169,6 +182,29 @@ const Home = () => {
             </div>
           </div>
         </div>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={modalStyles}
+          contentLabel="Example Modal"
+        >
+          <h2 className="text-sky-500 text-center text-[20px] mb-6">
+            سیستم پشتیبان گیری از املاک
+          </h2>
+          <div className="flex flex-wrap gap-8 ">
+            <button
+              onClick={handleBackoupSQL}
+              className="flex items-center gap-5 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            >
+              <span>بک آپ کلی</span>
+              <LuDatabaseBackup size={19} />
+            </button>
+            <button className="flex items-center gap-5 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+              <span>بک آپ امروز</span>
+              <LuDatabaseBackup size={19} />
+            </button>
+          </div>
+        </Modal>
       </Layout>
     </>
   );
