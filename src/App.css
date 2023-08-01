@@ -50,3 +50,7 @@ body {
   border-radius: 8px;
   border: none !important;
 }
+.Toastify__toast-body {
+  font-family: "Morabba" !important;
+  font-size: 14px !important;
+}
