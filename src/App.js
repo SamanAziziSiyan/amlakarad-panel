@@ -9,7 +9,10 @@ import EditPersonnel from "./Components/pages/Personnel/EditPersonnel";
 import SearchPersonnel from "./Components/pages/Personnel/SearchPersonnel";
 import Settings from "./Components/pages/Settings";
 import Logger from "./Components/pages/Logger";
+import NotFound from "./Components/pages/NotFound";
 import EstateDetails from "./Components/pages/Estate/EstateDetails";
+import UserEstate from "./Components/pages/Estate/UserEstate";
+
 import { ToastContainer } from "react-toastify";
 
 import "swiper/css";
@@ -32,7 +35,9 @@ function App() {
           element={<EditPersonnel />}
         />
         <Route path="/edit-estate/:stateId" element={<EditEstate />} />
+        <Route path="/user-estates/:authorId" element={<UserEstate />} />
         <Route path="/search-personnel" element={<SearchPersonnel />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/logger" element={<Logger />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/EstateDetails/:stateId" element={<EstateDetails />} />

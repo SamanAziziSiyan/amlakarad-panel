@@ -28,10 +28,13 @@ const SearchPersonnel = () => {
   const [users, setUsers] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
   const [showFilteredUser, setShowFilterdUser] = useState(false);
+  // const [userDataRole, setUserDataRole] = useState(false);
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
-
+    // if (userData.role.karbar) {
+    //   setUserDataRole(true);
+    // }
     // if (
     //   userData.role.administrator == undefined &&
     //   userData.role.karmand == undefined
@@ -307,6 +310,23 @@ const SearchPersonnel = () => {
                                           ویرایش
                                         </button>
                                       </Link>
+
+                                      {item.extra.role[0].karbar ? (
+                                        ""
+                                      ) : (
+                                        <Link to={`/user-estates/${item.id}`}>
+                                          <button
+                                            type="button"
+                                            className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
+                                          >
+                                            <RiHomeHeartLine
+                                              size={20}
+                                              className="pl-1"
+                                            />
+                                            مشاهده املاک
+                                          </button>
+                                        </Link>
+                                      )}
                                     </td>
                                   </tr>
                                 ))
@@ -343,7 +363,7 @@ const SearchPersonnel = () => {
                                       ? "کارمند"
                                       : "نقش یافت نشد"}
                                   </td>
-                                  <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
+                                  <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-start gap-7">
                                     <button
                                       className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
                                       onClick={() => {
@@ -369,16 +389,22 @@ const SearchPersonnel = () => {
                                       </button>
                                     </Link>
 
-                                    <button
-                                      type="button"
-                                      className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
-                                    >
-                                      <RiHomeHeartLine
-                                        size={20}
-                                        className="pl-1"
-                                      />
-                                      مشاهده املاک
-                                    </button>
+                                    {item.extra.role[0].karbar ? (
+                                      ""
+                                    ) : (
+                                      <Link to={`/user-estates/${item.id}`}>
+                                        <button
+                                          type="button"
+                                          className="bg-green-600 p-2 flex items-center  rounded-md text-white text-sm"
+                                        >
+                                          <RiHomeHeartLine
+                                            size={20}
+                                            className="pl-1"
+                                          />
+                                          مشاهده املاک
+                                        </button>
+                                      </Link>
+                                    )}
                                   </td>
                                 </tr>
                               ))

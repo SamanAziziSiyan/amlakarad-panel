@@ -10,11 +10,12 @@ import {
 import { BeatLoader } from "react-spinners";
 import service from "../../../../server/service";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const InformationForm = ({ setNextSection }) => {
   const [showLoading, setShowLoading] = useState(false);
   const { stateId } = useParams();
+  const navigate = useNavigate();
 
   const [informationData, setInformationData] = useState({
     title: "",
@@ -39,7 +40,6 @@ const InformationForm = ({ setNextSection }) => {
     service.states
       .editState(userToken, stateId, stateData)
       .then((data) => {
-        console.log(data);
         if (data.status == 200) {
           toastAlert("اطلاعات اولیه با موفقیت ویرایش شد", "success");
           toastAlert("روی مرحله نوع معامله کلیک کنید", "info");
@@ -47,7 +47,6 @@ const InformationForm = ({ setNextSection }) => {
         } else throw new Error();
       })
       .catch((err) => {
-        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });
@@ -58,7 +57,9 @@ const InformationForm = ({ setNextSection }) => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data.data.status);
+        if (data.data.length == 0) {
+          navigate("/404");
+        }
         setInformationData({
           title: data.data[0].post_title,
           content: data.data[0].post_content,
@@ -66,7 +67,7 @@ const InformationForm = ({ setNextSection }) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+      console.log(err);
       });
 
     // console.log(informationData);

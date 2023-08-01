@@ -175,6 +175,42 @@ const Header = () => {
             ) : (
               ""
             )}
+            {pathname.search("user-estates") != -1 ? (
+              <>
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                >
+                  <RiSearch2Fill size={25} />
+
+                  <span className="mx-2">املاک کاربر </span>
+                </Link>
+              </>
+            ) : (
+              ""
+            )}
+            {pathname.search("logger") != -1 ? (
+              <>
+                <span className="mx-5 text-gray-400 dark:text-gray-300 rtl:-scale-x-100">
+                  <RiArrowLeftSLine size={20} />
+                </span>
+
+                <Link
+                  to="#"
+                  className="flex items-center text-blue-600 -px-2 dark:text-blue-400"
+                >
+                  <RiSearch2Fill size={25} />
+
+                  <span className="mx-2">گزارش فعالیت کاربران</span>
+                </Link>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
 
