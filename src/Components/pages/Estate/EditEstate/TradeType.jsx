@@ -15,8 +15,13 @@ import { useParams } from "react-router-dom";
 const TradeType = ({ stateData }) => {
   const [showLoading, setShowLoading] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
+  const [getMoaveze, setMoaveze] = useState(false);
+  const [getPishforosh, setPishforosh] = useState(false);
   const moavezeRef = useRef();
   const pishforoshRef = useRef();
+  const emkanMoavezeRef = useRef();
+  const tahvilRef = useRef();
+  const mosharekat = useRef();
   const { stateId } = useParams();
 
   const [kharidData, setKharidData] = useState({
@@ -26,6 +31,9 @@ const TradeType = ({ stateData }) => {
     sanad: "",
     moaveze: "",
     pishforosh: "",
+    mosharekat: "",
+    tahvil: "",
+    moavezefor: "",
   });
   const [rahanData, setRahnData] = useState({
     nafarat: "",
@@ -75,10 +83,19 @@ const TradeType = ({ stateData }) => {
             sanad: kharidData.sanad,
             moaveze: moavezeRef.current.checked ? "1" : "0",
             pishforosh: pishforoshRef.current.checked ? "1" : "0",
+
+            mosharekat: mosharekat.current.checked ? "1" : "0",
+            tahvil:
+              tahvilRef?.current?.value == undefined
+                ? ""
+                : tahvilRef?.current?.value,
+            moavezefor:
+              emkanMoavezeRef.current.value == undefined
+                ? ""
+                : emkanMoavezeRef.current.value,
           },
         ],
       };
-      console.log(stateData);
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -171,6 +188,12 @@ const TradeType = ({ stateData }) => {
       .then((data) => {
         console.log(data);
         setShoMoamele(data.data[0].moamele);
+        if (data.data[0].pishforosh == "1") {
+          setPishforosh(true);
+        }
+        if (data.data[0].moaveze == "1") {
+          setMoaveze(true);
+        }
         setKharidData({
           pricekol: data.data[0]["price-kol"],
           pricemeteri: data.data[0]["price-meteri"],
@@ -178,6 +201,9 @@ const TradeType = ({ stateData }) => {
           sanad: data.data[0].sanad,
           moaveze: data.data[0].moaveze,
           pishforosh: data.data[0].pishforosh,
+          mosharekat: data.data[0].mosharekat,
+          tahvil: data.data[0].tahvil,
+          moavezefor: data.data[0]["moaveze-for"],
         });
         setRahnData({
           nafarat: data.data[0].nafarat,
@@ -521,6 +547,14 @@ const TradeType = ({ stateData }) => {
                         id="moaveze"
                         name="moaveze"
                         checked={kharidData.moaveze == "0" ? false : true}
+                        onChange={(e) => {
+                          if (e.target.checked) setMoaveze(true);
+                          else setMoaveze(false);
+                          setKharidData({
+                            ...kharidData,
+                            moaveze: e.target.checked ? "1" : "0",
+                          });
+                        }}
                         ref={moavezeRef}
                         class="sr-only peer"
                       />
@@ -540,12 +574,90 @@ const TradeType = ({ stateData }) => {
                         name="pishforosh"
                         ref={pishforoshRef}
                         checked={kharidData.pishforosh == "0" ? false : true}
+                        onChange={(e) => {
+                          if (e.target.checked) setPishforosh(true);
+                          else setPishforosh(false);
+                          setKharidData({
+                            ...kharidData,
+                            pishforosh: e.target.checked ? "1" : "0",
+                          });
+                        }}
                         id="pishforosh"
                         class="sr-only peer"
                       />
                       <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
+                  <div className="mt-4">
+                    <label
+                      htmlFor="mosharekat"
+                      className="mb-2 text-white block"
+                    >
+                      مشارکت در ساخت
+                    </label>{" "}
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="mosharekat"
+                        ref={mosharekat}
+                        checked={kharidData.mosharekat == "0" ? false : true}
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            mosharekat: e.target.checked ? "1" : "0",
+                          });
+                        }}
+                        id="mosharekat"
+                        class="sr-only peer"
+                      />
+                      <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </div>
+                <div className="w-full mt-4 max-md:flex-col flex items-center justify-between gap-4">
+                  {getMoaveze && (
+                    <div className="w-full">
+                      <label
+                        htmlFor="moavezefor"
+                        className="mb-3 text-white block"
+                      >
+                        امکان معاوضه با چه مواردی
+                      </label>
+                      <input
+                        id="moavezefor"
+                        ref={emkanMoavezeRef}
+                        value={kharidData.moavezefor}
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            moavezefor: e.target.value,
+                          });
+                        }}
+                        type="text"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      />
+                    </div>
+                  )}
+                  {getPishforosh && (
+                    <div className="w-full">
+                      <label htmlFor="tahvil" className="mb-3 text-white block">
+                        تحویل
+                      </label>
+                      <input
+                        id="tahvil"
+                        type="number"
+                        ref={tahvilRef}
+                        value={kharidData.tahvil}
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            tahvil: e.target.value,
+                          });
+                        }}
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      />
+                    </div>
+                  )}
                 </div>
               </>
             ) : shoMoamele == "رهن و اجاره" ? (
@@ -1007,8 +1119,8 @@ const TradeType = ({ stateData }) => {
                       <Field
                         id="Pets"
                         name="Pets"
-                          as="select"
-                          value={rozaneData.Pets}
+                        as="select"
+                        value={rozaneData.Pets}
                         onChange={(e) => {
                           setRozaneData({
                             ...rozaneData,
@@ -1051,7 +1163,7 @@ const TradeType = ({ stateData }) => {
                       <Field
                         id="darbast"
                         as="select"
-                         onChange={(e) => {
+                        onChange={(e) => {
                           setRozaneData({
                             ...rozaneData,
                             darbast: e.target.value,

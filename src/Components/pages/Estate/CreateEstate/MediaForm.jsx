@@ -6,6 +6,8 @@ import {
   getUserDataOnLocalStorage,
   getToken,
   toastAlert,
+  sendSMSStateOwner,
+  sendSMSAdminState,
 } from "../../../helper";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,6 +18,7 @@ const MediaForm = () => {
   const navigate = useNavigate();
 
   const uploadImageRef = useRef();
+
   const handleUploadImage = (e) => {
     let userToken = getToken();
     console.log(e.target.files[0]);
@@ -28,12 +31,14 @@ const MediaForm = () => {
       status: "publish",
       file: e.target.files[0],
     };
-
+    if (e.target.files[0].type == "video/mp4" && uploadedVideos.length != 0) {
+      toastAlert("فقط یک فیلم می توانید اپلود کنید");
+      return;
+    }
     service.media
       .uploadImage(userToken, imageData)
       .then((data) => {
         if (e.target.files[0].type != "video/mp4") {
-          console.log(1111);
           setUploadedImages([
             ...uploadedImages,
             { src: data.data.source_url, id: data.data.id },
@@ -50,8 +55,7 @@ const MediaForm = () => {
           };
           service.states
             .insertMetaData(userToken, videoData)
-            .then((data) => {
-              console.log(data);
+            .then((dataMeta) => {
               setUploadedVideos([
                 ...uploadedVideos,
                 { src: data.data.source_url, id: data.data.id },
@@ -95,7 +99,27 @@ const MediaForm = () => {
     setStateID(localStorage.getItem("stateId"));
   }, []);
   const redirectToDetails = () => {
-    localStorage.removeItem("stateId")
+    let stateTitle = localStorage.getItem("stateTitle");
+    let ownerMobile = localStorage.getItem("ownerMobile");
+    let moshaverName = localStorage.getItem("moshaverName");
+    sendSMSStateOwner(ownerMobile, stateTitle)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    sendSMSAdminState(moshaverName, stateTitle)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    localStorage.removeItem("stateId");
+    localStorage.removeItem("stateTitle");
+    localStorage.removeItem("ownerMobile");
+    localStorage.removeItem("moshaverName");
     navigate(`/estateDetails/${stateID}`);
   };
   return (

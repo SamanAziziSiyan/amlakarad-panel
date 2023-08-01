@@ -10,9 +10,8 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const MediaForm = () => {
-  const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedVideos, setUploadedVideos] = useState([]);
-  const [stateID, setStateID] = useState(0);
+  const [stateImages, setStateImages] = useState([]);
   const navigate = useNavigate();
   const { stateId } = useParams();
 
@@ -25,24 +24,26 @@ const MediaForm = () => {
       title: "ملک",
       author: userData.ID,
       alt_text: "ملک",
-      post: localStorage.getItem("stateId"),
+      post: stateId,
       status: "publish",
       file: e.target.files[0],
     };
-
+    if (e.target.files[0].type == "video/mp4" && uploadedVideos.length != 0) {
+      toastAlert("فقط یک فیلم می توانید اپلود کنید");
+      return;
+    }
     service.media
       .uploadImage(userToken, imageData)
       .then((data) => {
         if (e.target.files[0].type != "video/mp4") {
-          console.log(1111);
-          setUploadedImages([
-            ...uploadedImages,
-            { src: data.data.source_url, id: data.data.id },
+          setStateImages([
+            ...stateImages,
+            { img: data.data.source_url, ID: data.data.id },
           ]);
           toastAlert("عکس با موفقیت ذخیره شد", "success");
         } else {
           let videoData = {
-            ID: localStorage.getItem("stateId"),
+            ID: stateId,
             meta: [
               {
                 video: data.data.id,
@@ -51,11 +52,10 @@ const MediaForm = () => {
           };
           service.states
             .insertMetaData(userToken, videoData)
-            .then((data) => {
-              console.log(data);
+            .then((dataMeta) => {
               setUploadedVideos([
                 ...uploadedVideos,
-                { src: data.data.source_url, id: data.data.id },
+                { img: data.data.source_url, ID: data.data.id },
               ]);
               toastAlert("فیلم با موفقیت ذخیره شد", "success");
             })
@@ -69,20 +69,21 @@ const MediaForm = () => {
       });
   };
   const deleteUploadedImage = (id, type) => {
+    console.log(id);
     let userToken = getToken();
     service.media
       .deleteImage(userToken, id)
       .then((data) => {
         if (type == 1) {
           toastAlert("عکس با موفقیت حذف شد", "success");
-          let newUploadedImageItems = uploadedImages.filter(
-            (item) => item.id != id
+          let newUploadedImageItems = stateImages.filter(
+            (item) => item.ID != id
           );
-          setUploadedImages(newUploadedImageItems);
+          setStateImages(newUploadedImageItems);
         } else {
           toastAlert("فیلم با موفقیت حذف شد", "success");
           let newUploadedVideoItems = uploadedVideos.filter(
-            (item) => item.id != id
+            (item) => item.ID != id
           );
           setUploadedVideos(newUploadedVideoItems);
         }
@@ -95,17 +96,29 @@ const MediaForm = () => {
   useEffect(() => {
     let userToken = getToken();
 
-    setStateID(localStorage.getItem("stateId"));
-    service.media.getStateImages(userToken ,stateId)
-    .then(data=>{
-      console.log(data);
-    }).catch(err=>{
-      console.log(err);
-    })
+    service.states
+      .getState(userToken, stateId)
+      .then((data) => {
+        console.log(data);
+        let images = data.data[0].img == 0 ? [] : data.data[0].img;
+        let stateImage = [];
+        let videos = [];
+        images.map((item) => {
+          if (item.img.search(".mp4") != -1) {
+            videos.push(item);
+          } else {
+            stateImage.push(item);
+          }
+        });
+        setStateImages(stateImage);
+        setUploadedVideos(videos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   const redirectToDetails = () => {
-    localStorage.removeItem("stateId")
-    navigate(`/estateDetails/${stateID}`);
+     navigate(`/estateDetails/${stateId}`);
   };
   return (
     <>
@@ -136,12 +149,12 @@ const MediaForm = () => {
         </div>
 
         <div className="flex items-center gap-6 flex-wrap h-full  mt-10">
-          {uploadedImages.map((item) => (
-            <div className="flex items-center justify-between h-full flex-col">
-              <img src={item.src} className="max-w-xs" />
+          {stateImages.map((item) => (
+            <div className="flex gap-5 items-center justify-between h-full flex-col">
+              <img src={item.img} className="max-w-xs" />
               <button
                 onClick={() => {
-                  deleteUploadedImage(item.id, 1);
+                  deleteUploadedImage(item.ID, 1);
                 }}
                 className="bg-red-500 rounded-lg text-white p-2"
               >
@@ -174,10 +187,10 @@ const MediaForm = () => {
         <div className="flex items-center gap-6 flex-wrap h-full  mt-10">
           {uploadedVideos.map((item) => (
             <div className="flex items-center justify-between h-full flex-col">
-              <video src={item.src} className="max-w-xs" controls />
+              <video src={item.img} className="max-w-xs" controls />
               <button
                 onClick={() => {
-                  deleteUploadedImage(item.id, 2);
+                  deleteUploadedImage(item.ID, 2);
                 }}
                 className="bg-red-500 rounded-lg text-white p-2"
               >
