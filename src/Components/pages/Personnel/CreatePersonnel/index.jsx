@@ -30,7 +30,7 @@ const CreatePersonnel = () => {
       name: value.name,
       password: value.password,
       email: value.email,
-      meta: { phone: value.phone },
+      meta: { phone: value.phone, moshavername: value.moshavername },
       roles: value.roles,
     };
 
@@ -66,6 +66,7 @@ const CreatePersonnel = () => {
                 password: "",
                 email: "",
                 phone: "",
+                moshavername: "",
                 roles: "",
               }}
               validationSchema={createUser}
@@ -162,9 +163,9 @@ const CreatePersonnel = () => {
                         id="roles"
                         name="roles"
                         as="select"
-                        value = {showKarbarrole}
+                        value={showKarbarrole}
                         onChange={(e) => {
-                          setShowKarbarrole(e.target.value)
+                          setShowKarbarrole(e.target.value);
                           if (e.target.value != "karbar") {
                             setShowMoshaverName(true);
                           } else {
@@ -179,12 +180,12 @@ const CreatePersonnel = () => {
                         <option value="moshaver">مشاور املاک </option>
                         <option value="karbar">کاربر عادی</option>
                       </Field>
-                      <ErrorMessage
+                      {/* <ErrorMessage
                         name="roles"
                         render={(msg) => (
                           <div className="text-red-500">{msg}</div>
                         )}
-                      />
+                      /> */}
                     </div>
                   </div>
                   <div className="w-full flex items-center justify-between gap-4">
@@ -205,12 +206,15 @@ const CreatePersonnel = () => {
                   <div className="flex items-center justify-between gap-4">
                     <div className="w-full flex items-center justify-between gap-4">
                       <div className="w-full">
-                        <label htmlFor="area" className="mb-3 text-white block">
-                           نام مشاور املاک
+                        <label
+                          htmlFor="moshavername"
+                          className="mb-3 text-white block"
+                        >
+                          نام مشاور املاک
                         </label>
                         <input
-                          id="role"
-                          name="role"
+                          id="moshavername"
+                          name="moshavername"
                           as="select"
                           className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                         />

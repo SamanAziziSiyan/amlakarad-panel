@@ -17,12 +17,12 @@ const CreatePersonnel = () => {
     name: "",
     phone: "",
     role: "",
+    moshavername: "",
   });
 
   const [showMoshaverName, setShowMoshaverName] = useState(false);
 
   useEffect(() => {
-    console.log(personnelId);
     let userToken = getToken();
     let userData = getUserDataOnLocalStorage();
     if (userData.role.administrator == undefined) {
@@ -34,27 +34,35 @@ const CreatePersonnel = () => {
       .getUser(userToken, personnelId)
       .then((data) => {
         let userRol = data.data.extra.role[0];
-        console.log(data);
+
+        if (userRol != "karbar") {
+          setShowMoshaverName(true);
+        }
         setPersonnelData({
           name: data.data.name,
           username: data.data.extra.username,
           phone: data.data.extra.phone,
+          moshavername: data.data.extra.moshavername[0],
           role: Object.keys(userRol)[0],
         });
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status == 404) {
+          navigate("/404");
+        }
       });
-    console.log(personnelData);
   }, []);
   const handleUpdateUser = (e) => {
     e.preventDefault();
     let data = {
       name: personnelData.name,
-      meta: { phone: personnelData.phone },
+      meta: {
+        phone: personnelData.phone,
+        moshavername: personnelData.moshavername,
+      },
       roles: personnelData.role,
     };
-
+    console.log(data);
     let userToken = getToken();
     service.personnel
       .updateUser(data, personnelId, userToken)
@@ -257,7 +265,13 @@ const CreatePersonnel = () => {
                       <input
                         id="role"
                         name="role"
-                        as="select"
+                        value={personnelData.moshavername}
+                        onChange={(e) => {
+                          setPersonnelData({
+                            ...personnelData,
+                            moshavername: e.target.value,
+                          });
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
                       {/* <ErrorMessage

@@ -12,7 +12,7 @@ export const createUser = Yup.object().shape({
     .required("ایمیل الزامی می باشد")
     .email("ایمیل را به درستی وارد کنید"),
   password: Yup.string().required("رمز عبور الزامی می باشد"),
-  roles: Yup.string().required("نقش کاربر الزامی می باشد"),
+  // roles: Yup.string().required("نقش کاربر الزامی می باشد"),
 });
 export const createStateInfo = Yup.object().shape({
   post_title: Yup.string().required("عنوان الزامی می باشد"),

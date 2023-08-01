@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import service from "../../../../server/service";
 import { getToken } from "../../../helper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,6 +11,7 @@ import { FaParking, FaSignOutAlt } from "react-icons/fa";
 import Layout from "../../../Layout";
 
 const EstateDetails = () => {
+  const navigate = useNavigate();
   const { stateId } = useParams();
   const [stateData, setStateData] = useState({});
   useEffect(() => {
@@ -18,10 +19,15 @@ const EstateDetails = () => {
     service.states
       .getState(token, stateId)
       .then((data) => {
-        console.log(data);
+        if (data.data.length == 0) {
+          navigate("/404");
+        }
         setStateData(data.data[0]);
       })
       .catch((err) => {
+        if (err.response.status == 404) {
+          navigate("/404");
+        }
         console.log(err);
       });
   }, []);
@@ -66,11 +72,11 @@ const EstateDetails = () => {
                         )}
                       </Swiper>
                     </div>
-                    <div className="col-span-3  max-lg:col-span-12 bg-white h-full rounded-lg py-4  px-2 flex flex-col gap-6">
-                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                    <div className="col-span-3  max-lg:col-span-12  h-full rounded-lg py-2  px-1 flex flex-col gap-4">
+                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                         <span>نام مالک :{stateData.name}</span>
                       </div>
-                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                         <span>
                           {" "}
                           شماره تماس مالک:
@@ -80,19 +86,19 @@ const EstateDetails = () => {
 
                       {stateData.moamele == "خرید و فروش" ? (
                         <>
-                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                             <span>قیمت کل :{stateData["price-kol"]}</span>
                           </div>
-                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                             <span>قیمت متری :{stateData["price-metri"]}</span>
                           </div>
                         </>
                       ) : stateData.moamele == "رهن و اجاره" ? (
                         <>
-                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                             <span>قیمت رهن :{stateData["price-rahn"]}</span>
                           </div>
-                          <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                             <span>قیمت اجاره :{stateData["price-ejare"]}</span>
                           </div>
                         </>
@@ -100,8 +106,14 @@ const EstateDetails = () => {
                         ""
                       )}
 
-                      <div className="w-full bg-purple-200 rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
                         <span>آدرس ملک :{stateData.address} </span>
+                      </div>
+                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                        <span>شهر :{stateData.ostan} </span>
+                      </div>
+                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                        <span>منطقه :{stateData.shahr} </span>
                       </div>
                     </div>
                   </div>
@@ -113,6 +125,11 @@ const EstateDetails = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
+                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
+                      <span className="mb-2 text-[25px]">کد آگهی</span>
+                      <hr className="px-12" />
+                      <span className="mt-3">{stateData.ID}</span>
+                    </div>
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">متراژ</span>
                       <hr className="px-12" />
@@ -126,11 +143,6 @@ const EstateDetails = () => {
                           ? stateData.mg?.map((item, index) => item + " - ")
                           : ""}
                       </span>
-                    </div>
-                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
-                      <span className="mb-2 text-[25px]">سال ساخت</span>
-                      <hr className="px-12" />
-                      <span className="mt-3">1000</span>
                     </div>
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-2 w-full p-3 bg-white">
                       <span className="mb-2 text-[25px]">نوع معامله</span>

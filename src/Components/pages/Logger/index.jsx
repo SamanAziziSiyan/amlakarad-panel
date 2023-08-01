@@ -55,15 +55,22 @@ const Logger = () => {
       });
   }, []);
 
-  const filterLogs = (role) => {
+  const filterLogs = (value, Type) => {
     setFilterLogs([]);
     setShowFilterdLogs(true);
-    Logs.map((item) => {
-      // let userRole = item.extra.role[0];
-      // if (userRole[role]) {
-      //   setFilterLogs((users) => [...users, item]);
-      // }
-    });
+    if (Type == 1) {
+      Logs.map((item) => {
+        if (item.action == value) {
+          setFilterLogs((log) => [...log, item]);
+        }
+      });
+    } else {
+      Logs.map((item) => {
+        if (item.object_type == value) {
+          setFilterLogs((log) => [...log, item]);
+        }
+      });
+    }
   };
 
   const openModal = () => {
@@ -97,34 +104,50 @@ const Logger = () => {
                     <button
                       className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                       onClick={() => {
-                        filterLogs("administrator");
+                        filterLogs("updated", 1);
                       }}
                     >
-                      <span> مدیر کل</span>
+                      <span> بروزرسانی</span>
                     </button>
                     <button
                       className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                       onClick={() => {
-                        filterLogs("moshaver");
+                        filterLogs("added", 1);
                       }}
                     >
-                      <span> مشاور املاک</span>
+                      <span> افزودن </span>
                     </button>
                     <button
                       className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                       onClick={() => {
-                        filterLogs("karmand");
+                        filterLogs("created", 1);
                       }}
                     >
-                      <span> کارمند</span>
+                      <span> ساختن</span>
+                    </button>
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterLogs("Post", 2);
+                      }}
+                    >
+                      <span> املاک </span>
+                    </button>
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterLogs("Attachment", 2);
+                      }}
+                    >
+                      <span> رسانه </span>
                     </button>
                     <button
                       className="bg-transparent  shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                       onClick={() => {
-                        filterLogs("karbar");
+                        filterLogs("User", 2);
                       }}
                     >
-                      <span> کاربر عادی</span>
+                      <span> کاربران </span>
                     </button>
                   </div>
                 </div>
@@ -146,8 +169,27 @@ const Logger = () => {
                                 scope="col"
                                 className=" px-6 py-4 text-gray-950"
                               >
-                                عنوان
+                                زمان
                               </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                کاربر
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                آی پی
+                              </th>
+                              <th
+                                scope="col"
+                                className=" px-6 py-4 text-gray-950"
+                              >
+                                نوع
+                              </th>
+
                               <th
                                 scope="col"
                                 className=" px-6 py-4 text-gray-950"
@@ -158,13 +200,7 @@ const Logger = () => {
                                 scope="col"
                                 className=" px-6 py-4 text-gray-950"
                               >
-                                زمان
-                              </th>
-                              <th
-                                scope="col"
-                                className=" px-6 py-4 text-gray-950"
-                              >
-                                آی پی کاربر
+                                توضیحات
                               </th>
                             </tr>
                           </thead>
@@ -189,16 +225,72 @@ const Logger = () => {
                                       {index + 1}
                                     </td>
                                     <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                      {item.object_name}
+                                      {moment
+                                        .unix(item.hist_time)
+                                        .locale("fa")
+                                        .format("MMM/DD")}
                                     </td>
-                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                      {item.action}
-                                    </td>
-                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                      {item.hist_time}
-                                    </td>
+                                    {item.user_id == 0 ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        مهمان
+                                      </td>
+                                    ) : item.display_name == "" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        {item.user_Name}
+                                      </td>
+                                    ) : (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        {item.display_name}
+                                      </td>
+                                    )}
                                     <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                       {item.hist_ip}
+                                    </td>
+                                    {item.object_type == "User" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        کاربران
+                                      </td>
+                                    ) : item.object_type == "Post" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        املاک
+                                      </td>
+                                    ) : item.object_type == "Attachment" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        رسانه
+                                      </td>
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    {item.action == "wrong_password" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        رمز اشتباه
+                                      </td>
+                                    ) : item.action == "updated" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        بروزرسانی
+                                      </td>
+                                    ) : item.action == "created" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        ساخته شد
+                                      </td>
+                                    ) : item.action == "added" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        افزوده شد
+                                      </td>
+                                    ) : item.action == "logged_in" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        ورود
+                                      </td>
+                                    ) : item.action == "logged_out" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        خروج
+                                      </td>
+                                    ) : (
+                                      ""
+                                    )}
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {item.object_name}
                                     </td>
                                   </tr>
                                 ))
@@ -210,19 +302,72 @@ const Logger = () => {
                                     {index + 1}
                                   </td>
                                   <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                    {item.object_name}
-                                  </td>
-                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
-                                    {item.action}
-                                  </td>
-                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                     {moment
                                       .unix(item.hist_time)
                                       .locale("fa")
-                                      .format("MM/DD/YYYY  ساعت h:mm:ss")}
+                                      .format("MMM/DD")}
                                   </td>
+                                  {item.user_id == 0 ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      مهمان
+                                    </td>
+                                  ) : item.display_name == "" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {item.user_Name}
+                                    </td>
+                                  ) : (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      {item.display_name}
+                                    </td>
+                                  )}
                                   <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                     {item.hist_ip}
+                                  </td>
+                                  {item.object_type == "User" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      کاربران
+                                    </td>
+                                  ) : item.object_type == "Post" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      املاک
+                                    </td>
+                                  ) : item.object_type == "Attachment" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      رسانه
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+
+                                  {item.action == "wrong_password" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      رمز اشتباه
+                                    </td>
+                                  ) : item.action == "updated" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      بروزرسانی
+                                    </td>
+                                  ) : item.action == "created" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      ساخته شد
+                                    </td>
+                                  ) : item.action == "added" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      افزوده شد
+                                    </td>
+                                  ) : item.action == "logged_in" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      ورود
+                                    </td>
+                                  ) : item.action == "logged_out" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      خروج
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                    {item.object_name}
                                   </td>
                                 </tr>
                               ))
@@ -233,11 +378,6 @@ const Logger = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* <div className="flex items-center justify-center gap-4">
-                <div className="w-3/6 h-10 bg-red-100 rounded-lg  bg-white/20 backdrop-blur-md bg-opacity-50 "></div>
-                <div className="w-3/6 h-10 bg-red-100"></div>
-              </div> */}
               </div>
             </div>
           </div>
