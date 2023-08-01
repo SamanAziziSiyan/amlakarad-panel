@@ -16,16 +16,28 @@ const Settings = () => {
   const navigate = useNavigate();
   const [fromColor, setFromColor] = useState("#0c0a5a");
   const [toColor, setToColor] = useState("#1f0042");
+  const [titleColor, setTitleColor] = useState("#ffffff");
+  const [contetnColor, setContentColor] = useState("#ffffff");
+  const [inputColor, setInputColor] = useState("#ffffff");
+  const [placeholderColor, setPlaceholderColor] = useState("#eeeeee");
+  const [btnColor, setBtnColor] = useState("#ffffff");
+  const [subTitleColor, setSubTitleColor] = useState("#000000");
   const [font, setFont] = useState("yekan");
   useEffect(() => {
     const SettingsData = getUserSettinOnLocalStorage();
-
+    console.log(SettingsData);
     if (SettingsData == null) {
       return;
     } else {
       setFromColor(SettingsData.from);
       setToColor(SettingsData.to);
       setFont(SettingsData.font);
+      setTitleColor(SettingsData.title);
+      setContentColor(SettingsData.content);
+      setInputColor(SettingsData.inputColor);
+      setPlaceholderColor(SettingsData.placeholderColor);
+      setBtnColor(SettingsData.btnColor);
+      setSubTitleColor(SettingsData.subTitleColor);
     }
   }, []);
   const handleUpdatePassword = (values) => {
@@ -56,9 +68,19 @@ const Settings = () => {
       font: e.target[0].value,
       from: e.target[1].value,
       to: e.target[2].value,
+      title: e.target[3].value,
+      content: e.target[4].value,
+      inputColor: e.target[5].value,
+      placeholderColor: e.target[6].value,
+      btnColor: e.target[7].value,
+      subTitleColor: e.target[8].value,
     };
     localStorage.setItem("Settings", JSON.stringify(data));
     toastAlert("تنظیمات با موفقیت ثبت شد", "success");
+    window.location.reload();
+  };
+  const removeSettingsData = () => {
+    localStorage.removeItem("Settings");
     window.location.reload();
   };
   return (
@@ -200,7 +222,7 @@ const Settings = () => {
               <div className="flex items-center mt-4 justify-between gap-4">
                 <div className="w-full">
                   <label htmlFor="from" className="mb-3 text-white block">
-                    رنگ اول
+                    رنگ پس زمینه اول
                   </label>
                   <input
                     onChange={(e) => {
@@ -216,7 +238,7 @@ const Settings = () => {
                 </div>
                 <div className="w-full">
                   <label htmlFor="username" className="mb-3 text-white block">
-                    رنگ دوم
+                    رنگ پس زمینه دوم
                   </label>
                   <input
                     onChange={(e) => {
@@ -231,14 +253,138 @@ const Settings = () => {
                   />
                 </div>
               </div>
-              <button
-                type="submit"
-                className="bg-[#4a80bb] m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
-              >
-                {" "}
-                <RiEdit2Line size={23} className="ml-2" />
-                ثبت تنظیمات
-              </button>
+              <div className="flex items-center mt-4 justify-between gap-4">
+                <div className="w-full">
+                  <label htmlFor="titleColor" className="mb-3 text-white block">
+                    رنگ عنوان ها
+                  </label>
+                  <input
+                    onChange={(e) => {
+                      setTitleColor(e.target.value);
+                    }}
+                    value={titleColor}
+                    name="titleColor"
+                    id="titleColor"
+                    type="color"
+                    placeholder=""
+                    className="w-full h-11 mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor="contentColor"
+                    className="mb-3 text-white block"
+                  >
+                    رنگ متن
+                  </label>
+                  <input
+                    onChange={(e) => {
+                      setContentColor(e.target.value);
+                    }}
+                    value={contetnColor}
+                    id="contentColor"
+                    name="contentColor"
+                    type="color"
+                    placeholder=""
+                    className="w-full mb-4 h-11 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center mt-4 justify-between gap-4">
+                <div className="w-full">
+                  <label htmlFor="inputColor" className="mb-3 text-white block">
+                    رنگ برچسب ورودی ها
+                  </label>
+                  <input
+                    onChange={(e) => {
+                      setInputColor(e.target.value);
+                    }}
+                    value={inputColor}
+                    name="inputColor"
+                    id="inputColor"
+                    type="color"
+                    placeholder=""
+                    className="w-full h-11 mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor="contentColor"
+                    className="mb-3 text-white block"
+                  >
+                    رنگ متن جایگزین ورودی ها
+                  </label>
+                  <input
+                    onChange={(e) => {
+                      setPlaceholderColor(e.target.value);
+                    }}
+                    value={placeholderColor}
+                    id="contentColor"
+                    name="contentColor"
+                    type="color"
+                    placeholder=""
+                    className="w-full mb-4 h-11 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center mt-4 justify-between gap-4">
+                <div className="w-full">
+                  <label htmlFor="btnColor" className="mb-3 text-white block">
+                    رنگ متن دکمه ها
+                  </label>
+                  <input
+                    onChange={(e) => {
+                      setBtnColor(e.target.value);
+                    }}
+                    value={btnColor}
+                    name="btnColor"
+                    id="btnColor"
+                    type="color"
+                    placeholder=""
+                    className="w-full h-11 mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor="subTitleColor"
+                    className="mb-3 text-white block"
+                  >
+                    رنگ زیر عنوان ها
+                  </label>
+                  <input
+                    onChange={(e) => {
+                      setSubTitleColor(e.target.value);
+                    }}
+                    value={subTitleColor}
+                    id="subTitleColor"
+                    name="subTitleColor"
+                    type="color"
+                    placeholder=""
+                    className="w-full mb-4 h-11 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-900  placeholder-slate-300 focus:border-gray-200 shadow-gray-800 shadow-sm    sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <button
+                  type="submit"
+                  className="bg-green-600 m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                >
+                  {" "}
+                  <RiEdit2Line size={23} className="ml-2" />
+                  ثبت تنظیمات
+                </button>
+                <button
+                  onClick={removeSettingsData}
+                  type="button"
+                  className="bg-sky-500 m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                >
+                  {" "}
+                  <RiEdit2Line size={23} className="ml-2" />
+                  بازگردانی تنظیمات اولیه
+                </button>
+              </div>
             </form>
           </div>
         </div>
