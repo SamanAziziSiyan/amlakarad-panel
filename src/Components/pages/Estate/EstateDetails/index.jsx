@@ -107,9 +107,9 @@ const EstateDetails = () => {
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
                     <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col  col-span-12 md:col-span-10 lg:col-span-10 w-full p-3 bg-white">
-                      <span className="mb-2 text-right relative text-[25px]">
+                      <h2 className="mb-2 text-right relative text-[25px]">
                         {stateData.post_title}
-                      </span>
+                      </h2>
                     </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
@@ -150,18 +150,18 @@ const EstateDetails = () => {
                   </div>
 
                   <div className="flex flex-col items-start mt-10 ">
-                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                    <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       توضیحات{" "}
-                    </h3>
+                    </h2>
                     <p className="w-full text-justify text-white">
                       {stateData.post_content}
                     </p>
                   </div>
 
                   <div className="flex flex-col items-start mt-10 ">
-                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                    <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       مشخصات املاک{" "}
-                    </h3>
+                    </h2>
                     <div className="grid grid-cols-12 w-full gap-2 ">
                       {stateData.moamele == "خرید و فروش" ? (
                         <>
@@ -679,9 +679,9 @@ const EstateDetails = () => {
                   </div>
 
                   <div className="flex flex-col items-start mt-10 ">
-                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                    <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       سایر امکانات{" "}
-                    </h3>
+                    </h2>
                     <div className="grid grid-cols-12 w-full  gap-4">
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
                         <GiElevator size={24} />
@@ -698,9 +698,9 @@ const EstateDetails = () => {
                     </div>
                   </div>
                   <div className="flex flex-col items-start mt-10 ">
-                    <h3 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
+                    <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       دیگر امکانات{" "}
-                    </h3>
+                    </h2>
 
                     <div className=" bg-transparent h-10 flex flex-wrap items-center text-white ">
                       {stateData["sayer-emkanat"] != 0
