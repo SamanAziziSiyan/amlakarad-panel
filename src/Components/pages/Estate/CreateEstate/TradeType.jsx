@@ -14,10 +14,16 @@ import { BeatLoader } from "react-spinners";
 const TradeType = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
+  const [getMoaveze, setMoaveze] = useState(false);
+  const [getPishforosh, setPishforosh] = useState(false);
   const moavezeRef = useRef();
   const pishforoshRef = useRef();
+  const emkanMoavezeRef = useRef();
+  const tahvilRef = useRef();
+  const mosharekat = useRef();
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
+
     let userToken = getToken();
     let stateId = localStorage.getItem("stateId");
     if (shoMoamele == "خرید و فروش") {
@@ -32,12 +38,20 @@ const TradeType = () => {
             sanad: values.sanad,
             moaveze: moavezeRef.current.checked ? "1" : "0",
             pishforosh: pishforoshRef.current.checked ? "1" : "0",
+            mosharekat: mosharekat.current.checked ? "1" : "0",
+            tahvil:
+              tahvilRef?.current?.value == undefined
+                ? ""
+                : tahvilRef?.current?.value,
+            moavezefor:
+              emkanMoavezeRef.current.value == undefined
+                ? ""
+                : emkanMoavezeRef.current.value,
           },
         ],
       };
-
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -69,8 +83,8 @@ const TradeType = () => {
           },
         ],
       };
-       service.states
-        .insertMetaData(userToken,stateData)
+      service.states
+        .insertMetaData(userToken, stateData)
         .then((data) => {
           console.log(data);
         })
@@ -99,7 +113,7 @@ const TradeType = () => {
       };
       console.log(stateData);
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
           console.log(data);
         })
@@ -277,6 +291,10 @@ const TradeType = () => {
                         name="moaveze"
                         ref={moavezeRef}
                         class="sr-only peer"
+                        onChange={(e) => {
+                          if (e.target.checked) setMoaveze(true);
+                          else setMoaveze(false);
+                        }}
                       />
                       <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     </label>
@@ -295,10 +313,64 @@ const TradeType = () => {
                         ref={pishforoshRef}
                         id="pishforosh"
                         class="sr-only peer"
+                        onChange={(e) => {
+                          if (e.target.checked) setPishforosh(true);
+                          else setPishforosh(false);
+                        }}
                       />
                       <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
+                  <div className="mt-4">
+                    <label
+                      htmlFor="pishforosh"
+                      className="mb-2 text-white block"
+                    >
+                      مشارکت در ساخت
+                    </label>{" "}
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="pishforosh"
+                        ref={mosharekat}
+                        id="pishforosh"
+                        class="sr-only peer"
+                      />
+                      <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="w-full mt-4 max-md:flex-col flex items-center justify-between gap-4">
+                  {getMoaveze && (
+                    <div className="w-full">
+                      <label
+                        htmlFor="moavezefor"
+                        className="mb-3 text-white block"
+                      >
+                        امکان معاوضه با چه مواردی
+                      </label>
+                      <input
+                        id="moavezefor"
+                        ref={emkanMoavezeRef}
+                        type="text"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      />
+                    </div>
+                  )}
+                  {getPishforosh && (
+                    <div className="w-full">
+                      <label htmlFor="tahvil" className="mb-3 text-white block">
+                        تحویل
+                      </label>
+                      <input
+                        id="tahvil"
+                        type="number"
+                        ref={tahvilRef}
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      />
+                    </div>
+                  )}
                 </div>
               </>
             ) : shoMoamele == "رهن و اجاره" ? (

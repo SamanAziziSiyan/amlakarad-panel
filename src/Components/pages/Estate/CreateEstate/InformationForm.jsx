@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const InformationForm = ({ setNextSection }) => {
   const [showLoading, setShowLoading] = useState(false);
-  
+
   const handleCreateEstate = (values) => {
     if (values.post_status == "0") {
       toastAlert("لطفا وضعیت نوشته را وارد کنید ");
@@ -37,6 +37,7 @@ const InformationForm = ({ setNextSection }) => {
         console.log(data);
         if (data.status == 201) {
           localStorage.setItem("stateId", data.data.id);
+          localStorage.setItem("stateTitle", stateData.title);
           toastAlert("اطلاعات اولیه با موفقیت ثبت شد", "success");
           toastAlert("روی مرحله نوع معامله کلیک کنید", "info");
           setNextSection(3);

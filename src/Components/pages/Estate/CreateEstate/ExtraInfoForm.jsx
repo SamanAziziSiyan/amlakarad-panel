@@ -25,6 +25,7 @@ const ExtraInfoForm = () => {
   const specialRef = useRef();
   const parkingRef = useRef();
   const asansorRef = useRef();
+  const moshaverRef = useRef();
 
   useEffect(() => {
     let moshaverRole = getUserDataOnLocalStorage();
@@ -55,6 +56,7 @@ const ExtraInfoForm = () => {
   }, []);
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
+    let e = moshaverRef.current;
 
     let emkanatElements = document.getElementsByClassName("emkanat");
     let wgElements = document.getElementsByClassName("wg");
@@ -78,8 +80,8 @@ const ExtraInfoForm = () => {
       ID: stateId,
       meta: [
         {
-          mantaghe: showMantaghaData,
-          ostan: values.ostan,
+          ostan: showMantaghaData,
+          shahr: values.shahr,
           name: values.name,
           address: values.address,
           mobile: values.mobile,
@@ -89,7 +91,7 @@ const ExtraInfoForm = () => {
           moshaver: values.moshaver,
           fast: fastRef.current.checked ? "1" : "0",
           special: specialRef.current.checked ? "1" : "0",
-          wg: checkedWg,
+          mg: checkedWg,
           asansor: asansorRef.current.checked ? "1" : "0",
           parking: parkingRef.current.checked ? "1" : "0",
           shahraki: shahrakiRef.current.checked ? "1" : "0",
@@ -100,10 +102,12 @@ const ExtraInfoForm = () => {
       ],
     };
     service.states
-      .insertMetaData(userToken ,stateData )
+      .insertMetaData(userToken, stateData)
       .then((data) => {
         console.log(data);
         if (data.status == 200) {
+          localStorage.setItem("ownerMobile", values.mobile);
+          localStorage.setItem("moshaverName", e.options[e.selectedIndex].text);
           setShowLoading(false);
           toastAlert("اطلاعات اضافی با موفقیت ثبت شد", "success");
           toastAlert("روی مرحله رسانه کلیک کنید", "info");
@@ -120,7 +124,7 @@ const ExtraInfoForm = () => {
     <>
       <Formik
         initialValues={{
-          mantaghe: "",
+          shahr: "",
           name: "",
           address: "",
           mobile: "",
@@ -155,7 +159,7 @@ const ExtraInfoForm = () => {
           {showMantagha && (
             <Field
               id="ostan"
-              name="ostan"
+              name="shahr"
               as="select"
               rows={10}
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
@@ -295,18 +299,19 @@ const ExtraInfoForm = () => {
               <label htmlFor="moshaver" className="mb-3 text-white block">
                 مشاور مربوطه
               </label>
-              <Field
+              <select
                 id="moshaver"
                 name="moshaver"
                 as="select"
                 rows={10}
+                ref={moshaverRef}
                 disabled={userRole != 1 ? true : false}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
               >
                 {moshavers.map((item, index) => (
                   <option value={item.id}>{item.name}</option>
                 ))}
-              </Field>
+              </select>
             </div>
             <div className="w-full">
               <div className="flex items-center gap-9 mt-8">

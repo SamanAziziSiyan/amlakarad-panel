@@ -25,9 +25,7 @@ const CreateEstate = () => {
   const [shoMoamele, setShoMoamele] = useState("");
   const [shoMelk, setShowMelk] = useState("");
   const [nextSection, setNextSection] = useState(0);
-  useEffect(()=>{
-      console.log(nextSection);
-  } , [nextSection])
+
   return (
     <>
       <Layout>
