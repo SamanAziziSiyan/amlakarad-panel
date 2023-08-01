@@ -20,7 +20,7 @@ const ExtraInfoForm = () => {
   const [userID, setUserId] = useState(0);
   const [extraInfo, setExtraInfo] = useState({
     name: "",
-    mantaghe: "",
+    shahr: "",
     address: "",
     mobile: "",
     email: "",
@@ -32,6 +32,10 @@ const ExtraInfoForm = () => {
     shahraki: "",
     kohpaye: "",
     saheli: "",
+    parking: "",
+    asansor: "",
+    mg: [],
+    emkanat: [],
   });
   const [moshavers, setMoshavers] = useState([]);
   const shahrakiRef = useRef();
@@ -74,8 +78,13 @@ const ExtraInfoForm = () => {
       .getState(userToken, stateId)
       .then((data) => {
         console.log(data);
+        setshowMantaghaData(data.data[0].ostan);
+        setshowMantagha(true);
         setExtraInfo({
           name: data.data[0].name,
+          parking: data.data[0].parking,
+          asansor: data.data[0].asansor,
+          shahr: data.data[0].shahr,
           address: data.data[0].address,
           mobile: data.data[0].mobile,
           email: data.data[0].email,
@@ -88,6 +97,8 @@ const ExtraInfoForm = () => {
           kohpaye: data.data[0].kohpaye,
           saheli: data.data[0].saheli,
           mantaghe: data.data[0].mantaghe,
+          mg: data.data[0].mg,
+          emkanat: data.data[0]["sayer-emkanat"],
         });
       })
       .catch((err) => {
@@ -112,15 +123,15 @@ const ExtraInfoForm = () => {
         checkedWg.push(item.getAttribute("data-title"));
       }
     }
-
+    console.log(checkedEmkanat);
+    console.log(checkedWg);
     let userToken = getToken();
-    let stateId = localStorage.getItem("stateId");
     let stateData = {
       ID: stateId,
       meta: [
         {
-          mantaghe: showMantaghaData,
-          ostan: values.ostan,
+          ostan: showMantaghaData,
+          shahr: values.shahr,
           name: values.name,
           address: values.address,
           mobile: values.mobile,
@@ -130,7 +141,7 @@ const ExtraInfoForm = () => {
           moshaver: values.moshaver,
           fast: fastRef.current.checked ? "1" : "0",
           special: specialRef.current.checked ? "1" : "0",
-          wg: checkedWg,
+          mg: checkedWg,
           asansor: asansorRef.current.checked ? "1" : "0",
           parking: parkingRef.current.checked ? "1" : "0",
           shahraki: shahrakiRef.current.checked ? "1" : "0",
@@ -140,9 +151,11 @@ const ExtraInfoForm = () => {
         },
       ],
     };
+    
     service.states
-      .insertMetaData(stateData, userToken)
+      .insertMetaData(userToken, stateData)
       .then((data) => {
+        console.log(data);
         if (data.status == 200) {
           setShowLoading(false);
           toastAlert("اطلاعات اضافی با موفقیت ثبت شد", "success");
@@ -160,7 +173,7 @@ const ExtraInfoForm = () => {
     <>
       <Formik
         initialValues={{
-          mantaghe: "",
+          shahr: "",
           name: "",
           address: "",
           mobile: "",
@@ -186,7 +199,6 @@ const ExtraInfoForm = () => {
               if (e.target.value != 0) setshowMantagha(true);
               setshowMantaghaData(e.target.value);
             }}
-            rows={10}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
           >
             <option value="">منطقه را انتخاب کنید</option>
@@ -196,55 +208,265 @@ const ExtraInfoForm = () => {
             >
               بوکان
             </option>
+            <option
+              value="تهران"
+              selected={extraInfo.mantaghe == "تهران" ? true : false}
+            >
+              تهران
+            </option>
           </Field>
           {showMantagha && (
             <Field
-              id="ostan"
-              name="ostan"
+              id="shahr"
+              name="shahr"
               as="select"
-              rows={10}
+              value={extraInfo.shahr}
+              onChange={(e) => {
+                setExtraInfo({
+                  ...extraInfo,
+                  shahr: e.target.value,
+                });
+              }}
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
               <option>همه</option>
-              <option value="اسلام اباد">اسلام اباد</option>
-              <option value="آزادگان"> آزادگان</option>
-              <option value=" ابوذر"> ابوذر</option>
-              <option value="استاد حقیقی">استاد حقیقی</option>
-              <option value="اسکندری">اسکندری</option>
-              <option value="امیر آباد">امیر آباد</option>
-              <option value=" اینگیجه"> اینگیجه</option>
-              <option value="پارک ساحلی">پارک ساحلی</option>
-              <option value="جاده حصار">جاده حصار</option>
-              <option value="چهاراه اطلاعات">چهاراه اطلاعات</option>
-              <option value="چهاراه شهرداری">چهاراه شهرداری</option>
-              <option value="خیابان انقلاب">خیابان انقلاب</option>
-              <option value="خیابان زیتون">خیابان زیتون</option>
-              <option value="خیابان سقز">خیابان سقز</option>
-              <option value="خیابان ورزش">خیابان ورزش</option>
-              <option value="دانشگاه آزاد">دانشگاه آزاد</option>
-              <option value="زیبا کنار">زیبا کنار</option>
-              <option value="سه راه خاوران">سه راه خاوران</option>
-              <option value="سید شکره">سید شکره</option>
-              <option value="شهرک امام">شهرک امام</option>
-              <option value="شهرک برق">شهرک برق</option>
-              <option value="شهرک فرهنگیان">شهرک فرهنگیان</option>
-              <option value="شهرک گلستان">شهرک گلستان</option>
-              <option value="عشایر">عشایر</option>
-              <option value="علی آباد">علی آباد</option>
-              <option value="فرمانداری">فرمانداری</option>
-              <option value="فلکه قدس">فلکه قدس</option>
-              <option value="کشتارگاه">کشتارگاه</option>
-              <option value="کلتپه">کلتپه</option>
-              <option value="کمربندی">کمربندی</option>
-              <option value="کهریزه محمود آباد">کهریزه محمود آباد</option>
-              <option value="کوسه">کوسه</option>
-              <option value="کوی آفتاب">کوی آفتاب</option>
-              <option value="کوی اندیشه">کوی اندیشه</option>
-              <option value="کوی سپاه">کوی سپاه</option>
-              <option value="کوی محمدیه">کوی محمدیه</option>
-              <option value="مجسمه مادر">مجسمه مادر</option>
-              <option value="مسکن مهر">مسکن مهر</option>
-              <option value="ناچیت">ناچیت</option>
+              <option
+                selected={extraInfo.shahr == "اسلام اباد" ? true : false}
+                value="اسلام اباد"
+              >
+                اسلام اباد
+              </option>
+              <option
+                value="آزادگان"
+                selected={extraInfo.shahr == "آزادگان" ? true : false}
+              >
+                {" "}
+                آزادگان
+              </option>
+              <option
+                value="ابوذر"
+                selected={extraInfo.shahr == "ابوذر" ? true : false}
+              >
+                {" "}
+                ابوذر
+              </option>
+              <option
+                value="استاد حقیقی"
+                selected={extraInfo.shahr == "استاد حقیقی" ? true : false}
+              >
+                استاد حقیقی
+              </option>
+              <option
+                value="اسکندری"
+                selected={extraInfo.shahr == "اسکندری" ? true : false}
+              >
+                اسکندری
+              </option>
+              <option
+                value="امیر آباد"
+                selected={extraInfo.shahr == "امیر آباد" ? true : false}
+              >
+                امیر آباد
+              </option>
+              <option
+                value="اینگیجه"
+                selected={extraInfo.shahr == "اینگیجه" ? true : false}
+              >
+                {" "}
+                اینگیجه
+              </option>
+              <option
+                value="پارک ساحلی"
+                selected={extraInfo.shahr == "پارک ساحلی" ? true : false}
+              >
+                پارک ساحلی
+              </option>
+              <option
+                value="جاده حصار"
+                selected={extraInfo.shahr == "جاده حصار" ? true : false}
+              >
+                جاده حصار
+              </option>
+              <option
+                value="چهاراه اطلاعات"
+                selected={extraInfo.shahr == "چهاراه اطلاعات" ? true : false}
+              >
+                چهاراه اطلاعات
+              </option>
+              <option
+                value="چهاراه شهرداری"
+                selected={extraInfo.shahr == "چهاراه شهرداری" ? true : false}
+              >
+                چهاراه شهرداری
+              </option>
+              <option
+                value="خیابان انقلاب"
+                selected={extraInfo.shahr == "خیابان انقلاب" ? true : false}
+              >
+                خیابان انقلاب
+              </option>
+              <option
+                value="خیابان زیتون"
+                selected={extraInfo.shahr == "خیابان زیتون" ? true : false}
+              >
+                خیابان زیتون
+              </option>
+              <option
+                value="خیابان سقز"
+                selected={extraInfo.shahr == "خیابان سقز" ? true : false}
+              >
+                خیابان سقز
+              </option>
+              <option
+                value="خیابان ورزش"
+                selected={extraInfo.shahr == "خیابان ورزش" ? true : false}
+              >
+                خیابان ورزش
+              </option>
+              <option
+                value="دانشگاه آزاد"
+                selected={extraInfo.shahr == "دانشگاه آزاد" ? true : false}
+              >
+                دانشگاه آزاد
+              </option>
+              <option
+                value="زیبا کنار"
+                selected={extraInfo.shahr == "زیبا کنار" ? true : false}
+              >
+                زیبا کنار
+              </option>
+              <option
+                value="سه راه خاوران"
+                selected={extraInfo.shahr == "سه راه خاوران" ? true : false}
+              >
+                سه راه خاوران
+              </option>
+              <option
+                value="سید شکره"
+                selected={extraInfo.shahr == "سید شکره" ? true : false}
+              >
+                سید شکره
+              </option>
+              <option
+                value="شهرک امام"
+                selected={extraInfo.shahr == "شهرک امام" ? true : false}
+              >
+                شهرک امام
+              </option>
+              <option
+                value="شهرک برق"
+                selected={extraInfo.shahr == "شهرک برق" ? true : false}
+              >
+                شهرک برق
+              </option>
+              <option
+                value="شهرک فرهنگیان"
+                selected={extraInfo.shahr == "شهرک فرهنگیان" ? true : false}
+              >
+                شهرک فرهنگیان
+              </option>
+              <option
+                value="شهرک گلستان"
+                selected={extraInfo.shahr == "شهرک گلستان" ? true : false}
+              >
+                شهرک گلستان
+              </option>
+              <option
+                value="عشایر"
+                selected={extraInfo.shahr == "عشایر" ? true : false}
+              >
+                عشایر
+              </option>
+              <option
+                value="علی آباد"
+                selected={extraInfo.shahr == "علی آباد" ? true : false}
+              >
+                علی آباد
+              </option>
+              <option
+                value="فرمانداری"
+                selected={extraInfo.shahr == "فرمانداری" ? true : false}
+              >
+                فرمانداری
+              </option>
+              <option
+                value="فلکه قدس"
+                selected={extraInfo.shahr == "فلکه قدس" ? true : false}
+              >
+                فلکه قدس
+              </option>
+              <option
+                value="کشتارگاه"
+                selected={extraInfo.shahr == "کشتارگاه" ? true : false}
+              >
+                کشتارگاه
+              </option>
+              <option
+                value="کلتپه"
+                selected={extraInfo.shahr == "کلتپه" ? true : false}
+              >
+                کلتپه
+              </option>
+              <option
+                value="کمربندی"
+                selected={extraInfo.shahr == "کمربندی" ? true : false}
+              >
+                کمربندی
+              </option>
+              <option
+                value="کهریزه محمود آباد"
+                selected={extraInfo.shahr == "کهریزه محمود آباد" ? true : false}
+              >
+                کهریزه محمود آباد
+              </option>
+              <option
+                value="کوسه"
+                selected={extraInfo.shahr == "کوسه" ? true : false}
+              >
+                کوسه
+              </option>
+              <option
+                value="کوی آفتاب"
+                selected={extraInfo.shahr == "کوی آفتاب" ? true : false}
+              >
+                کوی آفتاب
+              </option>
+              <option
+                value="کوی اندیشه"
+                selected={extraInfo.shahr == "کوی اندیشه" ? true : false}
+              >
+                کوی اندیشه
+              </option>
+              <option
+                value="کوی سپاه"
+                selected={extraInfo.shahr == "کوی سپاه" ? true : false}
+              >
+                کوی سپاه
+              </option>
+              <option
+                value="کوی محمدیه"
+                selected={extraInfo.shahr == "کوی محمدیه" ? true : false}
+              >
+                کوی محمدیه
+              </option>
+              <option
+                value="مجسمه مادر"
+                selected={extraInfo.shahr == "مجسمه مادر" ? true : false}
+              >
+                مجسمه مادر
+              </option>
+              <option
+                value="مسکن مهر"
+                selected={extraInfo.shahr == "مسکن مهر" ? true : false}
+              >
+                مسکن مهر
+              </option>
+              <option
+                value="ناچیت"
+                selected={extraInfo.shahr == "ناچیت" ? true : false}
+              >
+                ناچیت
+              </option>
             </Field>
           )}
 
@@ -436,6 +658,12 @@ const ExtraInfoForm = () => {
                       checked={extraInfo.fast == "1" ? true : false}
                       name="saheli"
                       className="sr-only peer"
+                      onChange={(e) => {
+                        setExtraInfo({
+                          ...extraInfo,
+                          fast: e.target.checked ? "1" : "",
+                        });
+                      }}
                     />
                     <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
@@ -452,6 +680,12 @@ const ExtraInfoForm = () => {
                       name="shahraki"
                       ref={specialRef}
                       checked={extraInfo.special == "1" ? true : false}
+                      onChange={(e) => {
+                        setExtraInfo({
+                          ...extraInfo,
+                          special: e.target.checked ? "1" : "",
+                        });
+                      }}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -474,6 +708,17 @@ const ExtraInfoForm = () => {
                 id=""
                 className="wg"
                 data-title="شمالی"
+                checked={extraInfo.mg?.find((item) => item == "شمالی")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.mg?.filter((item) => item != "شمالی");
+                    console.log(data);
+                    setExtraInfo({ ...extraInfo, mg: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">شمالی</label>
             </div>
@@ -484,6 +729,17 @@ const ExtraInfoForm = () => {
                 name="wg"
                 id=""
                 className="wg"
+                checked={extraInfo.mg?.find((item) => item == "جنوبی")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.mg?.filter((item) => item != "جنوبی");
+                    console.log(data);
+                    setExtraInfo({ ...extraInfo, mg: data });
+                    e.target.checked = false;
+                  }
+                }}
                 data-title="جنوبی"
               />
               <label className="mr-2 text-white block">جنوبی</label>
@@ -496,6 +752,17 @@ const ExtraInfoForm = () => {
                 id=""
                 className="wg"
                 data-title="شرقی"
+                checked={extraInfo.mg?.find((item) => item == "شرقی")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.mg?.filter((item) => item != "شرقی");
+                    console.log(data);
+                    setExtraInfo({ ...extraInfo, mg: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">شرقی</label>
             </div>
@@ -505,6 +772,17 @@ const ExtraInfoForm = () => {
                 type="checkbox"
                 name="wg"
                 id=""
+                checked={extraInfo.mg?.find((item) => item == "غربی")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.mg?.filter((item) => item != "غربی");
+                    console.log(data);
+                    setExtraInfo({ ...extraInfo, mg: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="wg"
                 data-title="غربی"
               />
@@ -523,6 +801,12 @@ const ExtraInfoForm = () => {
                   type="checkbox"
                   ref={saheliRef}
                   checked={extraInfo.saheli == "1" ? true : false}
+                  onChange={(e) => {
+                    setExtraInfo({
+                      ...extraInfo,
+                      saheli: e.target.checked ? "1" : "",
+                    });
+                  }}
                   name="saheli"
                   className="sr-only peer"
                 />
@@ -540,6 +824,12 @@ const ExtraInfoForm = () => {
                   type="checkbox"
                   name="shahraki"
                   checked={extraInfo.shahraki == "1" ? true : false}
+                  onChange={(e) => {
+                    setExtraInfo({
+                      ...extraInfo,
+                      shahraki: e.target.checked ? "1" : "",
+                    });
+                  }}
                   ref={shahrakiRef}
                   className="sr-only peer"
                 />
@@ -557,6 +847,12 @@ const ExtraInfoForm = () => {
                   type="checkbox"
                   ref={kohpayeRef}
                   checked={extraInfo.kohpaye == "1" ? true : false}
+                  onChange={(e) => {
+                    setExtraInfo({
+                      ...extraInfo,
+                      kohpaye: e.target.checked ? "1" : "",
+                    });
+                  }}
                   name="kohpaye"
                   className="sr-only peer"
                 />
@@ -572,21 +868,77 @@ const ExtraInfoForm = () => {
           </label>
           <div className="flex items-center gap-7 flex-wrap justify-start">
             <div className="flex items-center">
-              <input type="checkbox" name="parking" id="" ref={parkingRef} />
+              <input
+                type="checkbox"
+                checked={extraInfo.parking == "دارد" ? true : false}
+                name="parking"
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    parking: e.target.checked ? "دارد" : "ندارد",
+                  });
+                }}
+                ref={parkingRef}
+              />
               <label className="mr-2 text-white block">پارکینگ</label>
             </div>
 
             <div className="flex items-center">
-              <input type="checkbox" name="asansor" id="" />
+              <input
+                type="checkbox"
+                name="asansor"
+                id=""
+                checked={extraInfo.asansor == "دارد" ? true : false}
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    asansor: e.target.checked ? "دارد" : "ندارد",
+                  });
+                }}
+              />
               <label className="mr-2 text-white block">آسانسور</label>
             </div>
             <div className="flex items-center">
-              <input type="checkbox" ref={asansorRef} />
+              <input
+                type="checkbox"
+                ref={asansorRef}
+                className="emkanat"
+                data-title="آب"
+                checked={extraInfo.emkanat?.find((item) => item == "آب")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "آب"
+                    );
+
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
               <label className="mr-2 text-white block">آب</label>
             </div>
 
             <div className="flex items-center">
-              <input type="checkbox" data-title="برق" className="emkanat" />
+              <input
+                type="checkbox"
+                data-title="برق"
+                className="emkanat"
+                checked={extraInfo.emkanat?.find((item) => item == "برق")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "برق"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
               <label className="mr-2 text-white block">برق</label>
             </div>
 
@@ -594,6 +946,18 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
+                checked={extraInfo.emkanat?.find((item) => item == "گاز")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "گاز"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 data-title="گاز"
                 className="emkanat"
               />
@@ -604,7 +968,18 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
-                id=""
+                checked={extraInfo.emkanat?.find((item) => item == "انباری")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "انباری"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="emkanat"
                 data-title="انباری"
               />
@@ -615,7 +990,20 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
-                id=""
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "درب ضد سرقت"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "درب ضد سرقت"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="emkanat"
                 data-title="درب ضد سرقت"
               />
@@ -626,7 +1014,18 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
-                id=""
+                checked={extraInfo.emkanat?.find((item) => item == "تلفن")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "تلفن"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="emkanat"
                 data-title="تلفن"
               />
@@ -637,7 +1036,18 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
-                id=""
+                checked={extraInfo.emkanat?.find((item) => item == "شوفاژ")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "شوفاژ"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="emkanat"
                 data-title="شوفاژ"
               />
@@ -651,6 +1061,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="شومینه"
+                checked={extraInfo.emkanat?.find((item) => item == "شومینه")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "شومینه"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">شومینه</label>
             </div>
@@ -659,7 +1081,18 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
-                id=""
+                checked={extraInfo.emkanat?.find((item) => item == "پکیج")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "پکیج"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="emkanat"
                 data-title="پکیج"
               />
@@ -673,6 +1106,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="کولر"
+                checked={extraInfo.emkanat?.find((item) => item == "کولر")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "کولر"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">کولر</label>
             </div>
@@ -684,6 +1129,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="سونا"
+                checked={extraInfo.emkanat?.find((item) => item == "سونا")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "سونا"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">سونا</label>
             </div>
@@ -695,6 +1152,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="استخر"
+                checked={extraInfo.emkanat?.find((item) => item == "استخر")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "استخر"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">استخر</label>
             </div>
@@ -706,6 +1175,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="جکوزی"
+                checked={extraInfo.emkanat?.find((item) => item == "جکوزی")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "جکوزی"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">جکوزی</label>
             </div>
@@ -717,6 +1198,20 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="آیفون نصویری"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "آیفون تصویری"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "آیفون تصویری"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">آیفون نصویری</label>
             </div>
@@ -728,6 +1223,20 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="دوربین مدار بسته"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "دوربین مدار بسته"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "دوربین مدار بسته"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">دوربین مدار بسته</label>
             </div>
@@ -739,6 +1248,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="درب ریموت"
+                checked={extraInfo.emkanat?.find((item) => item == "درب ریموت")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "درب ریموت"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">درب ریموت</label>
             </div>
@@ -750,6 +1271,20 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="انتن مرکزی"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "انتن مرکزی"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "انتن مرکزی"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">انتن مرکزی</label>
             </div>
@@ -758,7 +1293,18 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name=""
-                id=""
+                checked={extraInfo.emkanat?.find((item) => item == "پاسیو")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "پاسیو"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 className="emkanat"
                 data-title="پاسیو"
               />
@@ -772,6 +1318,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="باربیکیو"
+                checked={extraInfo.emkanat?.find((item) => item == "باربیکیو")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "باربیکیو"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">باربیکیو</label>
             </div>
@@ -783,6 +1341,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="بالکن"
+                checked={extraInfo.emkanat?.find((item) => item == "بالکن")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "بالکن"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">بالکن</label>
             </div>
@@ -794,6 +1364,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="حیات"
+                checked={extraInfo.emkanat?.find((item) => item == "حیات")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "حیات"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">حیات</label>
             </div>
@@ -805,6 +1387,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="لابی"
+                checked={extraInfo.emkanat?.find((item) => item == "لابی")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "لابی"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">لابی</label>
             </div>
@@ -815,6 +1409,20 @@ const ExtraInfoForm = () => {
                 name=""
                 id=""
                 className="emkanat"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "سالن اجتماعات"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "سالن اجتماعات"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
                 data-title="سالن اجتماعات"
               />
               <label className="mr-2 text-white block">سالن اجتماعات</label>
@@ -827,6 +1435,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="سرایداری"
+                checked={extraInfo.emkanat?.find((item) => item == "سرایداری")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "سرایداری"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">سرایداری</label>
             </div>
@@ -838,6 +1458,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="مبله"
+                checked={extraInfo.emkanat?.find((item) => item == "مبله")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "مبله"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">مبله</label>
             </div>
@@ -849,6 +1481,20 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="اطفاء حریق"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "اطفاء حریق"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "اطفاء حریق"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">اطفاء حریق</label>
             </div>
@@ -860,6 +1506,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="وام"
+                checked={extraInfo.emkanat?.find((item) => item == "وام")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "وام"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">وام</label>
             </div>
@@ -871,6 +1529,18 @@ const ExtraInfoForm = () => {
                 id=""
                 className="emkanat"
                 data-title="آب چاه"
+                checked={extraInfo.emkanat?.find((item) => item == "آب چاه")}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "آب چاه"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
               />
               <label className="mr-2 text-white block">آب چاه</label>
             </div>
