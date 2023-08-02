@@ -12,8 +12,8 @@ import { RiUserAddLine } from "react-icons/ri";
 import Layout from "../../../Layout";
 const CreatePersonnel = () => {
   const navigate = useNavigate();
-  const [showMoshaverName, setShowMoshaverName] = useState(false);
-  const [showKarbarrole, setShowKarbarrole] = useState(false);
+  // const [showMoshaverName, setShowMoshaverName] = useState(false);
+  const [showKarbarrole, setShowKarbarrole] = useState("");
 
   useEffect(() => {
     let userToken = getToken();
@@ -30,8 +30,8 @@ const CreatePersonnel = () => {
       name: value.name,
       password: value.password,
       email: value.email,
-      meta: { phone: value.phone, moshavername: value.moshavername },
-      roles: value.roles,
+      meta: { phone: value.phone  },
+      roles: showKarbarrole,
     };
 
     let userToken = getToken();
@@ -74,8 +74,8 @@ const CreatePersonnel = () => {
                 handleCreateUser(values);
               }}
             >
-              <Form className=" px-32 py-10">
-                <div className="flex items-center justify-between gap-4">
+              <Form className=" px-32 max-lg:px-6 py-10">
+                <div className="flex items-center max-lg:flex-col justify-between gap-4">
                   <div className="w-full">
                     <label htmlFor="username" className="mb-3 text-white block">
                       نام کاربری
@@ -114,7 +114,7 @@ const CreatePersonnel = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center max-lg:flex-col justify-between gap-4">
                   <div className="w-full">
                     <label htmlFor="username" className="mb-3 text-white block">
                       نام و نام خانوادگی
@@ -153,7 +153,7 @@ const CreatePersonnel = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center max-lg:flex-col justify-between gap-4">
                   <div className="w-full flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label htmlFor="area" className="mb-3 text-white block">
@@ -166,11 +166,11 @@ const CreatePersonnel = () => {
                         value={showKarbarrole}
                         onChange={(e) => {
                           setShowKarbarrole(e.target.value);
-                          if (e.target.value != "karbar") {
-                            setShowMoshaverName(true);
-                          } else {
-                            setShowMoshaverName(false);
-                          }
+                          // if (e.target.value != "karbar") {
+                          //   setShowMoshaverName(true);
+                          // } else {
+                          //   setShowMoshaverName(false);
+                          // }
                         }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
@@ -202,7 +202,7 @@ const CreatePersonnel = () => {
                     </div>
                   </div>
                 </div>
-                {showMoshaverName && (
+                {/* {showMoshaverName && (
                   <div className="flex items-center justify-between gap-4">
                     <div className="w-full flex items-center justify-between gap-4">
                       <div className="w-full">
@@ -212,26 +212,20 @@ const CreatePersonnel = () => {
                         >
                           نام مشاور املاک
                         </label>
-                        <input
+                        <Field
                           id="moshavername"
                           name="moshavername"
-                          as="select"
                           className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                         />
 
-                        {/* <ErrorMessage
-                              name="roles"
-                              render={(msg) => (
-                                <div className="text-red-500">{msg}</div>
-                              )}
-                            /> */}
+                        
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
                 <button
                   type="submit"
-                  className="bg-[#4a80bb] m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  className="bg-[#4a80bb] m-auto mt-10 max-lg:w-full flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                 >
                   {" "}
                   <RiUserAddLine size={23} className="ml-2" />

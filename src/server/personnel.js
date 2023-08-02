@@ -8,7 +8,7 @@ const getLogs = (token) => {
 };
 
 const getUsers = (token) => {
-  return axios.get(`${config.api}/wp-json/wp/v2/users?per_page=100`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/users`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

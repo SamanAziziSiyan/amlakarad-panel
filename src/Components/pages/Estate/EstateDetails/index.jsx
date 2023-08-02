@@ -14,14 +14,22 @@ const EstateDetails = () => {
   const navigate = useNavigate();
   const { stateId } = useParams();
   const [stateData, setStateData] = useState({});
+  const [videoSrc, setVideoSrc] = useState("");
   useEffect(() => {
     const token = getToken();
     service.states
       .getState(token, stateId)
       .then((data) => {
+        console.log(data);
         if (data.data.length == 0) {
           navigate("/404");
         }
+        console.log(data);
+        data.data[0].img.map((item) => {
+          if (item.img.search(".mp4") != -1) {
+            setVideoSrc(item);
+          }
+        });
         setStateData(data.data[0]);
       })
       .catch((err) => {
@@ -118,8 +126,8 @@ const EstateDetails = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
-                    <div className="border shadow shadow-gray-300 hover:scale-[1.02]  rounded-[5px] flex flex-col  col-span-12 md:col-span-10 lg:col-span-10 w-full p-3 bg-white">
-                      <h2 className="mb-2 text-right relative text-[25px]">
+                    <div className="   rounded-[5px] flex flex-col  col-span-12 md:col-span-10 lg:col-span-10 w-full p-3">
+                      <h2 className="mb-2 text-right relative text-white text-[25px]  ">
                         {stateData.post_title}
                       </h2>
                     </div>
@@ -165,9 +173,24 @@ const EstateDetails = () => {
                     <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       توضیحات{" "}
                     </h2>
-                    <p className="w-full text-justify text-white">
-                      {stateData.post_content}
-                    </p>
+                    <div className="grid grid-cols-12 gap-5">
+                      <p className="  text-justify text-white col-span-7">
+                        {stateData.post_content}
+                      </p>
+                      <div className="col-span-5">
+                        {videoSrc != "" ? (
+                          <video
+                            src={videoSrc.img}
+                            controls
+                            className="w-full rounded-xl"
+                          ></video>
+                        ) : (
+                          <button className="bg-sky-500 p-5 text-white rounded-md">
+                            این ملک ویدیو ندارد
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex flex-col items-start mt-10 ">
