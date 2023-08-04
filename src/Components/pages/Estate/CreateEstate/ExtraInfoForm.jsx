@@ -26,6 +26,7 @@ const ExtraInfoForm = () => {
   const parkingRef = useRef();
   const asansorRef = useRef();
   const moshaverRef = useRef();
+ 
 
   useEffect(() => {
     let moshaverRole = getUserDataOnLocalStorage();
@@ -104,7 +105,6 @@ const ExtraInfoForm = () => {
     service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
-        console.log(data);
         if (data.status == 200) {
           localStorage.setItem("ownerMobile", values.mobile);
           localStorage.setItem("moshaverName", e.options[e.selectedIndex].text);
@@ -114,7 +114,6 @@ const ExtraInfoForm = () => {
         } else throw new Error();
       })
       .catch((err) => {
-        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });

@@ -22,7 +22,7 @@ import ReactPaginate from "react-paginate";
 
 import { AiFillFilter } from "react-icons/ai";
 import { GiPriceTag } from "react-icons/gi";
-import { FaHospitalUser } from "react-icons/fa";
+import { FaHospitalUser, FaUserEdit } from "react-icons/fa";
 import { MdRealEstateAgent } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { BsInfoCircleFill } from "react-icons/bs";
@@ -33,11 +33,14 @@ import { ClipLoader } from "react-spinners";
 const SearchEstate = () => {
   const [states, setStates] = useState([]);
   const [empty, showEmpty] = useState(false);
+  const [userRole, setUserRole] = useState("");
+
   const [getPageCount, setPageCount] = useState(0);
   const [FilterEmpty, showFilterEmpty] = useState(false);
   const [showFilteredState, setShowFilteredState] = useState(false);
   const [FilteredState, setFilteredState] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
+
   const [moameleType, setMoameleType] = useState("");
 
   const [getMinPriceRange, setMinPriceRange] = useState(0);
@@ -70,33 +73,35 @@ const SearchEstate = () => {
     let userData = getUserDataOnLocalStorage();
     if (userData.role.karbar) return navigate("/");
     let userToken = getToken();
-
-    if (userData.role.administrator) {
+    setUserRole(userData.role);
+    if (userData.role.administrator || userData.role.karmand) {
+ 
       service.states
         .getStates(userToken)
         .then(async (data) => {
-          console.log(data.data);
-
+          console.log(data);
           setStates(data.data);
           const endOffset = itemOffset + 16;
           const currentStates = data.data.slice(itemOffset, endOffset);
           const pageCount = Math.ceil(data.data.length / 16);
+          console.log(1);
           setPageCount(pageCount);
           setStates(currentStates);
           setShowLoading(false);
-
           setMaxPriceRange(data.data[0].extraData[1].maxPrice);
           setMinPriceRange(data.data[0].extraData[1].minPrice);
           setInitialMaxPriceRange(data.data[0].extraData[1].maxPrice);
+          console.log(data.data[0].extraData);
 
           setMaxMetrazhRange(data.data[0].extraData[0].maxMetrazh);
           setMinMetrazhRange(data.data[0].extraData[0].minMetrazh);
           setInitialMaxMetrazhRange(data.data[0].extraData[0].maxMetrazh);
+          console.log(2);
 
           setMaxPriceRahnRange(data.data[0].extraData[2].maxPricerahn);
           setMinPriceRahnRange(data.data[0].extraData[2].minPricerahn);
           setInitialMaxPriceRahnRange(data.data[0].extraData[2].maxPricerahn);
-
+          console.log(3);
           setMaxPriceEjareRange(data.data[0].extraData[3].maxPriceejare);
           setMinPriceEjareRange(data.data[0].extraData[3].minPriceejare);
           setInitialMaxPriceEjareRange(data.data[0].extraData[3].maxPriceejare);
@@ -106,12 +111,10 @@ const SearchEstate = () => {
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
-      console.log(states);
     } else {
       service.states
         .getAutherStates(userData.ID, userToken)
         .then(async (data) => {
-          console.log(data);
           if (data.data.length == 0) {
             showEmpty(true);
             setShowLoading(false);
@@ -132,7 +135,6 @@ const SearchEstate = () => {
 
             setMaxPriceEjareRange(data.data[0].extraData[3].maxPriceejare);
             setMinPriceEjareRange(data.data[0].extraData[3].minPriceejare);
-            console.log(data.data[0].extraData[3].maxPriceejare);
             setInitialMaxPriceEjareRange(
               data.data[0].extraData[3].maxPriceejare
             );
@@ -160,13 +162,11 @@ const SearchEstate = () => {
         service.states
           .deleteState(stateId, userToken)
           .then((data) => {
-            console.log(data);
             // if (!data.data.deleted) throw new Error();
             let filteredStates = states.filter((item) => item.ID != stateId);
             setStates(filteredStates);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
           });
         Swal.fire("حذف شد!", "ملک مورد نظر حذف شد", "success");
@@ -175,13 +175,11 @@ const SearchEstate = () => {
   };
   const filterState = (e) => {
     e.preventDefault();
-    console.log(e);
+    setShowLoading(true);
     let userData = getUserDataOnLocalStorage();
 
-    setShowLoading(true);
-
     let userToken = getToken();
-    if (userData.role.administrator) {
+    if (userData.role.administrator || userData.role.karmand) {
       if (moameleType == "خرید و فروش") {
         let moamele = e.target[0].value;
         let melk = e.target[1].value;
@@ -203,7 +201,6 @@ const SearchEstate = () => {
         service.states
           .filterStates(userToken, stateData)
           .then((data) => {
-            console.log(data);
             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
@@ -214,7 +211,6 @@ const SearchEstate = () => {
             setFilteredState(data.data);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
             setShowLoading(false);
             setShowFilteredState(false);
@@ -222,7 +218,6 @@ const SearchEstate = () => {
       }
 
       if (moameleType == "رهن و اجاره") {
-        console.log(e);
         let moamele = e.target[0].value;
         let melk = e.target[1].value;
         let karbari = e.target[2].value;
@@ -246,7 +241,6 @@ const SearchEstate = () => {
         service.states
           .filterStates(userToken, stateData)
           .then((data) => {
-            console.log(data);
             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
@@ -257,7 +251,6 @@ const SearchEstate = () => {
             setFilteredState(data.data);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
             setShowLoading(false);
             setShowFilteredState(false);
@@ -279,11 +272,9 @@ const SearchEstate = () => {
           metrazhFrom: Number(getMinMetrazhRange),
           metrazhTo: Number(metrazh),
         };
-        console.log(stateData);
         service.states
           .filterStates(userToken, stateData)
           .then((data) => {
-            console.log(data);
             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
@@ -294,11 +285,14 @@ const SearchEstate = () => {
             setFilteredState(data.data);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
             setShowLoading(false);
             setShowFilteredState(false);
           });
+      }
+      if (moameleType == "") {
+        setFilteredState(states);
+        setShowLoading(false);
       }
     } else {
       if (moameleType == "خرید و فروش") {
@@ -323,7 +317,6 @@ const SearchEstate = () => {
         service.states
           .filterStateAuthorID(userToken, stateData)
           .then((data) => {
-            console.log(data);
             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
@@ -334,7 +327,6 @@ const SearchEstate = () => {
             setFilteredState(data.data);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
             setShowLoading(false);
             setShowFilteredState(false);
@@ -342,7 +334,6 @@ const SearchEstate = () => {
       }
 
       if (moameleType == "رهن و اجاره") {
-        console.log(e);
         let moamele = e.target[0].value;
         let melk = e.target[1].value;
         let karbari = e.target[2].value;
@@ -367,7 +358,6 @@ const SearchEstate = () => {
         service.states
           .filterStateAuthorID(userToken, stateData)
           .then((data) => {
-            console.log(data);
             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
@@ -378,7 +368,6 @@ const SearchEstate = () => {
             setFilteredState(data.data);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
             setShowLoading(false);
             setShowFilteredState(false);
@@ -405,7 +394,6 @@ const SearchEstate = () => {
         service.states
           .filterStateAuthorID(userToken, stateData)
           .then((data) => {
-            console.log(data);
             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
@@ -416,11 +404,14 @@ const SearchEstate = () => {
             setFilteredState(data.data);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
             setShowLoading(false);
             setShowFilteredState(false);
           });
+      }
+      if (moameleType == "") {
+        setFilteredState(states);
+        setShowLoading(false);
       }
     }
   };
@@ -583,13 +574,14 @@ const SearchEstate = () => {
                   </div>
                   <div className="w-full flex items-start justify-start max-lg:flex-col gap-4">
                     {moameleType == "خرید و فروش" ? (
-                      <div className="w-full flex justify-center flex-col items-center">
+                      <div className="w-full bg-sky-100 p-1 rounded-md flex justify-center flex-col items-center">
                         <label htmlFor="area" className="mb-3 block">
                           قیمت
                         </label>
-                        <div className="relative flex items-center">
-                          <span className="mx-4">
-                            {formatNumber(getMinPriceRange)} تومان
+                        <div className="relative flex items-center w-full max-lg:flex-col">
+                          <span className="mx-4 flex gap-1 items-center">
+                            {formatNumber(getMinPriceRange)}{" "}
+                            <span className="text-xs">تومان</span>
                           </span>
                           <input
                             type="range"
@@ -599,66 +591,70 @@ const SearchEstate = () => {
                             max={getMaxPriceRange}
                             value={getInitialMaxPriceRange}
                             onChange={changePriceRange}
-                            className="w-72"
+                            className="w-full"
                           />
-                          <span className="mx-4">
+                          <span className="mx-4 flex gap-1 items-center">
                             {formatNumber(Math.floor(getInitialMaxPriceRange))}
-                            {" تومان  "}
+                            <span className="text-xs">تومان</span>
                           </span>
                         </div>
                       </div>
                     ) : moameleType == "رهن و اجاره" ? (
                       <>
-                        <div className="w-full flex justify-center flex-col items-center">
-                          <label htmlFor="priceRahn" className="mb-3 block">
-                            قیمت رهن
-                          </label>
-                          <div className="relative flex items-center">
-                            <span className="mx-4">
-                              {formatNumber(getMinPriceRange)} تومان
-                            </span>
-                            <input
-                              type="range"
-                              id="priceRahn"
-                              name="priceRahn"
-                              min={getMinPriceRahnRange}
-                              max={getMaxPriceRahnRange}
-                              value={getInitialMaxPriceRahnRange}
-                              onChange={changePriceRahnRange}
-                              className="w-72"
-                            />
-                            <span className="mx-4">
-                              {formatNumber(
-                                Math.floor(getInitialMaxPriceRahnRange)
-                              )}
-                              {" تومان  "}
-                            </span>
+                        <div className="w-full flex flex-col gap-4">
+                          <div className="w-full flex justify-center flex-col items-center  bg-sky-100 p-1 rounded-md">
+                            <label htmlFor="priceRahn" className="mb-3 block">
+                              قیمت رهن
+                            </label>
+                            <div className="relative flex items-center w-full max-lg:flex-col">
+                              <span className="mx-4 flex gap-1 items-center">
+                                {formatNumber(getMinPriceRange)}{" "}
+                                <span className="text-xs">تومان</span>
+                              </span>
+                              <input
+                                type="range"
+                                id="priceRahn"
+                                name="priceRahn"
+                                min={getMinPriceRahnRange}
+                                max={getMaxPriceRahnRange}
+                                value={getInitialMaxPriceRahnRange}
+                                onChange={changePriceRahnRange}
+                                className="w-full"
+                              />
+                              <span className="mx-4 flex gap-1 items-center">
+                                {formatNumber(
+                                  Math.floor(getInitialMaxPriceRahnRange)
+                                )}
+                                <span className="text-xs">تومان</span>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="w-full flex justify-center flex-col items-center">
-                          <label htmlFor="priceEjare" className="mb-3 block">
-                            قیمت اجاره
-                          </label>
-                          <div className="relative flex items-center">
-                            <span className="mx-4">
-                              {formatNumber(getMinPriceEjareRange)} تومان
-                            </span>
-                            <input
-                              type="range"
-                              id="priceEjare"
-                              name="priceEjare"
-                              min={getMinPriceEjareRange}
-                              max={getMaxPriceEjareRange}
-                              value={getInitialMaxPriceEjareRange}
-                              onChange={changePriceEjareRange}
-                              className="w-72"
-                            />
-                            <span className="mx-4">
-                              {formatNumber(
-                                Math.floor(getInitialMaxPriceEjareRange)
-                              )}
-                              {" تومان  "}
-                            </span>
+                          <div className="w-full flex justify-center flex-col items-center  bg-sky-100 p-1 rounded-md">
+                            <label htmlFor="priceEjare" className="mb-3 block">
+                              قیمت اجاره
+                            </label>
+                            <div className="relative flex items-center w-full max-lg:flex-col">
+                              <span className="mx-4 flex gap-1 items-center">
+                                {formatNumber(getMinPriceEjareRange)}{" "}
+                                <span className="text-xs">تومان</span>
+                              </span>
+                              <input
+                                type="range"
+                                id="priceEjare"
+                                name="priceEjare"
+                                min={getMinPriceEjareRange}
+                                max={getMaxPriceEjareRange}
+                                value={getInitialMaxPriceEjareRange}
+                                onChange={changePriceEjareRange}
+                                className="w-full"
+                              />
+                              <span className="mx-4 flex gap-1 items-center">
+                                {formatNumber(
+                                  Math.floor(getInitialMaxPriceEjareRange)
+                                )}
+                                <span className="text-xs">تومان</span>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </>
@@ -666,13 +662,14 @@ const SearchEstate = () => {
                       ""
                     )}
 
-                    <div className="w-full flex justify-center flex-col items-center">
+                    <div className="w-full flex justify-center flex-col items-center  bg-sky-100 p-1 rounded-md">
                       <label htmlFor="metrazh" className="mb-3 block">
                         متراژ
                       </label>
-                      <div className="relative flex items-center">
-                        <span className="mx-4">
-                          {formatNumber(getMinMetrazhRange)} متر
+                      <div className="relative flex items-center w-full max-lg:flex-col">
+                        <span className="mx-4 flex gap-1 items-center">
+                          {formatNumber(getMinMetrazhRange)}{" "}
+                          <span className="text-xs">متر</span>
                         </span>
                         <input
                           type="range"
@@ -682,11 +679,11 @@ const SearchEstate = () => {
                           max={getMaxMetrazhRange}
                           value={getInitialMaxMetrazhRange}
                           onChange={changeMetrazhRange}
-                          className="w-72"
+                          className="w-full"
                         />
-                        <span className="mx-4">
+                        <span className="mx-4 flex gap-1 items-center">
                           {formatNumber(Math.floor(getInitialMaxMetrazhRange))}
-                          {" متر  "}
+                          <span className="text-xs">متر</span>
                         </span>
                       </div>
                     </div>
@@ -725,7 +722,7 @@ const SearchEstate = () => {
                       states.map((item, index) => (
                         <div
                           key={index}
-                          className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl"
+                          className="col-span-12 md:col-span-6 lg:col-span-4  xl:col-span-4 2xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl"
                         >
                           <div className="flex flex-col  pb-4 relative justify-between h-full">
                             {item.fast == "1" ? (
@@ -803,7 +800,19 @@ const SearchEstate = () => {
                               {item.post_title}
                             </p>
 
-                            <div className=" items-center gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
+                            <div className="flex items-center justify-center bg-sky-200 p-1 mt-1 rounded-md">
+                              <div className="flex ">
+                                <FaUserEdit
+                                  size={19}
+                                  className="text-gray-600"
+                                />
+                                <span className="mr-2 text-sm ">
+                                  کاربر ثبت : {item["0"].display_name}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className=" items-center h-[243px] gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
                               {item.moamele == "خرید و فروش" ? (
                                 <div className="flex mt-3">
                                   <GiPriceTag
@@ -894,26 +903,35 @@ const SearchEstate = () => {
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-4 mt-4 justify-center">
-                              <button
-                                onClick={() => {
-                                  deleteState(item.ID, item.post_title);
-                                }}
-                                type="button"
-                                className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
-                              >
-                                <RiDeleteBin6Line size={18} className="pl-1" />
-                                حذف{" "}
-                              </button>
-                              <Link to={`/edit-estate/${item.ID}`}>
-                                <button
-                                  type="button"
-                                  className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
-                                >
-                                  <RiEdit2Line size={18} className="pl-1" />
-                                  ویرایش
-                                </button>
-                              </Link>
+                            <div className="flex items-center gap-2 mt-4 justify-center">
+                              {!userRole.karmand ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      deleteState(item.ID, item.post_title);
+                                    }}
+                                    type="button"
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                  >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
+                                    حذف{" "}
+                                  </button>
+                                  <Link to={`/edit-estate/${item.ID}`}>
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
+                                      ویرایش
+                                    </button>
+                                  </Link>
+                                </>
+                              ) : (
+                                ""
+                              )}
                               <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"
@@ -946,7 +964,7 @@ const SearchEstate = () => {
                       FilteredState.map((item, index) => (
                         <div
                           key={index}
-                          className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl"
+                          className="col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 xl:col-span-4 cursor-pointer   h-auto bg-white  backdrop-blur-md rounded-2xl"
                         >
                           <div className="flex flex-col  pb-4 relative">
                             {item.fast == "1" ? (
@@ -1024,6 +1042,18 @@ const SearchEstate = () => {
                               {item.post_title}
                             </p>
 
+                            <div className="flex items-center justify-center bg-sky-200 p-1 mt-1 rounded-md">
+                              <div className="flex ">
+                                <FaUserEdit
+                                  size={19}
+                                  className="text-gray-600"
+                                />
+                                <span className="mr-2 text-sm ">
+                                  کاربر ثبت : {item["0"].display_name}
+                                </span>
+                              </div>
+                            </div>
+
                             <div className=" items-center gap-10 mt-4 justify-center bg-[#fafafa] p-2 flex-wrap  ">
                               {item.moamele == "خرید و فروش" ? (
                                 <div className="flex mt-3">
@@ -1115,26 +1145,36 @@ const SearchEstate = () => {
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-4 mt-4 justify-center">
-                              <button
-                                onClick={() => {
-                                  deleteState(item.ID, item.post_title);
-                                }}
-                                type="button"
-                                className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
-                              >
-                                <RiDeleteBin6Line size={18} className="pl-1" />
-                                حذف{" "}
-                              </button>
-                              <Link to={`/edit-estate/${item.ID}`}>
-                                <button
-                                  type="button"
-                                  className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
-                                >
-                                  <RiEdit2Line size={18} className="pl-1" />
-                                  ویرایش
-                                </button>
-                              </Link>
+                            <div className="flex items-center gap-2 mt-4 justify-center">
+                              {!userRole.karmand ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      deleteState(item.ID, item.post_title);
+                                    }}
+                                    type="button"
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                  >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
+                                    حذف{" "}
+                                  </button>
+                                  <Link to={`/edit-estate/${item.ID}`}>
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
+                                      ویرایش
+                                    </button>
+                                  </Link>
+                                </>
+                              ) : (
+                                ""
+                              )}
+
                               <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"
@@ -1158,7 +1198,7 @@ const SearchEstate = () => {
                     <ReactPaginate
                       containerClassName="flex justify-center items-center mt-8 mb-4"
                       pageClassName="block text-white !rounded-full border border-solid border-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-2"
-                      activeClassName="bg-white text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
+                      activeClassName="bg-white !text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
                       breakLabel="..."
                       onPageChange={handlePageClick}
                       pageRangeDisplayed={5}

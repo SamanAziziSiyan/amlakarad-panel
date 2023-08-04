@@ -65,7 +65,6 @@ const PropertyType = () => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data);
         setShowMelk(data.data[0].melk);
         setApartmentData({
           tabaghe: data.data[0].tabaghe,
@@ -109,10 +108,9 @@ const PropertyType = () => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
-
-    // console.log(informationData);
   }, []);
   const handleEditStateMeta = (values) => {
     setShowLoading(true);
@@ -139,7 +137,6 @@ const PropertyType = () => {
           },
         ],
       };
-      console.log(stateData);
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -150,14 +147,12 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
     }
 
     if (shoMelk == "خانه و ویلا") {
-      console.log(homeData);
       let stateData = {
         ID: stateId,
         meta: [
@@ -188,7 +183,6 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -213,7 +207,7 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
+
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -238,7 +232,6 @@ const PropertyType = () => {
           },
         ],
       };
-      console.log(stateData);
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -249,7 +242,6 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });

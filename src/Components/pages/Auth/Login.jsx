@@ -32,6 +32,8 @@ const Login = () => {
               role: user.data.extra.role[0],
               ID: decodeToken.data.user.id,
             };
+
+            
             localStorage.setItem("user", JSON.stringify(userData));
             toastAlert("با موفقیت وارد شدید ", "success");
             navigate("/");
@@ -50,11 +52,11 @@ const Login = () => {
   return (
     <>
       <AuthLayout>
-        <div className=" flex items-center justify-center relative  ">
+        <div className=" flex items-center justify-center relative px-4  ">
           <div className="relative">
-            <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
+            <div className="w-20 h-20  bg-purple-800 left-0 rounded-full absolute top-[-7%] drop-shadow-md "></div>
             <div className="w-20 h-20 bg-[#9b3ed3]  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
-            <div className="w-[430px] h-[490px] rounded-2xl backdrop-blur-md bg-opacity-50 shadow-[#7a2fae] shadow-md bg-white/10 flex justify-around flex-col items-center">
+            <div className="w-full h-[490px] rounded-2xl backdrop-blur-md bg-opacity-50 shadow-[#7a2fae] shadow-md bg-white/10 flex justify-around flex-col items-center">
               <div className="flex items-center flex-col gap-2">
                 <h3 className="mb-5 text-2xl font-medium text-gray-400">
                   صفحه ورود پرسنل

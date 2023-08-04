@@ -9,11 +9,15 @@ import {
 } from "../../../helper";
 import { BeatLoader } from "react-spinners";
 import service from "../../../../server/service";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const InformationForm = ({ setNextSection }) => {
   const [showLoading, setShowLoading] = useState(false);
+  const [userID, setUserId] = useState(0);
+  const moshaverRef = useRef();
+  const [userRole, setUserRole] = useState(null);
+  const [moshavers, setMoshavers] = useState([]);
   const { stateId } = useParams();
   const navigate = useNavigate();
 
@@ -21,6 +25,7 @@ const InformationForm = ({ setNextSection }) => {
     title: "",
     content: "",
     status: "",
+    moshaver: "",
   });
   const handleEditState = (values) => {
     if (values.post_status == "0") {
@@ -35,6 +40,7 @@ const InformationForm = ({ setNextSection }) => {
       title: informationData.title,
       content: informationData.content,
       status: informationData.status,
+      author: informationData.moshaver,
       type: "state",
     };
     service.states
@@ -53,10 +59,37 @@ const InformationForm = ({ setNextSection }) => {
   };
   useEffect(() => {
     let userToken = getToken();
+    let moshaverRole = getUserDataOnLocalStorage();
+    let moshaverId = getUserDataOnLocalStorage();
+    moshaverRole = moshaverRole.role;
+    moshaverId = moshaverRole.ID;
+    if (moshaverRole.administrator != null) {
+      setUserRole(1);
+    } else {
+      setUserId(moshaverId);
+    }
+
+    service.personnel
+      .getUsers(userToken)
+      .then((data) => {
+        if (data.data.status == 403) throw new Error();
+        let moshaverItems = [];
+        data.data.map((item) => {
+          if (!item.extra.role[0].karbar) {
+            moshaverItems.push(item);
+          }
+        });
+        setMoshavers(moshaverItems);
+      })
+      .catch((err) => {
+        toastAlert("شما به بخش دسترسی ندارید");
+      });
+
     let userData = getUserDataOnLocalStorage();
     service.states
       .getState(userToken, stateId)
       .then((data) => {
+        console.log(data);
         if (data.data.length == 0) {
           navigate("/404");
         }
@@ -64,13 +97,13 @@ const InformationForm = ({ setNextSection }) => {
           title: data.data[0].post_title,
           content: data.data[0].post_content,
           status: data.data[0].post_status,
+          moshaver: data.data[0].post_author,
         });
       })
       .catch((err) => {
-      console.log(err);
+        toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
-
-    // console.log(informationData);
   }, []);
 
   return (
@@ -123,6 +156,38 @@ const InformationForm = ({ setNextSection }) => {
             value={informationData.content}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
           />
+
+          <div className="flex items-center justify-between gap-4 max-md:flex-col">
+            <div className="w-full">
+              <label htmlFor="auther" className="mb-3 text-white block">
+                کاربر ثبت کننده ملک
+              </label>
+              <select
+                id="auther"
+                name="auther"
+                as="select"
+                ref={moshaverRef}
+                value={informationData.moshaver}
+                onChange={(e) => {
+                  setInformationData({
+                    ...informationData,
+                    moshaver: e.target.value,
+                  });
+                }}
+                disabled={userRole != 1 ? true : false}
+                className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+              >
+                {moshavers.map((item, index) => (
+                  <option
+                    selected={item.id == informationData.moshaver ? true : false}
+                    value={item.id}
+                  >
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
           <div className="w-full">
             <label htmlFor="post_status" className="mb-3 text-white block">

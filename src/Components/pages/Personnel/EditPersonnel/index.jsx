@@ -56,7 +56,7 @@ const CreatePersonnel = () => {
   }, []);
   const handleUpdateUser = (e) => {
     e.preventDefault();
-    console.log();
+  
     let data = {
       name: personnelData.name,
       meta: {
@@ -64,7 +64,7 @@ const CreatePersonnel = () => {
       },
       roles: personnelData.role,
     };
-    console.log(data);
+ 
     let userToken = getToken();
     service.personnel
       .updateUser(data, personnelId, userToken)
@@ -74,7 +74,7 @@ const CreatePersonnel = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+ 
         if (err.response) {
           toastAlert(err.response.data.message);
         } else toastAlert("سرور مشغول است");

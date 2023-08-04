@@ -25,7 +25,7 @@ const Settings = () => {
   const [font, setFont] = useState("yekan");
   useEffect(() => {
     const SettingsData = getUserSettinOnLocalStorage();
-    console.log(SettingsData);
+
     if (SettingsData == null) {
       return;
     } else {
@@ -59,7 +59,7 @@ const Settings = () => {
         navigate("/login");
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
   };
   const handleChangeSetting = (e) => {
@@ -163,7 +163,10 @@ const Settings = () => {
               تنظیمات{" "}
             </h2>
 
-            <form className=" px-32 max-lg:px-6 py-10" onSubmit={handleChangeSetting}>
+            <form
+              className=" px-32 max-lg:px-6 py-10"
+              onSubmit={handleChangeSetting}
+            >
               <div className="flex items-center max-lg:flex-col justify-between gap-4">
                 <div className="w-full">
                   <label htmlFor="username" className="mb-3 text-white block">

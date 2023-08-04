@@ -21,7 +21,7 @@ const MediaForm = () => {
 
   const handleUploadImage = (e) => {
     let userToken = getToken();
-    console.log(e.target.files[0]);
+
     let userData = getUserDataOnLocalStorage();
     let imageData = {
       title: "ملک",
@@ -63,12 +63,12 @@ const MediaForm = () => {
               toastAlert("فیلم با موفقیت ذخیره شد", "success");
             })
             .catch((err) => {
-              console.log(err);
+              toastAlert("سرور مشغول است");
             });
         }
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
   };
   const deleteUploadedImage = (id, type) => {
@@ -91,9 +91,8 @@ const MediaForm = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
-    console.log(id);
   };
   useEffect(() => {
     setStateID(localStorage.getItem("stateId"));
@@ -103,18 +102,14 @@ const MediaForm = () => {
     let ownerMobile = localStorage.getItem("ownerMobile");
     let moshaverName = localStorage.getItem("moshaverName");
     sendSMSStateOwner(ownerMobile, stateTitle)
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
     sendSMSAdminState(moshaverName, stateTitle)
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
     localStorage.removeItem("stateId");
     localStorage.removeItem("stateTitle");

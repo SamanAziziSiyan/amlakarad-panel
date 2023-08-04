@@ -29,6 +29,7 @@ const SearchPersonnel = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
   const [getPageCount, setPageCount] = useState(0);
+  const [userRole, setUserRole] = useState("");
 
   const [users, setUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -38,24 +39,14 @@ const SearchPersonnel = () => {
   // const [userDataRole, setUserDataRole] = useState(false);
 
   const handlePageClick = (e) => {
-    const newOffset = e.selected * 20;
+    const newOffset = e.selected *15;
     setItemOffset(newOffset);
   };
 
   useEffect(() => {
-    //  console.log(hash);
     let userData = getUserDataOnLocalStorage();
-    // if (userData.role.karbar) {
-    //   setUserDataRole(true);
-    // }
-    // if (
-    //   userData.role.administrator == undefined &&
-    //   userData.role.karmand == undefined
-    // ) {
-    //   toastAlert("شما به این بخش دسترسی ندارید");
-    //   navigate("/");
-    //   return;
-    // }
+
+    setUserRole(userData.role);
 
     let userToken = getToken();
     service.personnel
@@ -64,9 +55,9 @@ const SearchPersonnel = () => {
         if (data.data.status == 403) throw new Error();
         setAllUsers(data.data);
 
-        const endOffset = itemOffset + 20;
+        const endOffset = itemOffset + 15;
         const currentUser = data.data.slice(itemOffset, endOffset);
-        const pageCount = Math.ceil(data.data.length / 20);
+        const pageCount = Math.ceil(data.data.length / 15);
         setPageCount(pageCount);
         setUsers(currentUser);
         setShowLoading(false);
@@ -92,13 +83,11 @@ const SearchPersonnel = () => {
         service.personnel
           .deleteUser(id, userToken)
           .then((data) => {
-            console.log(data.data);
             if (!data.data.deleted) throw new Error();
             let filteredUsers = users.filter((item) => item.id != id);
             setUsers(filteredUsers);
           })
           .catch((err) => {
-            console.log(err);
             toastAlert("سرور مشغول است");
           });
         Swal.fire("حذف شد!", "اطلاعات کاربر به مدیر انتقال داده شد", "success");
@@ -319,26 +308,37 @@ const SearchPersonnel = () => {
                                         : "نقش یافت نشد"}
                                     </td>
                                     <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-center gap-7">
-                                      <button
-                                        className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
-                                        onClick={() => {
-                                          handleDeleteUser(item.id, item.name);
-                                        }}
-                                      >
-                                        حذف
-                                      </button>
-                                      <Link to={`/edit-personnel/${item.id}`}>
-                                        <button
-                                          type="button"
-                                          className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
-                                        >
-                                          <RiEdit2Line
-                                            size={18}
-                                            className="pl-1"
-                                          />
-                                          ویرایش
-                                        </button>
-                                      </Link>
+                                      {userRole.administrator ? (
+                                        <>
+                                          <button
+                                            className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
+                                            onClick={() => {
+                                              handleDeleteUser(
+                                                item.id,
+                                                item.name
+                                              );
+                                            }}
+                                          >
+                                            حذف
+                                          </button>
+                                          <Link
+                                            to={`/edit-personnel/${item.id}`}
+                                          >
+                                            <button
+                                              type="button"
+                                              className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                            >
+                                              <RiEdit2Line
+                                                size={18}
+                                                className="pl-1"
+                                              />
+                                              ویرایش
+                                            </button>
+                                          </Link>
+                                        </>
+                                      ) : (
+                                        ""
+                                      )}
 
                                       {item.extra.role[0].karbar ? (
                                         ""
@@ -393,30 +393,37 @@ const SearchPersonnel = () => {
                                       : "نقش یافت نشد"}
                                   </td>
                                   <td className="whitespace-nowrap  px-6 py-4 flex items-center justify-start gap-7">
-                                    <button
-                                      className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
-                                      onClick={() => {
-                                        handleDeleteUser(item.id, item.name);
-                                      }}
-                                    >
-                                      <RiDeleteBin6Line
-                                        size={18}
-                                        className="pl-1"
-                                      />
-                                      حذف
-                                    </button>
-                                    <Link to={`/edit-personnel/${item.id}`}>
-                                      <button
-                                        type="button"
-                                        className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
-                                      >
-                                        <RiEdit2Line
-                                          size={18}
-                                          className="pl-1"
-                                        />
-                                        ویرایش
-                                      </button>
-                                    </Link>
+                                  {userRole.administrator ? (
+                                        <>
+                                          <button
+                                            className="bg-red-500 p-2 text-white rounded-xl  shadow-sm shadow-rose-500 "
+                                            onClick={() => {
+                                              handleDeleteUser(
+                                                item.id,
+                                                item.name
+                                              );
+                                            }}
+                                          >
+                                            حذف
+                                          </button>
+                                          <Link
+                                            to={`/edit-personnel/${item.id}`}
+                                          >
+                                            <button
+                                              type="button"
+                                              className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                            >
+                                              <RiEdit2Line
+                                                size={18}
+                                                className="pl-1"
+                                              />
+                                              ویرایش
+                                            </button>
+                                          </Link>
+                                        </>
+                                      ) : (
+                                        ""
+                                      )}
 
                                     {item.extra.role[0].karbar ? (
                                       ""
@@ -456,7 +463,7 @@ const SearchPersonnel = () => {
                   <ReactPaginate
                     containerClassName="flex justify-center items-center mt-8 mb-4"
                     pageClassName="block text-white !rounded-full border border-solid border-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-2"
-                    activeClassName="bg-white text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
+                    activeClassName="bg-white !text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
                     breakLabel="..."
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}

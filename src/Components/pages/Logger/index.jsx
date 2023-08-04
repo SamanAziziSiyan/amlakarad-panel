@@ -41,20 +41,16 @@ const Logger = () => {
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
 
-    // if (
-    //   userData.role.administrator == undefined &&
-    //   userData.role.karmand == undefined
-    // ) {
-    //   toastAlert("شما به این بخش دسترسی ندارید");
-    //   navigate("/");
-    //   return;
-    // }
+    if (!userData.role.administrator) {
+      toastAlert("شما به این بخش دسترسی ندارید");
+      navigate("/");
+      return;
+    }
 
     let userToken = getToken();
     service.personnel
       .getLogs(userToken)
       .then((data) => {
-        console.log(data);
         // if (data.data.status == 403) throw new Error();
 
         const endOffset = itemOffset + 40;
@@ -408,7 +404,7 @@ const Logger = () => {
                   <ReactPaginate
                     containerClassName="flex justify-center items-center mt-8 mb-4"
                     pageClassName="block text-white !rounded-full border border-solid border-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-2"
-                    activeClassName="bg-white text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
+                    activeClassName="bg-white !text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
                     breakLabel="..."
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}

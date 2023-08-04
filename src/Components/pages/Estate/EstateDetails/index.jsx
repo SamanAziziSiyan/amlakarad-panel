@@ -1,42 +1,68 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import service from "../../../../server/service";
-import { getToken } from "../../../helper";
+import {
+  formatNumber,
+  getToken,
+  getUserDataOnLocalStorage,
+} from "../../../helper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { RiEdit2Line } from "react-icons/ri";
+import { RiCalendarCheckFill, RiEdit2Line } from "react-icons/ri";
 import { GiElevator } from "react-icons/gi";
 import { FaParking, FaSignOutAlt } from "react-icons/fa";
 
 import Layout from "../../../Layout";
+import { ClipLoader } from "react-spinners";
+import moment from "jalali-moment";
 
 const EstateDetails = () => {
   const navigate = useNavigate();
   const { stateId } = useParams();
   const [stateData, setStateData] = useState({});
   const [videoSrc, setVideoSrc] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const [stateAuthor, setStateAuthor] = useState("");
+
+  const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
+    let userData = getUserDataOnLocalStorage();
+    setUserRole(userData.role);
+    window.scrollTo(0, 0);
     const token = getToken();
     service.states
       .getState(token, stateId)
       .then((data) => {
-        console.log(data);
+
         if (data.data.length == 0) {
           navigate("/404");
         }
-        console.log(data);
-        data.data[0].img.map((item) => {
-          if (item.img.search(".mp4") != -1) {
-            setVideoSrc(item);
-          }
-        });
+        if (data.data[0].img != 0) {
+          data.data[0].img.map((item) => {
+            if (item.img.search(".mp4") != -1) {
+              setVideoSrc(item);
+            }
+          });
+        } else {
+          setVideoSrc("");
+        }
         setStateData(data.data[0]);
+        setShowLoading(false);
+        service.personnel
+          .getUser(token, data.data[0].post_author)
+          .then((data) => {
+            console.log(data);
+            setStateAuthor(data.data.name);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         if (err.response.status == 404) {
           navigate("/404");
         }
-        console.log(err);
+        setShowLoading(false);
       });
   }, []);
   return (
@@ -51,6 +77,14 @@ const EstateDetails = () => {
               <div className="w-full relative !pb-[100px] h-auto bg-white/5 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
                 <div className="flex items-center justify-between gap-4 max-lg:flex-wrap"></div>
                 <div className="w-full h-auto ">
+                  {showLoading && (
+                    <div className="flex-col mt-6 flex justify-center items-center  m-auto font-medium rounded-xl   ">
+                      <ClipLoader size={70} color="#fff" />
+                      <span className="text-white mt-6">
+                        درحال بارگزاری اطلاعات
+                      </span>
+                    </div>
+                  )}
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-9 max-lg:col-span-12">
                       <Swiper
@@ -81,10 +115,10 @@ const EstateDetails = () => {
                       </Swiper>
                     </div>
                     <div className="col-span-3  max-lg:col-span-12  h-full rounded-lg py-2  px-1 flex flex-col gap-4">
-                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white h-auto rounded-[5px]   flex items-center justify-center">
                         <span>نام مالک :{stateData.name}</span>
                       </div>
-                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                         <span>
                           {" "}
                           شماره تماس مالک:
@@ -94,19 +128,26 @@ const EstateDetails = () => {
 
                       {stateData.moamele == "خرید و فروش" ? (
                         <>
-                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
-                            <span>قیمت کل :{stateData["price-kol"]}</span>
+                          <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
+                            <span>
+                              قیمت کل :{formatNumber(stateData["price-kol"])}{" "}
+                              <span className="text-xs">تومان</span>
+                            </span>
                           </div>
-                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
-                            <span>قیمت متری :{stateData["price-metri"]}</span>
+                          <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
+                            <span>
+                              قیمت متری :
+                              {formatNumber(stateData["price-meteri"])}{" "}
+                              <span className="text-xs">تومان</span>
+                            </span>
                           </div>
                         </>
                       ) : stateData.moamele == "رهن و اجاره" ? (
                         <>
-                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                          <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                             <span>قیمت رهن :{stateData["price-rahn"]}</span>
                           </div>
-                          <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                          <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                             <span>قیمت اجاره :{stateData["price-ejare"]}</span>
                           </div>
                         </>
@@ -114,22 +155,151 @@ const EstateDetails = () => {
                         ""
                       )}
 
-                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                         <span>آدرس ملک :{stateData.address} </span>
                       </div>
-                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                         <span>شهر :{stateData.ostan} </span>
                       </div>
-                      <div className="w-full bg-white rounded-[5px] h-10 flex items-center justify-center">
+                      <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                         <span>منطقه :{stateData.shahr} </span>
                       </div>
                     </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
-                    <div className="   rounded-[5px] flex flex-col  col-span-12 md:col-span-10 lg:col-span-10 w-full p-3">
-                      <h2 className="mb-2 text-right relative text-white text-[25px]  ">
-                        {stateData.post_title}
+                    <div className="   rounded-[5px] items-end max-lg:flex-col max-lg:items-center flex justify-between bg-white   col-span-12  w-full p-3">
+                      <h2 className="mb-2 flex max-lg:text-lg items-end gap-4 max-lg:flex-col max-lg:items-center text-right relative text-gray-900 text-[25px]  ">
+                        <div>
+                          <div className="flex items-center">
+                            <RiCalendarCheckFill className="text-center text-gray-400 text-md" />
+                            <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
+                              {moment(stateData.post_date)
+                                .locale("fa")
+                                .format("DDD") + " روز پیش"}
+                            </p>
+                          </div>
+                          {stateData.post_title}
+                        </div>
+                        <div className="flex gap-4 max-lg:flex-col">
+                          {stateData.post_status == "expired" ? (
+                            <div className="flex items-center gap-4 justify-center">
+                              <button className="   bg-[#e01e36]  p-2 text-xs text-white   rounded-md">
+                                منقضی شده{" "}
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {stateData.post_status == "pending" ? (
+                            <div className="flex items-center gap-4 justify-center">
+                              <button className="    bg-orange-300 p-2 text-xs text-white   rounded-md">
+                                در انتظار بررسی{" "}
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {stateData.post_status == "publish" ? (
+                            <div className="flex items-center gap-4 justify-center">
+                              <button className="    bg-green-400 p-2 text-xs text-white   rounded-md">
+                                منتشر شده{" "}
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {stateData.post_status == "trash" ? (
+                            <div className="flex items-center gap-4 justify-center">
+                              <button className="    bg-[#e01e36] p-2 text-xs text-white   rounded-md">
+                                زباله دان{" "}
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {stateData.post_status == "draft" ? (
+                            <div className="flex items-center gap-4 justify-center">
+                              <button className="  bg-[#0369A1] p-2 text-xs text-white   rounded-md">
+                                پیش نویس{" "}
+                              </button>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+
+                          <div className="flex items-center gap-4 justify-center">
+                            <button className="   bg-purple-600  p-2 text-xs text-white   rounded-md">
+                              {stateAuthor}
+                            </button>
+                          </div>
+                        </div>
                       </h2>
+
+                      <div className="flex gap-2 pb-4 max-[425px]:flex-col ">
+                        {stateData.fast == "1" ? (
+                          <div className="flex items-center gap-2 justify-center">
+                            <button className="   bg-[#e01e36]  p-2 text-xs text-white   rounded-md">
+                              فوری{" "}
+                            </button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        {stateData.special == "1" ? (
+                          <div className="flex items-center gap-4 justify-center">
+                            <button className="bg-[#ffca28] p-2 text-xs text-white   rounded-md">
+                              ویژه
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-4 justify-center">
+                            <button className="bg-sky-600 p-2 text-xs text-white   rounded-md">
+                              عادی{" "}
+                            </button>
+                          </div>
+                        )}
+
+                        {stateData.shahraki == "1" ? (
+                          <div className="flex items-center gap-2 justify-center">
+                            <button className="   bg-[#e01e36]  p-2 text-xs text-white   rounded-md">
+                              شهرکی
+                            </button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        {stateData.saheli == "1" ? (
+                          <div className="flex items-center gap-4 justify-center">
+                            <button className="bg-sky-600 p-2 text-xs text-white   rounded-md">
+                              ساحلی
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-4 justify-center">
+                            <button className="bg-sky-600 p-2 text-xs text-white   rounded-md">
+                              کوهپایه
+                            </button>
+                          </div>
+                        )}
+
+                        <div className="flex items-center ">
+                          {!userRole.karmand ? (
+                            <div className="flex items-center gap-4 justify-center">
+                              <Link to={`/edit-estate/${stateData.ID}`}>
+                                <button
+                                  type="button"
+                                  className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                >
+                                  <RiEdit2Line size={18} className="pl-1" />
+                                  ویرایش
+                                </button>
+                              </Link>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 mt-10">
@@ -173,11 +343,14 @@ const EstateDetails = () => {
                     <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       توضیحات{" "}
                     </h2>
-                    <div className="grid grid-cols-12 gap-5">
-                      <p className="  text-justify text-white col-span-7">
-                        {stateData.post_content}
-                      </p>
-                      <div className="col-span-5">
+                    <div className="grid grid-cols-12 gap-5  ">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: stateData.post_content,
+                        }}
+                        className="text-justify text-white col-span-7 max-lg:col-span-12"
+                      ></div>
+                      <div className="col-span-5 max-lg:col-span-12">
                         {videoSrc != "" ? (
                           <video
                             src={videoSrc.img}
@@ -256,6 +429,19 @@ const EstateDetails = () => {
                                 </span>
                               </div>
                             </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">مشارکت در ساخت</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData.mosharekat == "0"
+                                    ? "ندارد"
+                                    : "دارد"}{" "}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </>
                       ) : stateData.moamele == "رهن و اجاره" ? (
@@ -327,6 +513,14 @@ const EstateDetails = () => {
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
                                 <span> {stateData.darbast}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">نوع معامله</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.moamele}</span>
                               </div>
                             </div>
                           </div>
@@ -721,13 +915,19 @@ const EstateDetails = () => {
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
                         <GiElevator size={24} />
                         <span className="text-lg mr-4">
-                          آسانسور : {stateData.asansor}
+                          آسانسور :{" "}
+                          {stateData.asansor == "0"
+                            ? "ندارد"
+                            : stateData.asansor}
                         </span>
                       </div>
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
                         <FaParking size={24} />
                         <span className="text-lg mr-4">
-                          پارکینگ : {stateData.parking}
+                          پارکینگ :{" "}
+                          {stateData.parking == "0"
+                            ? "ندارد"
+                            : stateData.parking}
                         </span>
                       </div>
                     </div>
