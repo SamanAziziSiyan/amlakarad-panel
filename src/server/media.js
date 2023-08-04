@@ -2,7 +2,7 @@ import config from "./config.json";
 import axios from "axios";
 
 const uploadImage = (token, data, imageName) => {
-  console.log(data);
+ 
   let headers = {
     Authorization: `Bearer ${token}`,
     "content-type": "multipart/form-data",

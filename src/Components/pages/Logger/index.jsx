@@ -18,42 +18,53 @@ import {
   RiReplyAllLine,
 } from "react-icons/ri";
 import { BsInfoCircleFill } from "react-icons/bs";
+import ReactPaginate from "react-paginate";
 
 import Layout from "../../Layout";
 import moment from "jalali-moment";
+import { ClipLoader } from "react-spinners";
 
 const Logger = () => {
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
 
   const [Logs, setLogs] = useState([]);
   const [filterLog, setFilterLogs] = useState([]);
   const [showFilteredLogs, setShowFilterdLogs] = useState(false);
-
+  const [itemOffset, setItemOffset] = useState(0);
+  const [getPageCount, setPageCount] = useState(0);
+  const handlePageClick = (e) => {
+    const newOffset = e.selected * 40;
+    setItemOffset(newOffset);
+  };
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
 
-    // if (
-    //   userData.role.administrator == undefined &&
-    //   userData.role.karmand == undefined
-    // ) {
-    //   toastAlert("شما به این بخش دسترسی ندارید");
-    //   navigate("/");
-    //   return;
-    // }
+    if (!userData.role.administrator) {
+      toastAlert("شما به این بخش دسترسی ندارید");
+      navigate("/");
+      return;
+    }
 
     let userToken = getToken();
     service.personnel
       .getLogs(userToken)
       .then((data) => {
-        console.log(data);
         // if (data.data.status == 403) throw new Error();
-        setLogs(data.data);
+
+        const endOffset = itemOffset + 40;
+        const currentLogs = data.data.slice(itemOffset, endOffset);
+        const pageCount = Math.ceil(data.data.length / 40);
+        setPageCount(pageCount);
+        setLogs(currentLogs);
+        setShowLoading(false);
       })
       .catch((err) => {
         toastAlert("شما به بخش دسترسی ندارید");
+        setShowLoading(false);
       });
-  }, []);
+  }, [itemOffset]);
 
   const filterLogs = (value, Type) => {
     setFilterLogs([]);
@@ -84,7 +95,7 @@ const Logger = () => {
     <>
       <Layout>
         <div className="w-full text-center m-auto mt-20">
-          <div className=" bg-white/5 grid grid-cols-12  lg:gap-10 px-2 justify-center items-center">
+          <div className="   grid grid-cols-12  lg:gap-10 px-2 justify-center items-center">
             <div className="col-span-12 xl:col-span-12 relative ">
               <div className="w-20 h-20 bg-purple-800  rounded-full absolute  drop-shadow-md "></div>
               <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-0  right-[-2%] drop-shadow-md"></div>
@@ -92,7 +103,7 @@ const Logger = () => {
 
               <div className="w-full relative  h-auto bg-white/10 backdrop-blur-md bg-opacity-50 rounded-lg lg:p-4 p-2">
                 <div className="flex items-center w-full justify-between gap-4 max-lg:flex-wrap">
-                  <div className="flex items-center w-2/6 justify-start gap-4">
+                  <div className="flex items-center w-2/6 justify-start gap-4 flex-wrap w-full">
                     <button
                       className="bg-transparent border-l-2 border-white shadow-sm pl-4  rounded-sm flex items-center  text-white"
                       onClick={() => {
@@ -151,12 +162,20 @@ const Logger = () => {
                     </button>
                   </div>
                 </div>
+                {showLoading && (
+                  <div className="flex-col  mt-6  flex justify-center items-center  m-auto font-medium rounded-xl   ">
+                    <ClipLoader size={70} color="#fff" />
+                    <span className="text-white mt-6">
+                      درحال بارگزاری اطلاعات
+                    </span>
+                  </div>
+                )}
 
                 <div className="flex flex-col">
-                  <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                  <div className="overflow-x-auto   ">
                     <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                       <div className="overflow-hidden">
-                        <table className="min-w-full text-center text-sm font-light">
+                        <table className=" w-full text-center text-sm font-light">
                           <thead className="border-b bg- font-medium rounded-xl bg-white/20 backdrop-blur-md bg-opacity-50 ">
                             <tr>
                               <th
@@ -379,6 +398,23 @@ const Logger = () => {
                   </div>
                 </div>
               </div>
+
+              {!showFilteredLogs && (
+                <div className="col-span-12 mt-10">
+                  <ReactPaginate
+                    containerClassName="flex justify-center items-center mt-8 mb-4"
+                    pageClassName="block text-white !rounded-full border border-solid border-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-2"
+                    activeClassName="bg-white !text-sky-600 border-sky-600 !border-2 text-palette-light !rounded-full   hover:bg-palette-dark"
+                    breakLabel="..."
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={getPageCount}
+                    previousLabel={null}
+                    nextLabel={null}
+                    renderOnZeroPageCount={null}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

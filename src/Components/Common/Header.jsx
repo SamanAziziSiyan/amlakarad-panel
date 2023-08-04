@@ -10,7 +10,7 @@ import {
   RiShutDownLine,
   RiUserSearchFill,
 } from "react-icons/ri";
-import { getToken, toastAlert } from "../helper";
+import { getToken, getUserDataOnLocalStorage, toastAlert } from "../helper";
 import service from "../../server/service";
 
 const Header = () => {
@@ -19,12 +19,18 @@ const Header = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    let userData = localStorage.getItem("user");
+    let userData = getUserDataOnLocalStorage();
     let userToken = getToken();
+    if (userData == null) {
+      navigate("/login");
+      return;
+    }
+    if (userData.role.karbar) {
+      window.location.href = "https://amlakarad.com";
+    }
     if (!userData) {
       setUsername("نام کاربری");
     } else {
-      userData = JSON.parse(userData);
       setUsername(userData.username);
     }
     service.auth

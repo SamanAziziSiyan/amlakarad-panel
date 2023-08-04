@@ -25,7 +25,7 @@ const Settings = () => {
   const [font, setFont] = useState("yekan");
   useEffect(() => {
     const SettingsData = getUserSettinOnLocalStorage();
-    console.log(SettingsData);
+
     if (SettingsData == null) {
       return;
     } else {
@@ -59,7 +59,7 @@ const Settings = () => {
         navigate("/login");
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
   };
   const handleChangeSetting = (e) => {
@@ -103,8 +103,8 @@ const Settings = () => {
                 handleUpdatePassword(values);
               }}
             >
-              <Form className=" px-32 py-10">
-                <div className="flex items-center justify-between gap-4">
+              <Form className=" px-32 max-lg:px-6 py-10">
+                <div className="flex items-center  max-lg:flex-col justify-between gap-4">
                   <div className="w-full">
                     <label htmlFor="username" className="mb-3 text-white block">
                       رمز عبور
@@ -145,7 +145,7 @@ const Settings = () => {
 
                 <button
                   type="submit"
-                  className="bg-[#4a80bb] m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  className="bg-[#4a80bb] m-auto mt-10 max-lg:w-full flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                 >
                   {" "}
                   <RiEdit2Line size={23} className="ml-2" />
@@ -163,8 +163,11 @@ const Settings = () => {
               تنظیمات{" "}
             </h2>
 
-            <form className=" px-32 py-10" onSubmit={handleChangeSetting}>
-              <div className="flex items-center justify-between gap-4">
+            <form
+              className=" px-32 max-lg:px-6 py-10"
+              onSubmit={handleChangeSetting}
+            >
+              <div className="flex items-center max-lg:flex-col justify-between gap-4">
                 <div className="w-full">
                   <label htmlFor="username" className="mb-3 text-white block">
                     تغییر فونت
@@ -219,7 +222,7 @@ const Settings = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex items-center mt-4 justify-between gap-4">
+              <div className="flex items-center mt-4 justify-between gap-4 max-lg:flex-col">
                 <div className="w-full">
                   <label htmlFor="from" className="mb-3 text-white block">
                     رنگ پس زمینه اول
@@ -253,7 +256,7 @@ const Settings = () => {
                   />
                 </div>
               </div>
-              <div className="flex items-center mt-4 justify-between gap-4">
+              <div className="flex items-center mt-4 justify-between gap-4 max-lg:flex-col">
                 <div className="w-full">
                   <label htmlFor="titleColor" className="mb-3 text-white block">
                     رنگ عنوان ها
@@ -291,7 +294,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div className="flex items-center mt-4 justify-between gap-4">
+              <div className="flex items-center mt-4 justify-between gap-4 max-lg:flex-col">
                 <div className="w-full">
                   <label htmlFor="inputColor" className="mb-3 text-white block">
                     رنگ برچسب ورودی ها
@@ -329,7 +332,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div className="flex items-center mt-4 justify-between gap-4">
+              <div className="flex items-center mt-4 justify-between gap-4 max-lg:flex-col">
                 <div className="w-full">
                   <label htmlFor="btnColor" className="mb-3 text-white block">
                     رنگ متن دکمه ها
@@ -366,10 +369,10 @@ const Settings = () => {
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-center">
+              <div className="flex items-center max-lg:flex-col justify-center">
                 <button
                   type="submit"
-                  className="bg-green-600 m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  className="bg-green-600 max-lg:w-full m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                 >
                   {" "}
                   <RiEdit2Line size={23} className="ml-2" />
@@ -378,7 +381,7 @@ const Settings = () => {
                 <button
                   onClick={removeSettingsData}
                   type="button"
-                  className="bg-sky-500 m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+                  className="bg-sky-500 max-lg:w-full m-auto mt-10 flex items-center justify-center shadow-sm shadow-indigo-700 my-4 w-1/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
                 >
                   {" "}
                   <RiEdit2Line size={23} className="ml-2" />

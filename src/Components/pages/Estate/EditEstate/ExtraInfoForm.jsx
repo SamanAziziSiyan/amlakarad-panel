@@ -77,7 +77,6 @@ const ExtraInfoForm = () => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data);
         setshowMantaghaData(data.data[0].ostan);
         setshowMantagha(true);
         setExtraInfo({
@@ -102,7 +101,8 @@ const ExtraInfoForm = () => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
   }, []);
   const handleCreateStateMeta = (values) => {
@@ -123,22 +123,20 @@ const ExtraInfoForm = () => {
         checkedWg.push(item.getAttribute("data-title"));
       }
     }
-    console.log(checkedEmkanat);
-    console.log(checkedWg);
     let userToken = getToken();
     let stateData = {
       ID: stateId,
       meta: [
         {
           ostan: showMantaghaData,
-          shahr: values.shahr,
-          name: values.name,
-          address: values.address,
-          mobile: values.mobile,
-          email: values.email,
-          priceform: values.priceform,
-          metrazh: values.metrazh,
-          moshaver: values.moshaver,
+          shahr: extraInfo.shahr,
+          name: extraInfo.name,
+          address: extraInfo.address,
+          mobile: extraInfo.mobile,
+          email: extraInfo.email,
+          priceform: extraInfo.priceform,
+          metrazh: extraInfo.metrazh,
+          moshaver: extraInfo.moshaver,
           fast: fastRef.current.checked ? "1" : "0",
           special: specialRef.current.checked ? "1" : "0",
           mg: checkedWg,
@@ -151,11 +149,10 @@ const ExtraInfoForm = () => {
         },
       ],
     };
-    
+
     service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
-        console.log(data);
         if (data.status == 200) {
           setShowLoading(false);
           toastAlert("اطلاعات اضافی با موفقیت ثبت شد", "success");
@@ -163,7 +160,6 @@ const ExtraInfoForm = () => {
         } else throw new Error();
       })
       .catch((err) => {
-        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });
@@ -635,12 +631,23 @@ const ExtraInfoForm = () => {
                 id="moshaver"
                 name="moshaver"
                 as="select"
-                rows={10}
+                value={extraInfo.moshaver}
+                onChange={(e) => {
+                  setExtraInfo({
+                    ...extraInfo,
+                    moshaver: e.target.value,
+                  });
+                }}
                 disabled={userRole != 1 ? true : false}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
               >
                 {moshavers.map((item, index) => (
-                  <option value={item.id}>{item.name}</option>
+                  <option
+                    selected={item.id == extraInfo.moshaver ? true : false}
+                    value={item.id}
+                  >
+                    {item.name}
+                  </option>
                 ))}
               </Field>
             </div>
@@ -714,7 +721,7 @@ const ExtraInfoForm = () => {
                     e.target.checked = true;
                   } else {
                     let data = extraInfo.mg?.filter((item) => item != "شمالی");
-                    console.log(data);
+
                     setExtraInfo({ ...extraInfo, mg: data });
                     e.target.checked = false;
                   }
@@ -735,7 +742,7 @@ const ExtraInfoForm = () => {
                     e.target.checked = true;
                   } else {
                     let data = extraInfo.mg?.filter((item) => item != "جنوبی");
-                    console.log(data);
+
                     setExtraInfo({ ...extraInfo, mg: data });
                     e.target.checked = false;
                   }
@@ -758,7 +765,7 @@ const ExtraInfoForm = () => {
                     e.target.checked = true;
                   } else {
                     let data = extraInfo.mg?.filter((item) => item != "شرقی");
-                    console.log(data);
+
                     setExtraInfo({ ...extraInfo, mg: data });
                     e.target.checked = false;
                   }
@@ -778,7 +785,7 @@ const ExtraInfoForm = () => {
                     e.target.checked = true;
                   } else {
                     let data = extraInfo.mg?.filter((item) => item != "غربی");
-                    console.log(data);
+
                     setExtraInfo({ ...extraInfo, mg: data });
                     e.target.checked = false;
                   }

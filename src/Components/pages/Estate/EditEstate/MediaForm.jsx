@@ -18,7 +18,6 @@ const MediaForm = () => {
   const uploadImageRef = useRef();
   const handleUploadImage = (e) => {
     let userToken = getToken();
-    console.log(e.target.files[0]);
     let userData = getUserDataOnLocalStorage();
     let imageData = {
       title: "ملک",
@@ -60,16 +59,15 @@ const MediaForm = () => {
               toastAlert("فیلم با موفقیت ذخیره شد", "success");
             })
             .catch((err) => {
-              console.log(err);
+              toastAlert("سرور مشغول است");
             });
         }
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
   };
   const deleteUploadedImage = (id, type) => {
-    console.log(id);
     let userToken = getToken();
     service.media
       .deleteImage(userToken, id)
@@ -89,9 +87,8 @@ const MediaForm = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
-    console.log(id);
   };
   useEffect(() => {
     let userToken = getToken();
@@ -99,7 +96,6 @@ const MediaForm = () => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data);
         let images = data.data[0].img == 0 ? [] : data.data[0].img;
         let stateImage = [];
         let videos = [];
@@ -114,11 +110,11 @@ const MediaForm = () => {
         setUploadedVideos(videos);
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
       });
   }, []);
   const redirectToDetails = () => {
-     navigate(`/estateDetails/${stateId}`);
+    navigate(`/estateDetails/${stateId}`);
   };
   return (
     <>

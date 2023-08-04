@@ -106,7 +106,8 @@ const TradeType = ({ stateData }) => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -129,7 +130,6 @@ const TradeType = ({ stateData }) => {
           },
         ],
       };
-      console.log(stateData);
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -140,7 +140,8 @@ const TradeType = ({ stateData }) => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -162,7 +163,6 @@ const TradeType = ({ stateData }) => {
           },
         ],
       };
-      console.log(stateData);
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -173,7 +173,8 @@ const TradeType = ({ stateData }) => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -186,7 +187,6 @@ const TradeType = ({ stateData }) => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data);
         setShoMoamele(data.data[0].moamele);
         if (data.data[0].pishforosh == "1") {
           setPishforosh(true);
@@ -241,10 +241,9 @@ const TradeType = ({ stateData }) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
-
-    // console.log(informationData);
   }, []);
   return (
     <>

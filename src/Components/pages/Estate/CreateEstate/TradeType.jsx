@@ -60,7 +60,6 @@ const TradeType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -86,10 +85,11 @@ const TradeType = () => {
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع معامله با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
         });
     }
@@ -111,14 +111,14 @@ const TradeType = () => {
           },
         ],
       };
-      console.log(stateData);
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع معامله با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
         });
     }

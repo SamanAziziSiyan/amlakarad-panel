@@ -2,13 +2,13 @@ import config from "./config.json";
 import axios from "axios";
 
 const getLogs = (token) => {
-  return axios.get(`${config.api}/wp-json/wp/v1/log`, {
+  return axios.get(`${config.api}/wp-json/wp/v1/log?per_page=4999`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
 const getUsers = (token) => {
-  return axios.get(`${config.api}/wp-json/wp/v2/users?per_page=100`, {
+  return axios.get(`${config.api}/wp-json/wp/v2/users?per_page=99`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -41,7 +41,6 @@ const searchUser = (username, token) => {
   });
 };
 const creatUser = (data, token) => {
-  console.log(data);
   return axios.post(`${config.api}/wp-json/wp/v2/users/`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });

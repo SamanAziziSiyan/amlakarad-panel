@@ -2,7 +2,7 @@ import config from "./config.json";
 import axios from "axios";
 
 const getStates = (token) => {
-  return axios.get(`${config.api}/wp-json/wp/v2/state`, {
+  return axios.get(`https://amlakarad.com/wp-json/wp/v2/state?per_page=2000`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

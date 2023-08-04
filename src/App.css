@@ -41,7 +41,7 @@ body {
 
 @media screen and (max-width: 1000px) {
   .go2392553372 {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 }
 .ReactModal__Content {

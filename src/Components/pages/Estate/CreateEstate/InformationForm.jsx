@@ -9,10 +9,44 @@ import {
 } from "../../../helper";
 import { BeatLoader } from "react-spinners";
 import service from "../../../../server/service";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const InformationForm = ({ setNextSection }) => {
+  const moshaverRef = useRef();
+  const [userRole, setUserRole] = useState(null);
+  const [moshavers, setMoshavers] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
+  const [userID, setUserId] = useState(0);
+
+  useEffect(() => {
+    let userData = getUserDataOnLocalStorage();
+
+    setUserId(userData.ID);
+
+    if (userData.role.administrator != null) {
+      setUserRole(1);
+    } else {
+      setUserId(userData.ID);
+    }
+    let userToken = getToken();
+    service.personnel
+      .getUsers(userToken)
+      .then((data) => {
+        console.log(data);
+        if (data.data.status == 403) throw new Error();
+        let moshaverItems = [];
+        data.data.map((item) => {
+          console.log(item);
+          if (!item.extra.role[0].karbar) {
+            moshaverItems.push(item);
+          }
+        });
+        setMoshavers(moshaverItems);
+      })
+      .catch((err) => {
+        toastAlert("شما به بخش دسترسی ندارید");
+      });
+  }, []);
 
   const handleCreateEstate = (values) => {
     if (values.post_status == "0") {
@@ -27,14 +61,13 @@ const InformationForm = ({ setNextSection }) => {
       title: values.post_title,
       content: values.post_content,
       status: values.post_status,
-      author: userData.ID,
+      author: moshaverRef.current.value,
       type: "state",
       slug: values.post_title,
     };
     service.states
       .createState(stateData, userToken)
       .then((data) => {
-        console.log(data);
         if (data.status == 201) {
           localStorage.setItem("stateId", data.data.id);
           localStorage.setItem("stateTitle", stateData.title);
@@ -45,7 +78,6 @@ const InformationForm = ({ setNextSection }) => {
         } else throw new Error();
       })
       .catch((err) => {
-        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });
@@ -94,6 +126,30 @@ const InformationForm = ({ setNextSection }) => {
             name="post_content"
             render={(msg) => <div className="text-red-500">{msg}</div>}
           />
+
+          <div className="flex items-center justify-between gap-4 max-md:flex-col">
+            <div className="w-full">
+              <label htmlFor="auther" className="mb-3 text-white block">
+                کاربر ثبت کننده ملک
+              </label>
+              <select
+                id="auther"
+                name="auther"
+                ref={moshaverRef}
+                disabled={userRole != 1 ? true : false}
+                className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+              >
+                {moshavers.map((item, index) => (
+                  <option
+                    selected={item.id == userID ? true : false}
+                    value={item.id}
+                  >
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
           <div className="w-full">
             <label htmlFor="post_status" className="mb-3 text-white block">

@@ -106,9 +106,13 @@ export const sendSMSStateOwner = async (mobile, title) => {
   });
 };
 
+export const formatNumber = (num) => {
+  return new Intl.NumberFormat("fa").format(num);
+};
+
 // export const hashData = (data) => {
 //   const salt = bcrypt.genSaltSync(10);
-//   const hash = bcrypt.hashSync(data, salt);
+//   const hash = bcrypt.hashSync(123, salt);
 //   return hash;
 // };
 

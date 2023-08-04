@@ -5,7 +5,6 @@ import { getUserSettinOnLocalStorage } from "../helper";
 const Layout = ({ children }) => {
   useEffect(() => {
     const SettingsData = getUserSettinOnLocalStorage();
-    console.log(SettingsData);
     let body = document.getElementById("body-element");
     let titleElement = document.getElementsByTagName("h2");
     let contentElement = document.getElementsByTagName("p");

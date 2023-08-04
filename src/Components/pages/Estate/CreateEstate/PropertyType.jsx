@@ -38,7 +38,7 @@ const PropertyType = () => {
       };
 
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
           if (data.status == 200) {
             setShowLoading(false);
@@ -47,7 +47,6 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -73,15 +72,17 @@ const PropertyType = () => {
           },
         ],
       };
-      console.log(stateData);
+
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
 
@@ -94,15 +95,17 @@ const PropertyType = () => {
           },
         ],
       };
-      console.log(stateData);
+
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
     if (shoMelk == "اداری و تجاری ") {
@@ -125,15 +128,17 @@ const PropertyType = () => {
           },
         ],
       };
-      console.log(stateData);
+
       service.states
-        .insertMetaData(userToken,stateData)
+        .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
-          console.log(err);
           toastAlert("سرور مشغول است");
+          setShowLoading(false);
         });
     }
   };
@@ -481,7 +486,7 @@ const PropertyType = () => {
                       >
                         مساحت زمین
                       </label>
-                      <Field  
+                      <Field
                         id="masahat-zamin"
                         name="masahatzamin"
                         type="text"
