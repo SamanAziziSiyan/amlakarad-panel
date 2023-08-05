@@ -51,6 +51,7 @@ const Logger = () => {
     service.personnel
       .getLogs(userToken)
       .then((data) => {
+        console.log(data);
         // if (data.data.status == 403) throw new Error();
 
         const endOffset = itemOffset + 40;
@@ -128,6 +129,15 @@ const Logger = () => {
                     >
                       <span> افزودن </span>
                     </button>
+                    <button
+                      className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
+                      onClick={() => {
+                        filterLogs("deleted", 1);
+                      }}
+                    >
+                      <span> حذف شده </span>
+                    </button>
+
                     <button
                       className="bg-transparent border-l-2 border-white shadow-sm  pl-4  rounded-sm flex items-center  text-white"
                       onClick={() => {
@@ -305,8 +315,14 @@ const Logger = () => {
                                       <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                         خروج
                                       </td>
+                                    ) : item.action == "deleted" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        حذف شده
+                                      </td>
                                     ) : (
-                                      ""
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        عملیات نامعلوم
+                                      </td>
                                     )}
                                     <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                       {item.object_name}
@@ -382,8 +398,14 @@ const Logger = () => {
                                     <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                       خروج
                                     </td>
+                                  ) : item.action == "deleted" ? (
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      حذف شده
+                                    </td>
                                   ) : (
-                                    ""
+                                    <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                      عملیات نامعلوم
+                                    </td>
                                   )}
                                   <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                     {item.object_name}

@@ -33,7 +33,7 @@ const CreateEstate = () => {
           <div className="w-20 h-20 bg-purple-800 left-[-8%] rounded-full absolute top-[-7%] drop-shadow-md "></div>
           <div className="w-20 h-20 bg-blue-800  rounded-full absolute bottom-[-8%]  right-[-7%] drop-shadow-md"></div>
           <div className="w-full h-full rounded-2xl backdrop-blur-md bg-opacity-50 shadow-blue-800 shadow-sm bg-white/10 flex justify-around flex-col ">
-            <MultiStep activeStep={nextSection}>
+            <MultiStep showNavigation={false} activeStep={nextSection}>
               <InformationForm
                 title="اطلاعات اولیه"
                 setNextSection={setNextSection}

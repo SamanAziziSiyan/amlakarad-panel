@@ -8,15 +8,19 @@ import {
   toastAlert,
 } from "../../../helper";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const MediaForm = () => {
   const [uploadedVideos, setUploadedVideos] = useState([]);
   const [stateImages, setStateImages] = useState([]);
   const navigate = useNavigate();
   const { stateId } = useParams();
+  const [showLoading, setShowLoading] = useState(false);
 
   const uploadImageRef = useRef();
   const handleUploadImage = (e) => {
+    setShowLoading(true);
+
     let userToken = getToken();
     let userData = getUserDataOnLocalStorage();
     let imageData = {
@@ -40,6 +44,7 @@ const MediaForm = () => {
             { img: data.data.source_url, ID: data.data.id },
           ]);
           toastAlert("عکس با موفقیت ذخیره شد", "success");
+          setShowLoading(false);
         } else {
           let videoData = {
             ID: stateId,
@@ -57,14 +62,17 @@ const MediaForm = () => {
                 { img: data.data.source_url, ID: data.data.id },
               ]);
               toastAlert("فیلم با موفقیت ذخیره شد", "success");
+              setShowLoading(false);
             })
             .catch((err) => {
               toastAlert("سرور مشغول است");
+              setShowLoading(false);
             });
         }
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
+        setShowLoading(false);
       });
   };
   const deleteUploadedImage = (id, type) => {
@@ -195,6 +203,12 @@ const MediaForm = () => {
             </div>
           ))}
         </div>
+        {showLoading && (
+          <div className="flex-col my-2  flex justify-center items-center  m-auto font-medium rounded-xl   ">
+            <ClipLoader size={70} color="#fff" />
+            <span className="text-white mt-6">درحال آپلود رسانه </span>
+          </div>
+        )}
 
         <button
           onClick={redirectToDetails}

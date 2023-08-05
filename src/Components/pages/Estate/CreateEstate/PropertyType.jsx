@@ -12,8 +12,7 @@ const PropertyType = () => {
   const [shoMelk, setShowMelk] = useState("");
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
-
-    let userToken = getToken();
+     let userToken = getToken();
     let stateId = localStorage.getItem("stateId");
     if (shoMelk == "آپارتمان") {
       let stateData = {
@@ -22,9 +21,9 @@ const PropertyType = () => {
           {
             melk: shoMelk,
             tabaghe: values.tabaghe,
-            tedadtabaghat: values.tedadtabaghat,
-            tedadvahedhartabaghe: values.tedadvahedhartabaghe,
-            tedadvahedkol: values.tedadvahedkol,
+            tedadtabaghat: String(values.tedadtabaghat),
+            tedadvahedhartabaghe: String(values.tedadvahedhartabaghe),
+            tedadvahedkol: String(values.tedadvahedkol),
             otagh: values.otagh,
             numhamam: values.numhamam,
             numwc: values.numwc,
@@ -40,6 +39,7 @@ const PropertyType = () => {
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
+          console.log(data);
           if (data.status == 200) {
             setShowLoading(false);
             toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
@@ -59,8 +59,8 @@ const PropertyType = () => {
           {
             melk: shoMelk,
             masahatzamin: values.masahatzamin,
-            tedadtabaghat: values.tedadtabaghat,
-            tedadvahedkol: values.tedadvahedkol,
+            tedadtabaghat: String(values.tedadtabaghat),
+            tedadvahedkol: String(values.tedadvahedkol),
             otagh: values.otagh,
             numhamam: values.numhamam,
             numwc: values.numwc,
@@ -76,6 +76,7 @@ const PropertyType = () => {
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
+          console.log(data);
           setShowLoading(false);
           toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
@@ -115,9 +116,9 @@ const PropertyType = () => {
           {
             melk: shoMelk,
             tabaghe: values.tabaghe,
-            tedadtabaghat: values.tedadtabaghat,
-            tedadvahedhartabaghe: values.tedadvahedhartabaghe,
-            tedadvahedkol: values.tedadvahedkol,
+            tedadtabaghat: String(values.tedadtabaghat),
+            tedadvahedhartabaghe: String(values.tedadvahedhartabaghe),
+            tedadvahedkol: String(values.tedadvahedkol),
             otagh: values.otagh,
             numhamam: values.numhamam,
             numwc: values.numwc,

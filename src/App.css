@@ -53,4 +53,15 @@ body {
 .Toastify__toast-body {
   font-family: "Morabba" !important;
   font-size: 14px !important;
+  text-align: right !important;
+}
+
+option {
+  color: #000 !important;
+}
+
+@media screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 95vw !important;
+  }
 }

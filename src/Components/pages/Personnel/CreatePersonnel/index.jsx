@@ -10,9 +10,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiUserAddLine } from "react-icons/ri";
 import Layout from "../../../Layout";
+import { BeatLoader } from "react-spinners";
+
 const CreatePersonnel = () => {
   const navigate = useNavigate();
   // const [showMoshaverName, setShowMoshaverName] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+
   const [showKarbarrole, setShowKarbarrole] = useState("");
 
   useEffect(() => {
@@ -25,12 +29,14 @@ const CreatePersonnel = () => {
     }
   }, []);
   const handleCreateUser = (value) => {
+    setShowLoading(true);
+
     let data = {
       username: value.username,
       name: value.name,
       password: value.password,
       email: value.email,
-      meta: { phone: value.phone  },
+      meta: { phone: value.phone },
       roles: showKarbarrole,
     };
 
@@ -44,8 +50,11 @@ const CreatePersonnel = () => {
           `کاربر با نام ${data.data.name} با موفقیت ایجاد شد`,
           "success"
         );
+        setShowLoading(false);
       })
       .catch((err) => {
+        setShowLoading(false);
+
         if (err.response) {
           toastAlert(err.response.data.message);
         } else toastAlert("سرور مشغول است");
@@ -230,6 +239,7 @@ const CreatePersonnel = () => {
                   {" "}
                   <RiUserAddLine size={23} className="ml-2" />
                   ثبت کاربر جدید
+                  {showLoading && <BeatLoader size={10} color="#fff" />}
                 </button>
               </Form>
             </Formik>

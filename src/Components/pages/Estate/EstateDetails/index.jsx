@@ -33,7 +33,7 @@ const EstateDetails = () => {
     service.states
       .getState(token, stateId)
       .then((data) => {
-
+        console.log(data);
         if (data.data.length == 0) {
           navigate("/404");
         }
@@ -145,10 +145,17 @@ const EstateDetails = () => {
                       ) : stateData.moamele == "رهن و اجاره" ? (
                         <>
                           <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
-                            <span>قیمت رهن :{stateData["price-rahn"]}</span>
+                            <span>
+                              قیمت رهن :{formatNumber(stateData["price-rahn"])}
+                              <span className="text-xs">تومان</span>
+                            </span>
                           </div>
                           <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
-                            <span>قیمت اجاره :{stateData["price-ejare"]}</span>
+                            <span>
+                              قیمت اجاره :
+                              {formatNumber(stateData["price-ejare"])}
+                              <span className="text-xs">تومان</span>
+                            </span>
                           </div>
                         </>
                       ) : (
@@ -175,7 +182,7 @@ const EstateDetails = () => {
                             <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
                               {moment(stateData.post_date)
                                 .locale("fa")
-                                .format("DDD") + " روز پیش"}
+                                .fromNow()}
                             </p>
                           </div>
                           {stateData.post_title}
@@ -343,7 +350,7 @@ const EstateDetails = () => {
                     <h2 className="  mt-4 font-bold text-2xl border-b-[3px] pb-1 border-white inline w-max text-white mb-6 ">
                       توضیحات{" "}
                     </h2>
-                    <div className="grid grid-cols-12 gap-5  ">
+                    <div className="grid grid-cols-12 gap-5 w-full ">
                       <div
                         dangerouslySetInnerHTML={{
                           __html: stateData.post_content,
@@ -387,7 +394,10 @@ const EstateDetails = () => {
                                 <span className="text">قیمت کل</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["price-kol"]} </span>
+                                <span>
+                                  {formatNumber(stateData["price-kol"])}{" "}
+                                  <span className="text-xs">تومان</span>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -397,7 +407,11 @@ const EstateDetails = () => {
                                 <span className="text">قیمت متری</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["price-metri"]} </span>
+                                <span>
+                                  {" "}
+                                  {formatNumber(stateData["price-meteri"])}{" "}
+                                  <span className="text-xs">تومان</span>
+                                </span>
                               </div>
                             </div>
                             <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
@@ -418,20 +432,48 @@ const EstateDetails = () => {
                           <div className=" col-span-6 gap-4 max-lg:col-span-12">
                             <div className="flex items-center w-full gap-4 mb-4  ">
                               <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                                <span className="text">امکان معاوضه</span>
+                                <span className="text">قیمت متری</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
                                 <span>
                                   {" "}
-                                  {stateData.moaveze == "0"
+                                  {formatNumber(stateData["price-meteri"])}{" "}
+                                  <span className="text-xs">تومان</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">پیش فروش</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData.pishforosh == "0"
                                     ? "ندارد"
                                     : "دارد"}{" "}
                                 </span>
                               </div>
                             </div>
+                          </div>
+
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
                             <div className="flex items-center w-full gap-4 mb-4  ">
                               <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                                <span className="text">مشارکت در ساخت</span>
+                                <span className="text">تحویل</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span>
+                                  {" "}
+                                  {stateData.tahvil == ""
+                                    ? "-"
+                                    : stateData.tahvil}{" "}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text">مشارکت</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
                                 <span>
@@ -452,7 +494,11 @@ const EstateDetails = () => {
                                 <span className="text">قیمت رهن</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["price-rahn"]} </span>
+                                <span>
+                                  {" "}
+                                  {formatNumber(stateData["price-rahn"])}
+                                  <span className="text-xs">تومان</span>
+                                </span>
                               </div>
                             </div>
                             <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
@@ -460,7 +506,11 @@ const EstateDetails = () => {
                                 <span className="text">قیمت اجاره</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["price-ejare"]} </span>
+                                <span>
+                                  {" "}
+                                  {formatNumber(stateData["price-ejare"])}
+                                  <span className="text-xs">تومان</span>
+                                </span>
                               </div>
                             </div>
                           </div>

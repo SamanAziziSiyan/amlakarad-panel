@@ -10,8 +10,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { RiEdit2Line } from "react-icons/ri";
 import Layout from "../../../Layout";
+import { BeatLoader } from "react-spinners";
+
 const CreatePersonnel = () => {
   const navigate = useNavigate();
+  const [showLoading, setShowLoading] = useState(false);
+
   const { personnelId } = useParams();
   const [personnelData, setPersonnelData] = useState({
     name: "",
@@ -56,7 +60,8 @@ const CreatePersonnel = () => {
   }, []);
   const handleUpdateUser = (e) => {
     e.preventDefault();
-  
+    setShowLoading(true);
+
     let data = {
       name: personnelData.name,
       meta: {
@@ -64,17 +69,19 @@ const CreatePersonnel = () => {
       },
       roles: personnelData.role,
     };
- 
+
     let userToken = getToken();
     service.personnel
       .updateUser(data, personnelId, userToken)
       .then((data) => {
         if (data.status == 200) {
           toastAlert("کاربر با موفقیت ویرایش شد", "success");
+          setShowLoading(false);
         }
       })
       .catch((err) => {
- 
+        setShowLoading(false);
+
         if (err.response) {
           toastAlert(err.response.data.message);
         } else toastAlert("سرور مشغول است");
@@ -99,7 +106,10 @@ const CreatePersonnel = () => {
               handleUpdateUser(values);
             }}
           > */}
-            <form className=" px-32 max-lg:px-6 py-10" onSubmit={handleUpdateUser}>
+            <form
+              className=" px-32 max-lg:px-6 py-10"
+              onSubmit={handleUpdateUser}
+            >
               <div className="flex items-center max-lg:flex-col justify-between gap-4">
                 <div className="w-full">
                   <label htmlFor="username" className="mb-3 text-white block">
@@ -229,7 +239,6 @@ const CreatePersonnel = () => {
                         کاربر عادی
                       </option>
                     </select>
-                   
                   </div>
                 </div>
                 <div className="w-full flex items-center max-lg:flex-col justify-between gap-4">
@@ -285,6 +294,7 @@ const CreatePersonnel = () => {
                 {" "}
                 <RiEdit2Line size={23} className="ml-2" />
                 ویرایش کاربر فعلی
+                {showLoading && <BeatLoader size={10} color="#fff" />}
               </button>
             </form>
             {/* </Formik> */}

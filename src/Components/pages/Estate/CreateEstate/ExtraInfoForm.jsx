@@ -26,17 +26,15 @@ const ExtraInfoForm = () => {
   const parkingRef = useRef();
   const asansorRef = useRef();
   const moshaverRef = useRef();
- 
 
   useEffect(() => {
-    let moshaverRole = getUserDataOnLocalStorage();
-    let moshaverId = getUserDataOnLocalStorage();
-    moshaverRole = moshaverRole.role;
-    moshaverId = moshaverRole.ID;
-    if (moshaverRole.administrator != null) {
+    let userData = getUserDataOnLocalStorage();
+
+    if (userData.role.administrator != null) {
       setUserRole(1);
+      setUserId(userData.ID);
     } else {
-      setUserId(moshaverId);
+      setUserId(userData.ID);
     }
     let userToken = getToken();
     service.personnel
@@ -89,7 +87,7 @@ const ExtraInfoForm = () => {
           email: values.email,
           priceform: values.priceform,
           metrazh: values.metrazh,
-          moshaver: values.moshaver,
+          moshaver: userID,
           fast: fastRef.current.checked ? "1" : "0",
           special: specialRef.current.checked ? "1" : "0",
           mg: checkedWg,
@@ -102,7 +100,7 @@ const ExtraInfoForm = () => {
         },
       ],
     };
-    service.states
+     service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
         if (data.status == 200) {
@@ -302,8 +300,11 @@ const ExtraInfoForm = () => {
                 id="moshaver"
                 name="moshaver"
                 as="select"
-                rows={10}
                 ref={moshaverRef}
+                value={userID}
+                onChange={(e) => {
+                  setUserId(e.target.value);
+                }}
                 disabled={userRole != 1 ? true : false}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
               >

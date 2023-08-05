@@ -48,14 +48,14 @@ const ExtraInfoForm = () => {
   const { stateId } = useParams();
 
   useEffect(() => {
-    let moshaverRole = getUserDataOnLocalStorage();
-    let moshaverId = getUserDataOnLocalStorage();
-    moshaverRole = moshaverRole.role;
-    moshaverId = moshaverRole.ID;
-    if (moshaverRole.administrator != null) {
+    let userData = getUserDataOnLocalStorage();
+
+    setUserId(userData.ID);
+
+    if (userData.role.administrator != null) {
       setUserRole(1);
     } else {
-      setUserId(moshaverId);
+      setUserId(userData.ID);
     }
     let userToken = getToken();
     service.personnel
@@ -77,6 +77,7 @@ const ExtraInfoForm = () => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
+        console.log(data);
         setshowMantaghaData(data.data[0].ostan);
         setshowMantagha(true);
         setExtraInfo({
@@ -99,6 +100,7 @@ const ExtraInfoForm = () => {
           mg: data.data[0].mg,
           emkanat: data.data[0]["sayer-emkanat"],
         });
+        setUserId(data.data[0].moshaver);
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
@@ -123,6 +125,7 @@ const ExtraInfoForm = () => {
         checkedWg.push(item.getAttribute("data-title"));
       }
     }
+
     let userToken = getToken();
     let stateData = {
       ID: stateId,
@@ -136,7 +139,7 @@ const ExtraInfoForm = () => {
           email: extraInfo.email,
           priceform: extraInfo.priceform,
           metrazh: extraInfo.metrazh,
-          moshaver: extraInfo.moshaver,
+          moshaver: userID,
           fast: fastRef.current.checked ? "1" : "0",
           special: specialRef.current.checked ? "1" : "0",
           mg: checkedWg,
@@ -631,19 +634,20 @@ const ExtraInfoForm = () => {
                 id="moshaver"
                 name="moshaver"
                 as="select"
-                value={extraInfo.moshaver}
+                value={userID}
                 onChange={(e) => {
                   setExtraInfo({
                     ...extraInfo,
                     moshaver: e.target.value,
                   });
+                  setUserId(e.target.value);
                 }}
                 disabled={userRole != 1 ? true : false}
                 className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
               >
                 {moshavers.map((item, index) => (
                   <option
-                    selected={item.id == extraInfo.moshaver ? true : false}
+                    selected={item.id == userID ? true : false}
                     value={item.id}
                   >
                     {item.name}

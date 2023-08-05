@@ -61,6 +61,8 @@ const SearchEstate = () => {
   const [getMaxMetrazhRange, setMaxMetrazhRange] = useState(0);
   const [getInitialMaxMetrazhRange, setInitialMaxMetrazhRange] = useState(0);
 
+  const [userId, setUserId] = useState(0);
+
   const navigate = useNavigate();
   const [itemOffset, setItemOffset] = useState(0);
 
@@ -71,37 +73,34 @@ const SearchEstate = () => {
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
+    setUserId(userData.ID);
     if (userData.role.karbar) return navigate("/");
     let userToken = getToken();
     setUserRole(userData.role);
     if (userData.role.administrator || userData.role.karmand) {
- 
       service.states
         .getStates(userToken)
         .then(async (data) => {
-          console.log(data);
           setStates(data.data);
           const endOffset = itemOffset + 16;
           const currentStates = data.data.slice(itemOffset, endOffset);
           const pageCount = Math.ceil(data.data.length / 16);
-          console.log(1);
+
           setPageCount(pageCount);
           setStates(currentStates);
           setShowLoading(false);
           setMaxPriceRange(data.data[0].extraData[1].maxPrice);
           setMinPriceRange(data.data[0].extraData[1].minPrice);
           setInitialMaxPriceRange(data.data[0].extraData[1].maxPrice);
-          console.log(data.data[0].extraData);
 
           setMaxMetrazhRange(data.data[0].extraData[0].maxMetrazh);
           setMinMetrazhRange(data.data[0].extraData[0].minMetrazh);
           setInitialMaxMetrazhRange(data.data[0].extraData[0].maxMetrazh);
-          console.log(2);
 
           setMaxPriceRahnRange(data.data[0].extraData[2].maxPricerahn);
           setMinPriceRahnRange(data.data[0].extraData[2].minPricerahn);
           setInitialMaxPriceRahnRange(data.data[0].extraData[2].maxPricerahn);
-          console.log(3);
+
           setMaxPriceEjareRange(data.data[0].extraData[3].maxPriceejare);
           setMinPriceEjareRange(data.data[0].extraData[3].minPriceejare);
           setInitialMaxPriceEjareRange(data.data[0].extraData[3].maxPriceejare);
@@ -519,7 +518,7 @@ const SearchEstate = () => {
                           <select
                             id="shahr"
                             name="shahr"
-                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3    placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value="">همه</option>
                             <option value="اسلام اباد">اسلام اباد</option>
@@ -734,7 +733,7 @@ const SearchEstate = () => {
                             )}
                             {item.post_status == "expired" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
-                                منقضی شده{" "}
+                                فروخته شده{" "}
                               </button>
                             ) : (
                               ""
@@ -783,7 +782,7 @@ const SearchEstate = () => {
                                 <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
                                   {moment(item.post_date)
                                     .locale("fa")
-                                    .format("DDD") + " روز پیش"}
+                                    .fromNow()}{" "}
                                 </p>
                               </div>
                               {item.special == "1" ? (
@@ -932,6 +931,36 @@ const SearchEstate = () => {
                               ) : (
                                 ""
                               )}
+
+                              {item.post_author == userId &&
+                              !userRole.administrator ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      deleteState(item.ID, item.post_title);
+                                    }}
+                                    type="button"
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                  >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
+                                    حذف{" "}
+                                  </button>
+                                  <Link to={`/edit-estate/${item.ID}`}>
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
+                                      ویرایش
+                                    </button>
+                                  </Link>
+                                </>
+                              ) : (
+                                ""
+                              )}
                               <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"
@@ -1025,7 +1054,7 @@ const SearchEstate = () => {
                                 <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
                                   {moment(item.post_date)
                                     .locale("fa")
-                                    .format("DDD") + " روز پیش"}
+                                    .fromNow()}{" "}
                                 </p>
                               </div>
                               {item.special == "1" ? (
@@ -1174,7 +1203,35 @@ const SearchEstate = () => {
                               ) : (
                                 ""
                               )}
-
+                              {item.post_author == userId &&
+                              !userRole.administrator ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      deleteState(item.ID, item.post_title);
+                                    }}
+                                    type="button"
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                  >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
+                                    حذف{" "}
+                                  </button>
+                                  <Link to={`/edit-estate/${item.ID}`}>
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
+                                      ویرایش
+                                    </button>
+                                  </Link>
+                                </>
+                              ) : (
+                                ""
+                              )}
                               <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"

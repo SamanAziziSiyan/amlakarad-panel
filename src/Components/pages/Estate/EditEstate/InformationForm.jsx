@@ -63,6 +63,7 @@ const InformationForm = ({ setNextSection }) => {
     let moshaverId = getUserDataOnLocalStorage();
     moshaverRole = moshaverRole.role;
     moshaverId = moshaverRole.ID;
+  
     if (moshaverRole.administrator != null) {
       setUserRole(1);
     } else {
@@ -160,7 +161,7 @@ const InformationForm = ({ setNextSection }) => {
           <div className="flex items-center justify-between gap-4 max-md:flex-col">
             <div className="w-full">
               <label htmlFor="auther" className="mb-3 text-white block">
-                کاربر ثبت کننده ملک
+                کاربر ثبت کننده ملک 
               </label>
               <select
                 id="auther"
@@ -231,6 +232,12 @@ const InformationForm = ({ setNextSection }) => {
                 {" "}
                 پیشنویس{" "}
               </option>
+              <option
+                value="expired  "
+                selected={informationData.status == "expired" ? true : false}
+              >
+                فروخته شد
+                </option>
             </select>
             <ErrorMessage
               name="post_status"

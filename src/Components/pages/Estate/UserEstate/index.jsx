@@ -59,6 +59,8 @@ const UserEstate = () => {
   const [getMaxMetrazhRange, setMaxMetrazhRange] = useState(0);
   const [getInitialMaxMetrazhRange, setInitialMaxMetrazhRange] = useState(0);
 
+  const [userId, setUserId] = useState(0);
+
   const [itemOffset, setItemOffset] = useState(0);
   const [getPageCount, setPageCount] = useState(0);
   const handlePageClick = (e) => {
@@ -69,6 +71,8 @@ const UserEstate = () => {
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
+    setUserId(userData.ID);
+
     if (userData.role.karbar) return navigate("/");
     let userToken = getToken();
     setUserRole(userData.role);
@@ -372,7 +376,7 @@ const UserEstate = () => {
                           <select
                             id="shahr"
                             name="shahr"
-                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3    placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value="">همه</option>
                             <option value="اسلام اباد">اسلام اباد</option>
@@ -589,7 +593,7 @@ const UserEstate = () => {
                             )}
                             {item.post_status == "expired" ? (
                               <button className=" absolute top-[2%] left-[5%] bg-[#e01e36] p-1 text-xs text-white   px-3 rounded-md">
-                                منقضی شده{" "}
+                                فروخته شده{" "}
                               </button>
                             ) : (
                               ""
@@ -638,7 +642,7 @@ const UserEstate = () => {
                                 <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
                                   {moment(item.post_date)
                                     .locale("fa")
-                                    .format("DDD") + " روز پیش"}
+                                    .fromNow()}{" "}
                                 </p>
                               </div>
                               {item.special == "1" ? (
@@ -776,6 +780,36 @@ const UserEstate = () => {
                                 ""
                               )}
 
+                              {item.post_author == userId &&
+                              !userRole.administrator ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      deleteState(item.ID, item.post_title);
+                                    }}
+                                    type="button"
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                  >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
+                                    حذف{" "}
+                                  </button>
+                                  <Link to={`/edit-estate/${item.ID}`}>
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
+                                      ویرایش
+                                    </button>
+                                  </Link>
+                                </>
+                              ) : (
+                                ""
+                              )}
+
                               <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"
@@ -869,7 +903,7 @@ const UserEstate = () => {
                                 <p className="mt-1 mr-1 text-center text-gray-400 text-sm">
                                   {moment(item.post_date)
                                     .locale("fa")
-                                    .format("DDD") + " روز پیش"}
+                                    .fromNow()}{" "}
                                 </p>
                               </div>
                               {item.special == "1" ? (
@@ -979,6 +1013,36 @@ const UserEstate = () => {
 
                             <div className="flex items-center gap-2 mt-4 justify-center">
                               {userRole.administrator ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      deleteState(item.ID, item.post_title);
+                                    }}
+                                    type="button"
+                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                  >
+                                    <RiDeleteBin6Line
+                                      size={18}
+                                      className="pl-1"
+                                    />
+                                    حذف{" "}
+                                  </button>
+                                  <Link to={`/edit-estate/${item.ID}`}>
+                                    <button
+                                      type="button"
+                                      className="bg-sky-700 p-2 flex items-center  rounded-md text-white text-sm"
+                                    >
+                                      <RiEdit2Line size={18} className="pl-1" />
+                                      ویرایش
+                                    </button>
+                                  </Link>
+                                </>
+                              ) : (
+                                ""
+                              )}
+
+                              {item.post_author == userId &&
+                              !userRole.administrator ? (
                                 <>
                                   <button
                                     onClick={() => {

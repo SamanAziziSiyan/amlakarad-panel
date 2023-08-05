@@ -164,9 +164,10 @@ const InformationForm = ({ setNextSection }) => {
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
               <option value="0"> انتخاب کنید </option>
-              <option value="pending"> در انتظار بررسی </option>
+              <option value="pending" > در انتظار بررسی </option>
               <option value="publish"> انتشار </option>
               <option value="draft"> پیشنویس </option>
+              <option value="expired"> فروخته شد </option>
             </Field>
             <ErrorMessage
               name="post_status"

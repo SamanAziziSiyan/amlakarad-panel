@@ -10,17 +10,21 @@ import {
   sendSMSAdminState,
 } from "../../../helper";
 import { Link, useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const MediaForm = () => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedVideos, setUploadedVideos] = useState([]);
   const [stateID, setStateID] = useState(0);
+  const [showLoading, setShowLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const uploadImageRef = useRef();
 
   const handleUploadImage = (e) => {
     let userToken = getToken();
+    setShowLoading(true);
 
     let userData = getUserDataOnLocalStorage();
     let imageData = {
@@ -44,6 +48,7 @@ const MediaForm = () => {
             { src: data.data.source_url, id: data.data.id },
           ]);
           toastAlert("عکس با موفقیت ذخیره شد", "success");
+          setShowLoading(false);
         } else {
           let videoData = {
             ID: localStorage.getItem("stateId"),
@@ -61,13 +66,18 @@ const MediaForm = () => {
                 { src: data.data.source_url, id: data.data.id },
               ]);
               toastAlert("فیلم با موفقیت ذخیره شد", "success");
+              setShowLoading(false);
             })
             .catch((err) => {
+              setShowLoading(false);
+
               toastAlert("سرور مشغول است");
             });
         }
       })
       .catch((err) => {
+        setShowLoading(false);
+
         toastAlert("سرور مشغول است");
       });
   };
@@ -102,12 +112,16 @@ const MediaForm = () => {
     let ownerMobile = localStorage.getItem("ownerMobile");
     let moshaverName = localStorage.getItem("moshaverName");
     sendSMSStateOwner(ownerMobile, stateTitle)
-      .then((data) => {})
+      .then((data) => {
+        console.log(data);
+      })
       .catch((err) => {
         toastAlert("سرور مشغول است");
       });
     sendSMSAdminState(moshaverName, stateTitle)
-      .then((data) => {})
+      .then((data) => {
+        console.log(data);
+      })
       .catch((err) => {
         toastAlert("سرور مشغول است");
       });
@@ -196,6 +210,12 @@ const MediaForm = () => {
             </div>
           ))}
         </div>
+        {showLoading && (
+          <div className="flex-col my-2  flex justify-center items-center  m-auto font-medium rounded-xl   ">
+            <ClipLoader size={70} color="#fff" />
+            <span className="text-white mt-6">درحال آپلود رسانه </span>
+          </div>
+        )}
 
         <button
           onClick={redirectToDetails}
