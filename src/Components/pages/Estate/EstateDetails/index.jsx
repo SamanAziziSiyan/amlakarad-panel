@@ -5,6 +5,7 @@ import {
   formatNumber,
   getToken,
   getUserDataOnLocalStorage,
+  toastAlert,
 } from "../../../helper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -33,7 +34,6 @@ const EstateDetails = () => {
     service.states
       .getState(token, stateId)
       .then((data) => {
-        console.log(data);
         if (data.data.length == 0) {
           navigate("/404");
         }
@@ -51,11 +51,10 @@ const EstateDetails = () => {
         service.personnel
           .getUser(token, data.data[0].post_author)
           .then((data) => {
-            console.log(data);
             setStateAuthor(data.data.name);
           })
           .catch((err) => {
-            console.log(err);
+            toastAlert("سرور مشغول است");
           });
       })
       .catch((err) => {

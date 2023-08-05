@@ -90,7 +90,6 @@ const InformationForm = ({ setNextSection }) => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data);
         if (data.data.length == 0) {
           navigate("/404");
         }

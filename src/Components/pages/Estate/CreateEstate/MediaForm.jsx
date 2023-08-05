@@ -113,14 +113,14 @@ const MediaForm = () => {
     let moshaverName = localStorage.getItem("moshaverName");
     sendSMSStateOwner(ownerMobile, stateTitle)
       .then((data) => {
-        console.log(data);
+        toastAlert("پیامک مالک ارسال شد", "success");
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
       });
     sendSMSAdminState(moshaverName, stateTitle)
       .then((data) => {
-        console.log(data);
+        toastAlert("پیامک مدیر ارسال شد", "success");
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");

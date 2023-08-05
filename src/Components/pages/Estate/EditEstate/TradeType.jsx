@@ -11,6 +11,7 @@ import {
 import service from "../../../../server/service";
 import { BeatLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
+import Num2persian from "num2persian";
 
 const TradeType = ({ stateData }) => {
   const [showLoading, setShowLoading] = useState(false);
@@ -69,7 +70,7 @@ const TradeType = ({ stateData }) => {
     kafposh: "",
   });
   const handleCreateStateMeta = () => {
-    setShowLoading(true);
+     setShowLoading(true);
     let userToken = getToken();
     if (shoMoamele == "خرید و فروش") {
       let stateData = {
@@ -183,7 +184,6 @@ const TradeType = ({ stateData }) => {
 
   useEffect(() => {
     let userToken = getToken();
-
     service.states
       .getState(userToken, stateId)
       .then((data) => {
@@ -215,7 +215,7 @@ const TradeType = ({ stateData }) => {
           pricerahn: data.data[0]["price-rahn"],
           priceejare: data.data[0]["price-ejare"],
         });
-        setRozaneData({
+         setRozaneData({
           nafarat: data.data[0].nafarat,
           tahol: data.data[0].tahol,
           Pets: data.data[0].Pets,
@@ -329,6 +329,15 @@ const TradeType = ({ stateData }) => {
                         }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(
+                          kharidData.pricekol == "" ||
+                            kharidData.pricekol == undefined
+                            ? 0
+                            : kharidData.pricekol
+                        )}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                     <div className="w-full">
                       <label
@@ -350,9 +359,18 @@ const TradeType = ({ stateData }) => {
                         value={kharidData.pricemeteri}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(
+                          kharidData.pricemeteri == "" ||
+                            kharidData.pricemeteri == undefined
+                            ? 0
+                            : kharidData.pricemeteri
+                        )}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                   </div>
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full mb-6 max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
                         htmlFor="karbari"
@@ -661,7 +679,7 @@ const TradeType = ({ stateData }) => {
               </>
             ) : shoMoamele == "رهن و اجاره" ? (
               <>
-                <div className="flex max-md:flex-col items-center justify-between gap-4 w-full">
+                <div className="flex mb-6 max-md:flex-col items-center justify-between gap-4 w-full">
                   <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label htmlFor="vadie" className="mb-3 text-white block">
@@ -679,6 +697,15 @@ const TradeType = ({ stateData }) => {
                         value={rahanData.pricerahn}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(
+                          rahanData.pricerahn == "" ||
+                            rahanData.pricerahn == undefined
+                            ? 0
+                            : rahanData.pricerahn
+                        )}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                     <div className="w-full">
                       <label
@@ -700,9 +727,18 @@ const TradeType = ({ stateData }) => {
                         value={rahanData.priceejare}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(
+                          rahanData.priceejare == "" ||
+                            rahanData.priceejare == undefined
+                            ? 0
+                            : rahanData.priceejare
+                        )}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                   </div>
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full mb-6 max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
                         htmlFor="karbari"
@@ -969,7 +1005,7 @@ const TradeType = ({ stateData }) => {
               </>
             ) : shoMoamele == "اجاره روزانه" ? (
               <>
-                <div className="flex max-md:flex-col items-center justify-between gap-4 w-full">
+                <div className="flex max-md:flex-col mb-6 items-center justify-between gap-4 w-full">
                   <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
@@ -991,6 +1027,15 @@ const TradeType = ({ stateData }) => {
                         }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(
+                          rozaneData.priceshabi == "" ||
+                            rozaneData.priceshabi == undefined
+                            ? 0
+                            : rozaneData.priceshabi
+                        )}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                     <div className="w-full">
                       <label
@@ -1012,9 +1057,18 @@ const TradeType = ({ stateData }) => {
                         type="number"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(
+                          rozaneData.pricetatilat == "" ||
+                            rozaneData.pricetatilat == undefined
+                            ? 0
+                            : rozaneData.pricetatilat
+                        )}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                   </div>
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full mb-6 max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label htmlFor="tahol" className="mb-3 text-white block">
                         قابلیت اجاره به

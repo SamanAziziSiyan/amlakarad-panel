@@ -39,7 +39,6 @@ const PropertyType = () => {
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
           if (data.status == 200) {
             setShowLoading(false);
             toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
@@ -76,7 +75,6 @@ const PropertyType = () => {
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
-          console.log(data);
           setShowLoading(false);
           toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");

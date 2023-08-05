@@ -933,7 +933,8 @@ const SearchEstate = () => {
                               )}
 
                               {item.post_author == userId &&
-                              !userRole.administrator ? (
+                              !userRole.administrator &&
+                              !userRole.moshaver ? (
                                 <>
                                   <button
                                     onClick={() => {
@@ -1204,7 +1205,8 @@ const SearchEstate = () => {
                                 ""
                               )}
                               {item.post_author == userId &&
-                              !userRole.administrator ? (
+                              !userRole.administrator &&
+                              !userRole.moshaver ? (
                                 <>
                                   <button
                                     onClick={() => {
@@ -1232,6 +1234,7 @@ const SearchEstate = () => {
                               ) : (
                                 ""
                               )}
+
                               <Link to={`/EstateDetails/${item.ID}`}>
                                 <button
                                   type="button"

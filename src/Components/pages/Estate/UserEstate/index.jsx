@@ -80,7 +80,6 @@ const UserEstate = () => {
       service.states
         .getAutherStates(authorId, userToken)
         .then(async (data) => {
-          console.log(data);
           if (data.data.length == 0) {
             showEmpty(true);
             setShowLoading(false);
@@ -781,7 +780,8 @@ const UserEstate = () => {
                               )}
 
                               {item.post_author == userId &&
-                              !userRole.administrator ? (
+                              !userRole.administrator &&
+                              !userRole.moshaver ? (
                                 <>
                                   <button
                                     onClick={() => {
@@ -1042,7 +1042,8 @@ const UserEstate = () => {
                               )}
 
                               {item.post_author == userId &&
-                              !userRole.administrator ? (
+                              !userRole.administrator &&
+                              !userRole.moshaver ? (
                                 <>
                                   <button
                                     onClick={() => {

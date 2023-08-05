@@ -77,7 +77,6 @@ const ExtraInfoForm = () => {
     service.states
       .getState(userToken, stateId)
       .then((data) => {
-        console.log(data);
         setshowMantaghaData(data.data[0].ostan);
         setshowMantagha(true);
         setExtraInfo({

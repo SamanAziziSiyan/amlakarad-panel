@@ -51,9 +51,6 @@ const Logger = () => {
     service.personnel
       .getLogs(userToken)
       .then((data) => {
-        console.log(data);
-        // if (data.data.status == 403) throw new Error();
-
         const endOffset = itemOffset + 40;
         const currentLogs = data.data.slice(itemOffset, endOffset);
         const pageCount = Math.ceil(data.data.length / 40);
@@ -318,6 +315,10 @@ const Logger = () => {
                                     ) : item.action == "deleted" ? (
                                       <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
                                         حذف شده
+                                      </td>
+                                    ) : item.action == "trashed" ? (
+                                      <td className="whitespace-nowrap text-white px-6 py-4 font-medium">
+                                        انتقال به زباله دان
                                       </td>
                                     ) : (
                                       <td className="whitespace-nowrap text-white px-6 py-4 font-medium">

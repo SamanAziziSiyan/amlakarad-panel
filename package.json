@@ -11,6 +11,8 @@
     "formik": "^2.4.2",
     "jalali-moment": "^3.3.11",
     "jwt-decode": "^3.1.2",
+    "num2persian": "^3.2.2",
+    "nums2persian": "^1.0.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",

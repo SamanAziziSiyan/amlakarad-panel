@@ -32,11 +32,9 @@ const InformationForm = ({ setNextSection }) => {
     service.personnel
       .getUsers(userToken)
       .then((data) => {
-        console.log(data);
         if (data.data.status == 403) throw new Error();
         let moshaverItems = [];
         data.data.map((item) => {
-          console.log(item);
           if (!item.extra.role[0].karbar) {
             moshaverItems.push(item);
           }

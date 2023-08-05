@@ -10,12 +10,20 @@ import {
 } from "../../../helper";
 import service from "../../../../server/service";
 import { BeatLoader } from "react-spinners";
+import Num2persian from "num2persian";
 
 const TradeType = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [shoMoamele, setShoMoamele] = useState("");
   const [getMoaveze, setMoaveze] = useState(false);
   const [getPishforosh, setPishforosh] = useState(false);
+  const [priceKolAlphabetic, setPriceKolAlphabetic] = useState("");
+  const [priceMetriAlphabetic, setPriceMetriAlphabetic] = useState("");
+  const [priceRahnAlphabetic, setPriceRahnAlphabetic] = useState("");
+  const [priceEjareAlphabetic, setPriceEjareAlphabetic] = useState("");
+  const [priceShabiAlphabetic, setPriceShabiAlphabetic] = useState("");
+  const [priceShabiTatilatAlphabetic, setPriceShabiTatilatAlphabetic] =
+    useState("");
   const moavezeRef = useRef();
   const pishforoshRef = useRef();
   const emkanMoavezeRef = useRef();
@@ -77,8 +85,8 @@ const TradeType = () => {
             karbari: values.karbari,
             tabdil: values.tabdil,
             darbast: values.darbast,
-            pricerahn: values.pricerahn,
-            priceejare: values.priceejare,
+            pricerahn: priceRahnAlphabetic,
+            priceejare: priceEjareAlphabetic,
           },
         ],
       };
@@ -208,8 +216,15 @@ const TradeType = () => {
                         id="pricekol"
                         name="pricekol"
                         type="text"
-                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                        onChange={(e) => {
+                          setPriceKolAlphabetic(e.target.value);
+                        }}
+                        className="w-full  backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-gray-300 text-sm ">
+                        {Num2persian(priceKolAlphabetic)}{" "}
+                        <span className="text-xs ">تومان</span>
+                      </span>
                     </div>
                     <div className="w-full">
                       <label
@@ -222,8 +237,15 @@ const TradeType = () => {
                         id="pricemeteri"
                         name="pricemeteri"
                         type="text"
-                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                        onChange={(e) => {
+                          setPriceMetriAlphabetic(e.target.value);
+                        }}
+                        className="w-full   backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-white text-sm">
+                        {Num2persian(priceMetriAlphabetic)}{" "}
+                        <span className="text-xs">تومان</span>
+                      </span>
                     </div>
                   </div>
                   <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
@@ -376,7 +398,7 @@ const TradeType = () => {
             ) : shoMoamele == "رهن و اجاره" ? (
               <>
                 <div className="flex max-md:flex-col items-center justify-between gap-4 w-full">
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full mb-4 max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
                         htmlFor="price-rahn"
@@ -384,12 +406,20 @@ const TradeType = () => {
                       >
                         ودیعه
                       </label>
-                      <Field
+                      <input
                         id="price-rahn"
                         name="pricerahn"
                         type="text"
+                        onChange={(e) => {
+                          setPriceRahnAlphabetic(e.target.value);
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+
+                      <span className="text-gray-300 text-sm ">
+                        {Num2persian(priceRahnAlphabetic)}{" "}
+                        <span className="text-xs ">تومان</span>
+                      </span>
                     </div>
                     <div className="w-full">
                       <label
@@ -398,15 +428,22 @@ const TradeType = () => {
                       >
                         اجاره
                       </label>
-                      <Field
+                      <input
                         id="priceejare"
                         name="priceejare"
                         type="text"
+                        onChange={(e) => {
+                          setPriceEjareAlphabetic(e.target.value);
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+                      <span className="text-gray-300 text-sm ">
+                        {Num2persian(priceEjareAlphabetic)}{" "}
+                        <span className="text-xs ">تومان</span>
+                      </span>
                     </div>
                   </div>
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full mb-9 max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
                         htmlFor="karbari"
@@ -452,7 +489,7 @@ const TradeType = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center max-md:flex-col justify-between gap-4 w-full">
+                <div className="flex mb-4 items-center max-md:flex-col justify-between gap-4 w-full">
                   <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
@@ -525,7 +562,7 @@ const TradeType = () => {
             ) : shoMoamele == "اجاره روزانه" ? (
               <>
                 <div className="flex max-md:flex-col items-center justify-between gap-4 w-full">
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full mb-4 max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
                         htmlFor="price-shabi"
@@ -537,8 +574,16 @@ const TradeType = () => {
                         id="price-shabi"
                         name="priceshabi"
                         type="number"
+                        onChange={(e) => {
+                          setPriceShabiAlphabetic(e.target.value);
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+
+                      <span className="text-gray-300 text-sm ">
+                        {Num2persian(priceShabiAlphabetic)}{" "}
+                        <span className="text-xs ">تومان</span>
+                      </span>
                     </div>
                     <div className="w-full">
                       <label
@@ -551,12 +596,20 @@ const TradeType = () => {
                         id="price-tatilat"
                         name="pricetatilat"
                         type="number"
+                        onChange={(e) => {
+                          setPriceShabiTatilatAlphabetic(e.target.value);
+                        }}
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
+
+                      <span className="text-gray-300 text-sm ">
+                        {Num2persian(priceShabiTatilatAlphabetic)}{" "}
+                        <span className="text-xs ">تومان</span>
+                      </span>
                     </div>
                   </div>
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
-                    <div className="w-full">
+                  <div className="w-full mb-9 max-md:flex-col flex items-center justify-between gap-4">
+                    <div className="w-full ">
                       <label htmlFor="tahol" className="mb-3 text-white block">
                         قابلیت اجاره به
                       </label>
@@ -593,7 +646,7 @@ const TradeType = () => {
                   </div>
                 </div>
                 <div className="flex max-md:flex-col items-center justify-between gap-4 w-full">
-                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                  <div className="w-full  max-md:flex-col flex items-center justify-between gap-4">
                     <div className="w-full">
                       <label
                         htmlFor="nafarat"
