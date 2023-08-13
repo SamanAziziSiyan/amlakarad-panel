@@ -108,6 +108,15 @@ const MediaForm = () => {
     setStateID(localStorage.getItem("stateId"));
   }, []);
   const redirectToDetails = () => {
+    let userToken = getToken();
+    let imageIds = [];
+    uploadedImages.map((item) => {
+      imageIds.push(String(item.id));
+    });
+    let data = {
+      ID: stateID,
+      meta: [{ gallery: imageIds, _gallery: "field_5bdd406aef1f8" }],
+    };
     let stateTitle = localStorage.getItem("stateTitle");
     let ownerMobile = localStorage.getItem("ownerMobile");
     let moshaverName = localStorage.getItem("moshaverName");
@@ -125,11 +134,20 @@ const MediaForm = () => {
       .catch((err) => {
         toastAlert("سرور مشغول است");
       });
-    localStorage.removeItem("stateId");
-    localStorage.removeItem("stateTitle");
-    localStorage.removeItem("ownerMobile");
-    localStorage.removeItem("moshaverName");
-    navigate(`/estateDetails/${stateID}`);
+    service.states
+      .insertMetaData(userToken, data)
+      .then((dataMeta) => {
+        localStorage.removeItem("stateId");
+        localStorage.removeItem("stateTitle");
+        localStorage.removeItem("ownerMobile");
+        localStorage.removeItem("moshaverName");
+        navigate(`/estateDetails/${stateID}`);
+      })
+      .catch((err) => {
+        setShowLoading(false);
+
+        toastAlert("سرور مشغول است");
+      });
   };
   return (
     <>

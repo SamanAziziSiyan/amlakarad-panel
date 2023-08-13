@@ -12,7 +12,7 @@ const PropertyType = () => {
   const [shoMelk, setShowMelk] = useState("");
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
-     let userToken = getToken();
+    let userToken = getToken();
     let stateId = localStorage.getItem("stateId");
     if (shoMelk == "آپارتمان") {
       let stateData = {
@@ -107,7 +107,7 @@ const PropertyType = () => {
           setShowLoading(false);
         });
     }
-    if (shoMelk == "اداری و تجاری ") {
+    if (shoMelk == "اداری و تجاری") {
       let stateData = {
         ID: stateId,
         meta: [
@@ -752,7 +752,7 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-tabaghat"
-                        name="tedad-tabaghat"
+                        name="tedadtabaghat"
                         type="text"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
@@ -768,7 +768,7 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-vahed-har-tabaghe"
-                        name="tedad-vahed-har-tabaghe"
+                        name="tedadvahedhartabaghe"
                         type="number"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />
@@ -782,7 +782,7 @@ const PropertyType = () => {
                       </label>
                       <Field
                         id="tedad-vahed-kol"
-                        name="tedad-vahed-kol"
+                        name="tedadvahedkol"
                         type="number"
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       />

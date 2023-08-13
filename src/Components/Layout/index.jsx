@@ -35,7 +35,6 @@ const Layout = ({ children }) => {
         el.style.color = SettingsData.title;
       }
       for (const el of lableElement) {
-        console.log(el);
         el.style.color = SettingsData.inputColor;
       }
       for (const el of contentElement) {

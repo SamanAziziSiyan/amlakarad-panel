@@ -13,6 +13,8 @@ import service from "../../../../server/service";
 import { BeatLoader } from "react-spinners";
 const ExtraInfoForm = () => {
   const [showLoading, setShowLoading] = useState(false);
+  const [getSpecial, setSpecial] = useState(false);
+
   const [showMantagha, setshowMantagha] = useState(false);
   const [showMantaghaData, setshowMantaghaData] = useState("");
   const [userRole, setUserRole] = useState(null);
@@ -26,6 +28,7 @@ const ExtraInfoForm = () => {
   const parkingRef = useRef();
   const asansorRef = useRef();
   const moshaverRef = useRef();
+  const specialReasonRef = useRef();
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
@@ -97,10 +100,14 @@ const ExtraInfoForm = () => {
           kohpaye: kohpayeRef.current.checked ? "1" : "0",
           saheli: saheliRef.current.checked ? "1" : "0",
           sayeremkanat: checkedEmkanat,
+          specialReason:
+            specialReasonRef?.current?.value == undefined
+              ? ""
+              : specialReasonRef?.current?.value,
         },
       ],
     };
-     service.states
+    service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
         if (data.status == 200) {
@@ -341,11 +348,31 @@ const ExtraInfoForm = () => {
                       type="checkbox"
                       name="shahraki"
                       ref={specialRef}
+                      onChange={(e) => {
+                        if (e.target.checked) setSpecial(true);
+                        else setSpecial(false);
+                      }}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
+                {getSpecial && (
+                  <div className="w-full">
+                    <label
+                      htmlFor="moavezefor"
+                      className="mb-3 text-white block"
+                    >
+                      علت ویژه بودن
+                    </label>
+                    <input
+                      id="moavezefor"
+                      ref={specialReasonRef}
+                      type="text"
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -760,12 +787,62 @@ const ExtraInfoForm = () => {
               />
               <label className="mr-2 text-white block">آب چاه</label>
             </div>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="آشپزخانه سرد و گرم"
+              />
+              <label className="mr-2 text-white block">
+                آشپزخانه سرد و گرم
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی آبی"
+              />
+              <label className="mr-2 text-white block">زمین کشاورزی آبی</label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی دیمی"
+              />
+              <label className="mr-2 text-white block">زمین کشاورزی دیمی</label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی بارانی ثابت"
+              />
+              <label className="mr-2 text-white block">
+                زمین کشاورزی بارانی ثابت
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی بارانی متحرک"
+              />
+              <label className="mr-2 text-white block">
+                زمین کشاورزی بارانی متحرک
+              </label>
+            </div>
           </div>
 
           <div className="w-full m-auto flex items-center justify-center">
             <button
               type="submit"
-              className="bg-[#4a80bb] items-center justify-center max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb]  max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات اضافی

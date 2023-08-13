@@ -22,6 +22,7 @@ const EstateDetails = () => {
   const { stateId } = useParams();
   const [stateData, setStateData] = useState({});
   const [videoSrc, setVideoSrc] = useState("");
+  const [userId, setUSerId] = useState(0);
   const [userRole, setUserRole] = useState("");
   const [stateAuthor, setStateAuthor] = useState("");
 
@@ -29,6 +30,7 @@ const EstateDetails = () => {
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
     setUserRole(userData.role);
+    setUSerId(userData.ID);
     window.scrollTo(0, 0);
     const token = getToken();
     service.states
@@ -114,16 +116,27 @@ const EstateDetails = () => {
                       </Swiper>
                     </div>
                     <div className="col-span-3  max-lg:col-span-12  h-full rounded-lg py-2  px-1 flex flex-col gap-4">
-                      <div className="w-full bg-white h-auto rounded-[5px]   flex items-center justify-center">
-                        <span>نام مالک :{stateData.name}</span>
-                      </div>
-                      <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
-                        <span>
-                          {" "}
-                          شماره تماس مالک:
-                          {stateData.mobile}{" "}
-                        </span>
-                      </div>
+                      {userRole.administrator ||
+                      userRole.karmand ||
+                      stateData.post_author == userId ? (
+                        <>
+                          <div className="w-full bg-white h-auto rounded-[5px]   flex items-center justify-center">
+                            <span>نام مالک :{stateData.name}</span>
+                          </div>
+                          <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
+                            <span>
+                              {" "}
+                              شماره تماس مالک:
+                              {stateData.mobile}{" "}
+                            </span>
+                          </div>
+                          <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
+                            <span>آدرس ملک :{stateData.address} </span>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
 
                       {stateData.moamele == "خرید و فروش" ? (
                         <>
@@ -161,9 +174,6 @@ const EstateDetails = () => {
                         ""
                       )}
 
-                      <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
-                        <span>آدرس ملک :{stateData.address} </span>
-                      </div>
                       <div className="w-full bg-white rounded-[5px] h-auto p-2 flex items-center justify-center">
                         <span>شهر :{stateData.ostan} </span>
                       </div>
@@ -289,7 +299,7 @@ const EstateDetails = () => {
                         )}
 
                         <div className="flex items-center ">
-                          {!userRole.karmand ? (
+                          {userRole.administrator || userId == stateData.post_author ?(
                             <div className="flex items-center gap-4 justify-center">
                               <Link to={`/edit-estate/${stateData.ID}`}>
                                 <button
@@ -965,18 +975,14 @@ const EstateDetails = () => {
                         <GiElevator size={24} />
                         <span className="text-lg mr-4">
                           آسانسور :{" "}
-                          {stateData.asansor == "0"
-                            ? "ندارد"
-                            : stateData.asansor}
+                          {stateData.asansor == "0" ? "ندارد" : "دارد"}
                         </span>
                       </div>
                       <div className="col-span-6 lg:col-span-2 bg-transparent h-10 flex items-center text-white ">
                         <FaParking size={24} />
                         <span className="text-lg mr-4">
                           پارکینگ :{" "}
-                          {stateData.parking == "0"
-                            ? "ندارد"
-                            : stateData.parking}
+                          {stateData.parking == "0" ? "ندارد" : "دارد"}
                         </span>
                       </div>
                     </div>

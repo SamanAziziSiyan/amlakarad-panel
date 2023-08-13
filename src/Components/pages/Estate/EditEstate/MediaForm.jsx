@@ -122,7 +122,26 @@ const MediaForm = () => {
       });
   }, []);
   const redirectToDetails = () => {
-    navigate(`/estateDetails/${stateId}`);
+    let userToken = getToken();
+    let imageIds = [];
+    stateImages.map((item) => {
+      imageIds.push(item.ID);
+    });
+    let data = {
+      ID: stateId,
+      meta: [{ gallery: imageIds , _gallery:"field_5bdd406aef1f8" }],
+    };
+
+    service.states
+      .insertMetaData(userToken, data)
+      .then(() => {
+        navigate(`/estateDetails/${stateId}`);
+      })
+      .catch((err) => {
+        setShowLoading(false);
+
+        toastAlert("سرور مشغول است");
+      });
   };
   return (
     <>

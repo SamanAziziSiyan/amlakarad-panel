@@ -76,7 +76,11 @@ const UserEstate = () => {
     if (userData.role.karbar) return navigate("/");
     let userToken = getToken();
     setUserRole(userData.role);
-    if (userData.role.administrator || userData.role.karmand) {
+    if (
+      userData.role.administrator ||
+      userData.role.karmand ||
+      userData.role.moshaver
+    ) {
       service.states
         .getAutherStates(authorId, userToken)
         .then(async (data) => {
@@ -714,7 +718,7 @@ const UserEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  پارکینگ : {item.parking}
+                                  پارکینگ : {item.parking == "0" ? "ندارد" : "دارد"}
                                 </span>
                               </div>
 

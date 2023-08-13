@@ -35,6 +35,7 @@ const TradeType = ({ stateData }) => {
     mosharekat: "",
     tahvil: "",
     moavezefor: "",
+    construction: "",
   });
   const [rahanData, setRahnData] = useState({
     nafarat: "",
@@ -70,7 +71,7 @@ const TradeType = ({ stateData }) => {
     kafposh: "",
   });
   const handleCreateStateMeta = () => {
-     setShowLoading(true);
+    setShowLoading(true);
     let userToken = getToken();
     if (shoMoamele == "خرید و فروش") {
       let stateData = {
@@ -82,6 +83,7 @@ const TradeType = ({ stateData }) => {
             pricemeteri: kharidData.pricemeteri,
             karbari: kharidData.karbari,
             sanad: kharidData.sanad,
+            construction: kharidData.construction,
             moaveze: moavezeRef.current.checked ? "1" : "0",
             pishforosh: pishforoshRef.current.checked ? "1" : "0",
 
@@ -91,9 +93,9 @@ const TradeType = ({ stateData }) => {
                 ? ""
                 : tahvilRef?.current?.value,
             moavezefor:
-              emkanMoavezeRef.current.value == undefined
+              emkanMoavezeRef?.current?.value == undefined
                 ? ""
-                : emkanMoavezeRef.current.value,
+                : emkanMoavezeRef?.current?.value,
           },
         ],
       };
@@ -204,6 +206,7 @@ const TradeType = ({ stateData }) => {
           mosharekat: data.data[0].mosharekat,
           tahvil: data.data[0].tahvil,
           moavezefor: data.data[0]["moaveze-for"],
+          construction: data.data[0].construction,
         });
         setRahnData({
           nafarat: data.data[0].nafarat,
@@ -215,7 +218,7 @@ const TradeType = ({ stateData }) => {
           pricerahn: data.data[0]["price-rahn"],
           priceejare: data.data[0]["price-ejare"],
         });
-         setRozaneData({
+        setRozaneData({
           nafarat: data.data[0].nafarat,
           tahol: data.data[0].tahol,
           Pets: data.data[0].Pets,
@@ -548,6 +551,70 @@ const TradeType = ({ stateData }) => {
                           selected={kharidData.sanad == "سایر" ? true : false}
                         >
                           سایر{" "}
+                        </option>
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                    <div className="w-full">
+                      <label
+                        htmlFor="construction"
+                        className="mb-3 text-white block"
+                      >
+                        نوع ساخت{" "}
+                      </label>
+                      <Field
+                        id="construction"
+                        name="construction"
+                        as="select"
+                        onChange={(e) => {
+                          setKharidData({
+                            ...kharidData,
+                            construction: e.target.value,
+                          });
+                        }}
+                        value={kharidData.construction}
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      >
+                        <option value={0}>انتخاب کنید</option>
+                        <option
+                          selected={
+                            kharidData.construction == "دیوار باربر"
+                              ? true
+                              : false
+                          }
+                        >
+                          دیوار باربر
+                        </option>
+                        <option
+                          selected={
+                            kharidData.construction == "بتن آرمه" ? true : false
+                          }
+                        >
+                          بتن آرمه
+                        </option>
+                        <option
+                          selected={
+                            kharidData.construction == "اسکلت فلزی"
+                              ? true
+                              : false
+                          }
+                        >
+                          اسکلت فلزی
+                        </option>
+                        <option
+                          selected={
+                            kharidData.construction == "کلنگی" ? true : false
+                          }
+                        >
+                          کلنگی
+                        </option>
+                        <option
+                          selected={
+                            kharidData.construction == "ترکیبی" ? true : false
+                          }
+                        >
+                          ترکیبی
                         </option>
                       </Field>
                     </div>

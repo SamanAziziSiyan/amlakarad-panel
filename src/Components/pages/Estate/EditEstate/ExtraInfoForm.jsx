@@ -15,6 +15,8 @@ import { useParams } from "react-router-dom";
 const ExtraInfoForm = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [showMantagha, setshowMantagha] = useState(false);
+  const [getSpecial, setSpecial] = useState(false);
+
   const [showMantaghaData, setshowMantaghaData] = useState("");
   const [userRole, setUserRole] = useState(null);
   const [userID, setUserId] = useState(0);
@@ -36,6 +38,7 @@ const ExtraInfoForm = () => {
     asansor: "",
     mg: [],
     emkanat: [],
+    specialReason: "",
   });
   const [moshavers, setMoshavers] = useState([]);
   const shahrakiRef = useRef();
@@ -46,6 +49,7 @@ const ExtraInfoForm = () => {
   const parkingRef = useRef();
   const asansorRef = useRef();
   const { stateId } = useParams();
+  const specialReasonRef = useRef();
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
@@ -96,9 +100,16 @@ const ExtraInfoForm = () => {
           kohpaye: data.data[0].kohpaye,
           saheli: data.data[0].saheli,
           mantaghe: data.data[0].mantaghe,
-          mg: data.data[0].mg,
-          emkanat: data.data[0]["sayer-emkanat"],
+          specialReason: data.data[0].specialReason,
+          mg: data.data[0].mg == "" ? [] : data.data[0].mg,
+          emkanat:
+            data.data[0]["sayer-emkanat"] == ""
+              ? []
+              : data.data[0]["sayer-emkanat"],
         });
+        if (data.data[0].special == "1") {
+          setSpecial(true);
+        }
         setUserId(data.data[0].moshaver);
       })
       .catch((err) => {
@@ -108,7 +119,6 @@ const ExtraInfoForm = () => {
   }, []);
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
-
     let emkanatElements = document.getElementsByClassName("emkanat");
     let wgElements = document.getElementsByClassName("wg");
     let checkedEmkanat = [];
@@ -124,7 +134,6 @@ const ExtraInfoForm = () => {
         checkedWg.push(item.getAttribute("data-title"));
       }
     }
-
     let userToken = getToken();
     let stateData = {
       ID: stateId,
@@ -139,6 +148,7 @@ const ExtraInfoForm = () => {
           priceform: extraInfo.priceform,
           metrazh: extraInfo.metrazh,
           moshaver: userID,
+
           fast: fastRef.current.checked ? "1" : "0",
           special: specialRef.current.checked ? "1" : "0",
           mg: checkedWg,
@@ -148,10 +158,13 @@ const ExtraInfoForm = () => {
           kohpaye: kohpayeRef.current.checked ? "1" : "0",
           saheli: saheliRef.current.checked ? "1" : "0",
           sayeremkanat: checkedEmkanat,
+          specialReason:
+            specialReasonRef?.current?.value == undefined
+              ? ""
+              : specialReasonRef?.current?.value,
         },
       ],
     };
-
     service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
@@ -695,12 +708,37 @@ const ExtraInfoForm = () => {
                           ...extraInfo,
                           special: e.target.checked ? "1" : "",
                         });
+                        if (e.target.checked) setSpecial(true);
+                        else setSpecial(false);
                       }}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
+                {getSpecial && (
+                  <div className="w-full">
+                    <label
+                      htmlFor="moavezefor"
+                      className="mb-3 text-white block"
+                    >
+                      علت ویژه بودن
+                    </label>
+                    <input
+                      id="moavezefor"
+                      ref={specialReasonRef}
+                      value={extraInfo.specialReason}
+                      onChange={(e) => {
+                        setExtraInfo({
+                          ...extraInfo,
+                          specialReason: e.target.value,
+                        });
+                      }}
+                      type="text"
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -880,12 +918,12 @@ const ExtraInfoForm = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                checked={extraInfo.parking == "دارد" ? true : false}
+                checked={extraInfo.parking == "1" ? true : false}
                 name="parking"
                 onChange={(e) => {
                   setExtraInfo({
                     ...extraInfo,
-                    parking: e.target.checked ? "دارد" : "ندارد",
+                    parking: e.target.checked ? "1" : "0",
                   });
                 }}
                 ref={parkingRef}
@@ -897,12 +935,13 @@ const ExtraInfoForm = () => {
               <input
                 type="checkbox"
                 name="asansor"
+                ref={asansorRef}
                 id=""
-                checked={extraInfo.asansor == "دارد" ? true : false}
+                checked={extraInfo.asansor == "1" ? true : false}
                 onChange={(e) => {
                   setExtraInfo({
                     ...extraInfo,
-                    asansor: e.target.checked ? "دارد" : "ندارد",
+                    asansor: e.target.checked ? "1" : "0",
                   });
                 }}
               />
@@ -911,7 +950,6 @@ const ExtraInfoForm = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                ref={asansorRef}
                 className="emkanat"
                 data-title="آب"
                 checked={extraInfo.emkanat?.find((item) => item == "آب")}
@@ -1554,12 +1592,132 @@ const ExtraInfoForm = () => {
               />
               <label className="mr-2 text-white block">آب چاه</label>
             </div>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="آشپزخانه سرد و گرم"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "آشپزخانه سرد و گرم"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "آشپزخانه سرد و گرم"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
+              <label className="mr-2 text-white block">
+                آشپزخانه سرد و گرم
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی آبی"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "زمین کشاورزی آبی"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "زمین کشاورزی آبی"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
+              <label className="mr-2 text-white block">زمین کشاورزی آبی</label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی دیمی"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "زمین کشاورزی دیمی"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "زمین کشاورزی دیمی"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
+              <label className="mr-2 text-white block">زمین کشاورزی دیمی</label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی بارانی ثابت"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "زمین کشاورزی بارانی ثابت"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "زمین کشاورزی بارانی ثابت"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
+              <label className="mr-2 text-white block">
+                زمین کشاورزی بارانی ثابت
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="emkanat"
+                data-title="زمین کشاورزی بارانی متحرک"
+                checked={extraInfo.emkanat?.find(
+                  (item) => item == "زمین کشاورزی بارانی متحرک"
+                )}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    e.target.checked = true;
+                  } else {
+                    let data = extraInfo.emkanat?.filter(
+                      (item) => item != "زمین کشاورزی بارانی متحرک"
+                    );
+                    setExtraInfo({ ...extraInfo, emkanat: data });
+                    e.target.checked = false;
+                  }
+                }}
+              />
+              <label className="mr-2 text-white block">
+                زمین کشاورزی بارانی متحرک
+              </label>
+            </div>
           </div>
 
           <div className="w-full m-auto flex items-center justify-center">
             <button
               type="submit"
-              className="bg-[#4a80bb] items-center justify-center max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb]  max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات اضافی

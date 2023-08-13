@@ -867,7 +867,7 @@ const SearchEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  پارکینگ : {item.parking}
+                                  پارکینگ : {item.parking == "0" ? "ندارد" : "دارد"}
                                 </span>
                               </div>
 

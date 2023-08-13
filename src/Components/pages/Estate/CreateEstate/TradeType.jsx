@@ -31,7 +31,6 @@ const TradeType = () => {
   const mosharekat = useRef();
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
-
     let userToken = getToken();
     let stateId = localStorage.getItem("stateId");
     if (shoMoamele == "خرید و فروش") {
@@ -40,10 +39,11 @@ const TradeType = () => {
         meta: [
           {
             moamele: shoMoamele,
-            pricekol: values.pricekol,
-            pricemeteri: values.pricemeteri,
+            pricekol: priceKolAlphabetic,
+            pricemeteri: priceMetriAlphabetic,
             karbari: values.karbari,
             sanad: values.sanad,
+            construction: values.construction,
             moaveze: moavezeRef.current.checked ? "1" : "0",
             pishforosh: pishforoshRef.current.checked ? "1" : "0",
             mosharekat: mosharekat.current.checked ? "1" : "0",
@@ -52,9 +52,9 @@ const TradeType = () => {
                 ? ""
                 : tahvilRef?.current?.value,
             moavezefor:
-              emkanMoavezeRef.current.value == undefined
+              emkanMoavezeRef?.current?.value == undefined
                 ? ""
-                : emkanMoavezeRef.current.value,
+                : emkanMoavezeRef?.current?.value,
           },
         ],
       };
@@ -90,6 +90,7 @@ const TradeType = () => {
           },
         ],
       };
+
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -114,11 +115,12 @@ const TradeType = () => {
             tabdil: values.tabdil,
             darbast: values.darbast,
             celebrations: values.celebrations,
-            priceshabi: values.priceshabi,
-            pricetatilat: values.pricetatilat,
+            priceshabi: priceShabiAlphabetic,
+            pricetatilat: priceShabiTatilatAlphabetic,
           },
         ],
       };
+
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -144,6 +146,8 @@ const TradeType = () => {
           darbast: "",
           pricerahn: "",
           priceejare: "",
+          sanad: "",
+          construction: "",
         }}
         onSubmit={(values) => {
           handleCreateStateMeta(values);
@@ -297,6 +301,29 @@ const TradeType = () => {
                         <option>نسخ</option>
                         <option>دردست اقدام</option>
                         <option>سایر </option>
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="w-full max-md:flex-col flex items-center justify-between gap-4">
+                    <div className="w-full">
+                      <label
+                        htmlFor="construction"
+                        className="mb-3 text-white block"
+                      >
+                        نوع ساخت{" "}
+                      </label>
+                      <Field
+                        id="construction"
+                        name="construction"
+                        as="select"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      >
+                        <option value={0}>انتخاب کنید</option>
+                        <option>دیوار باربر</option>
+                        <option>بتن آرمه</option>
+                        <option>اسکلت فلزی</option>
+                        <option>کلنگی</option>
+                        <option>ترکیبی</option>
                       </Field>
                     </div>
                   </div>
