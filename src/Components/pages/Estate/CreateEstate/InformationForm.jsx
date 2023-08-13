@@ -76,6 +76,7 @@ const InformationForm = ({ setNextSection }) => {
         } else throw new Error();
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });

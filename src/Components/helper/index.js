@@ -85,7 +85,15 @@ export const sendSMSAdminState = async (username, title) => {
   });
 };
 
-export const sendSMSStateOwner = async (mobile, title) => {
+export const slugHandler = (slug) => {
+  let step1 = slug.trim();
+  let step2 = step1.replaceAll(" ", "-");
+  let step3 = step2.replaceAll("‌", "-");
+  let step4 = step3.toLowerCase();
+  return step4;
+};
+export const sendSMSStateOwner = async (mobile, title, name) => {
+  let link = slugHandler(title);
   let data = {
     mobile: String(mobile),
     templateId: 172091,
@@ -93,6 +101,14 @@ export const sendSMSStateOwner = async (mobile, title) => {
       {
         name: "title",
         value: title,
+      },
+      {
+        name: "owner",
+        value: name,
+      },
+      {
+        name: "statelink",
+        value: `https://amlakarad.com/state/${link}`,
       },
     ],
   };

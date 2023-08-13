@@ -41,6 +41,7 @@ const PropertyType = () => {
     sokonat: "",
     nama: "",
     kafposh: "",
+    dahane: "",
   });
 
   const [homeData, setHomeData] = useState({
@@ -55,6 +56,14 @@ const PropertyType = () => {
     nama: "",
     kabinet: "",
     kafposh: "",
+    zirbana: "",
+    dahane: "",
+  });
+  const [keshavarzi, setKeshavarzi] = useState({
+    dahane: "",
+  });
+  const [zamin, setZamin] = useState({
+    dahane: "",
   });
   const { stateId } = useParams();
 
@@ -92,6 +101,7 @@ const PropertyType = () => {
           sokonat: data.data[0].sokonat,
           nama: data.data[0].nama,
           kafposh: data.data[0].kafposh,
+          dahane: data.data[0].dahane,
         });
         setHomeData({
           masahatzamin: data.data[0]["masahat-zamin"],
@@ -105,9 +115,18 @@ const PropertyType = () => {
           nama: data.data[0].nama,
           kabinet: data.data[0].kabinet,
           kafposh: data.data[0].kafposh,
+          zirbana: data.data[0].zirbana,
+          dahane: data.data[0].dahane,
+        });
+        setKeshavarzi({
+          dahane: data.data[0].dahane,
+        });
+        setZamin({
+          dahane: data.data[0].dahane,
         });
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });
@@ -147,6 +166,7 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -169,6 +189,8 @@ const PropertyType = () => {
             nama: homeData.nama,
             kabinet: homeData.kabinet,
             kafposh: homeData.kafposh,
+            zirbana: homeData.zirbana,
+            dahane: homeData.dahane,
           },
         ],
       };
@@ -183,6 +205,7 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -194,6 +217,7 @@ const PropertyType = () => {
         meta: [
           {
             melk: shoMelk,
+            dahane: zamin.dahane,
           },
         ],
       };
@@ -207,12 +231,37 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
-
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
     }
-    if (shoMelk == "اداری و تجاری ") {
+
+    if (shoMelk == "زمین کشاورزی") {
+      let stateData = {
+        ID: stateId,
+        meta: [
+          {
+            melk: shoMelk,
+            dahane: keshavarzi.dahane,
+          },
+        ],
+      };
+
+      service.states
+        .insertMetaData(userToken, stateData)
+        .then((data) => {
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
+        })
+        .catch((err) => {
+          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
+        });
+    }
+    if (shoMelk == "اداری و تجاری") {
       let stateData = {
         ID: stateId,
         meta: [
@@ -229,6 +278,7 @@ const PropertyType = () => {
             sokonat: edariData.sokonat,
             nama: edariData.nama,
             kafposh: edariData.kafposh,
+            dahane: edariData.dahane,
           },
         ],
       };
@@ -242,6 +292,7 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -282,6 +333,9 @@ const PropertyType = () => {
 
                       if (e.target.value == "اداری و تجاری")
                         return setShowMelk("اداری و تجاری");
+
+                      if (e.target.value == "زمین کشاورزی")
+                        return setShowMelk("زمین کشاورزی");
                     }}
                     as="select"
                     value={shoMelk}
@@ -308,6 +362,12 @@ const PropertyType = () => {
                       selected={shoMelk == "زمین و کلنگی" ? true : false}
                     >
                       زمین و کلنگی
+                    </option>
+                    <option
+                      value="زمین کشاورزی"
+                      selected={shoMelk == "زمین کشاورزی" ? true : false}
+                    >
+                      زمین کشاورزی
                     </option>
                     <option
                       value="اداری و تجاری"
@@ -1701,11 +1761,75 @@ const PropertyType = () => {
                         </option>
                       </Field>
                     </div>
+                    <div className="w-full">
+                      <label
+                        htmlFor="kafposh"
+                        className="mb-3 text-white block"
+                      >
+                        متراژ زیر بنا
+                      </label>
+                      <Field
+                        id="zirbana"
+                        name="zirbana"
+                        type="number"
+                        value={homeData.zirbana}
+                        onChange={(e) => {
+                          setHomeData({
+                            ...homeData,
+                            zirbana: e.target.value,
+                          });
+                        }}
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      ></Field>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                  <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                    <div className="w-full">
+                      <label htmlFor="dahane" className="mb-3 text-white block">
+                        دهنه ملک
+                      </label>
+                      <Field
+                        id="dahane"
+                        name="dahane"
+                        type="number"
+                        onChange={(e) => {
+                          setHomeData({
+                            ...homeData,
+                            dahane: e.target.value,
+                          });
+                        }}
+                        value={homeData.dahane}
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      ></Field>
+                    </div>
                   </div>
                 </div>
               </>
             ) : shoMelk == "زمین و کلنگی" ? (
-              ""
+              <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                  <div className="w-full">
+                    <label htmlFor="dahane" className="mb-3 text-white block">
+                      دهنه ملک
+                    </label>
+                    <Field
+                      id="dahane"
+                      name="dahane"
+                      type="number"
+                      onChange={(e) => {
+                        setZamin({
+                          ...zamin,
+                          dahane: e.target.value,
+                        });
+                      }}
+                      value={zamin.dahane}
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    ></Field>
+                  </div>
+                </div>
+              </div>
             ) : shoMelk == "اداری و تجاری" ? (
               <>
                 <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
@@ -2310,7 +2434,52 @@ const PropertyType = () => {
                     </div>
                   </div>
                 </div>
+                <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                  <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                    <div className="w-full">
+                      <label htmlFor="dahane" className="mb-3 text-white block">
+                        دهنه ملک
+                      </label>
+                      <Field
+                        id="dahane"
+                        name="dahane"
+                        type="number"
+                        onChange={(e) => {
+                          setEdariData({
+                            ...edariData,
+                            dahane: e.target.value,
+                          });
+                        }}
+                        value={edariData.dahane}
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      ></Field>
+                    </div>
+                  </div>
+                </div>
               </>
+            ) : shoMelk == "زمین کشاورزی" ? (
+              <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                  <div className="w-full">
+                    <label htmlFor="dahane" className="mb-3 text-white block">
+                      دهنه ملک
+                    </label>
+                    <Field
+                      id="dahane"
+                      name="dahane"
+                      type="number"
+                      value={keshavarzi.dahane}
+                      onChange={(e) => {
+                        setKeshavarzi({
+                          ...keshavarzi,
+                          dahane: e.target.value,
+                        });
+                      }}
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    ></Field>
+                  </div>
+                </div>
+              </div>
             ) : (
               ""
             )}

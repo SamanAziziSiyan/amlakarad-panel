@@ -71,6 +71,7 @@ const MediaForm = () => {
             .catch((err) => {
               setShowLoading(false);
 
+              console.log(err);
               toastAlert("سرور مشغول است");
             });
         }
@@ -78,6 +79,7 @@ const MediaForm = () => {
       .catch((err) => {
         setShowLoading(false);
 
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
   };
@@ -101,6 +103,7 @@ const MediaForm = () => {
         }
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
   };
@@ -120,11 +123,13 @@ const MediaForm = () => {
     let stateTitle = localStorage.getItem("stateTitle");
     let ownerMobile = localStorage.getItem("ownerMobile");
     let moshaverName = localStorage.getItem("moshaverName");
-    sendSMSStateOwner(ownerMobile, stateTitle)
+    let ownerName = localStorage.getItem("ownerName");
+    sendSMSStateOwner(ownerMobile, stateTitle, ownerName)
       .then((data) => {
         toastAlert("پیامک مالک ارسال شد", "success");
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
     sendSMSAdminState(moshaverName, stateTitle)
@@ -132,6 +137,7 @@ const MediaForm = () => {
         toastAlert("پیامک مدیر ارسال شد", "success");
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
     service.states
@@ -141,11 +147,13 @@ const MediaForm = () => {
         localStorage.removeItem("stateTitle");
         localStorage.removeItem("ownerMobile");
         localStorage.removeItem("moshaverName");
+        localStorage.removeItem("ownerName");
         navigate(`/estateDetails/${stateID}`);
       })
       .catch((err) => {
         setShowLoading(false);
 
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
   };

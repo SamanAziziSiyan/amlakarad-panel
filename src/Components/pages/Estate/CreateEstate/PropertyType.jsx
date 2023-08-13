@@ -46,6 +46,7 @@ const PropertyType = () => {
           } else throw new Error();
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -68,10 +69,11 @@ const PropertyType = () => {
             nama: values.nama,
             kabinet: values.kabinet,
             kafposh: values.kafposh,
+            zirbana: values.zirbana,
+            dahane: values.dahane,
           },
         ],
       };
-
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -80,6 +82,7 @@ const PropertyType = () => {
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -91,6 +94,7 @@ const PropertyType = () => {
         meta: [
           {
             melk: shoMelk,
+            dahane: values.dahane,
           },
         ],
       };
@@ -103,6 +107,31 @@ const PropertyType = () => {
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
+          console.log(err);
+          toastAlert("سرور مشغول است");
+          setShowLoading(false);
+        });
+    }
+
+    if (shoMelk == "زمین کشاورزی") {
+      let stateData = {
+        ID: stateId,
+        meta: [
+          {
+            melk: shoMelk,
+            dahane: values.dahane,
+          },
+        ],
+      };
+      service.states
+        .insertMetaData(userToken, stateData)
+        .then((data) => {
+          setShowLoading(false);
+          toastAlert("اطلاعات نوع ملک با موفقیت ثبت شد", "success");
+          toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
+        })
+        .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -124,10 +153,10 @@ const PropertyType = () => {
             sokonat: values.sokonat,
             nama: values.nama,
             kafposh: values.kafposh,
+            dahane: values.dahane,
           },
         ],
       };
-
       service.states
         .insertMetaData(userToken, stateData)
         .then((data) => {
@@ -136,6 +165,7 @@ const PropertyType = () => {
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -174,6 +204,9 @@ const PropertyType = () => {
                       if (e.target.value == "زمین و کلنگی")
                         return setShowMelk("زمین و کلنگی");
 
+                      if (e.target.value == "زمین کشاورزی")
+                        return setShowMelk("زمین کشاورزی");
+
                       if (e.target.value == "اداری و تجاری")
                         return setShowMelk("اداری و تجاری");
                     }}
@@ -202,6 +235,12 @@ const PropertyType = () => {
                       selected={shoMelk == "زمین و کلنگی" ? true : false}
                     >
                       زمین و کلنگی
+                    </option>
+                    <option
+                      value="زمین کشاورزی"
+                      selected={shoMelk == "زمین کشاورزی" ? true : false}
+                    >
+                      زمین کشاورزی
                     </option>
                     <option
                       value="اداری و تجاری"
@@ -720,11 +759,54 @@ const PropertyType = () => {
                         <option>سایر </option>
                       </Field>
                     </div>
+                    <div className="w-full">
+                      <label
+                        htmlFor="kafposh"
+                        className="mb-3 text-white block"
+                      >
+                        متراژ زیر بنا
+                      </label>
+                      <Field
+                        id="zirbana"
+                        name="zirbana"
+                        type="number"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      ></Field>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                  <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                    <div className="w-full">
+                      <label htmlFor="dahane" className="mb-3 text-white block">
+                        دهنه ملک
+                      </label>
+                      <Field
+                        id="dahane"
+                        name="dahane"
+                        type="number"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      ></Field>
+                    </div>
                   </div>
                 </div>
               </>
             ) : shoMelk == "زمین و کلنگی" ? (
-              ""
+              <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                  <div className="w-full">
+                    <label htmlFor="dahane" className="mb-3 text-white block">
+                      دهنه ملک
+                    </label>
+                    <Field
+                      id="dahane"
+                      name="dahane"
+                      type="number"
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    ></Field>
+                  </div>
+                </div>
+              </div>
             ) : shoMelk == "اداری و تجاری" ? (
               <>
                 <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
@@ -961,13 +1043,44 @@ const PropertyType = () => {
                     </div>
                   </div>
                 </div>
+                <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                  <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                    <div className="w-full">
+                      <label htmlFor="dahane" className="mb-3 text-white block">
+                        دهنه ملک
+                      </label>
+                      <Field
+                        id="dahane"
+                        name="dahane"
+                        type="number"
+                        className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                      ></Field>
+                    </div>
+                  </div>
+                </div>
               </>
+            ) : shoMelk == "زمین کشاورزی" ? (
+              <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                <div className="w-full flex items-center justify-between gap-4 max-md:flex-col">
+                  <div className="w-full">
+                    <label htmlFor="dahane" className="mb-3 text-white block">
+                      دهنه ملک
+                    </label>
+                    <Field
+                      id="dahane"
+                      name="dahane"
+                      type="number"
+                      className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                    ></Field>
+                  </div>
+                </div>
+              </div>
             ) : (
               ""
             )}
             <button
               type="submit"
-              className="bg-[#4a80bb] items-center justify-center max-lg:w-full m-auto flex items-end justify-center gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
+              className="bg-[#4a80bb]   justify-center max-lg:w-full m-auto flex items-end    gap-2  shadow-sm shadow-indigo-700 my-4 w-2/6 cursor-pointer  rounded-lg  py-2.5 text-center text-gray-100  hover:scale-105"
             >
               <RiAncientPavilionFill size={24} />
               ثبت اطلاعات نوع ملک

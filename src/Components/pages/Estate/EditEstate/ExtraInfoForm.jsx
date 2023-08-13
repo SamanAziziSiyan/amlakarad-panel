@@ -16,6 +16,7 @@ const ExtraInfoForm = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [showMantagha, setshowMantagha] = useState(false);
   const [getSpecial, setSpecial] = useState(false);
+  const [mantagheId, setManateghId] = useState(0);
 
   const [showMantaghaData, setshowMantaghaData] = useState("");
   const [userRole, setUserRole] = useState(null);
@@ -50,6 +51,7 @@ const ExtraInfoForm = () => {
   const asansorRef = useRef();
   const { stateId } = useParams();
   const specialReasonRef = useRef();
+  const [getManategh, setManategh] = useState([]);
 
   useEffect(() => {
     let userData = getUserDataOnLocalStorage();
@@ -114,7 +116,17 @@ const ExtraInfoForm = () => {
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
+        console.log(err);
         setShowLoading(false);
+      });
+
+    service.states
+      .getManategh(userToken)
+      .then((data) => {
+        setManategh(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
   const handleCreateStateMeta = (values) => {
@@ -176,7 +188,22 @@ const ExtraInfoForm = () => {
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
+        console.log(err);
         setShowLoading(false);
+      });
+
+    let mantagheData = {
+      stateId: Number(stateId),
+      mantaghe: Number(mantagheId),
+    };
+    console.log(mantagheData);
+    service.states
+      .addMantaghe(userToken, mantagheData)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -219,12 +246,6 @@ const ExtraInfoForm = () => {
             >
               بوکان
             </option>
-            <option
-              value="تهران"
-              selected={extraInfo.mantaghe == "تهران" ? true : false}
-            >
-              تهران
-            </option>
           </Field>
           {showMantagha && (
             <Field
@@ -233,6 +254,11 @@ const ExtraInfoForm = () => {
               as="select"
               value={extraInfo.shahr}
               onChange={(e) => {
+                setManateghId(
+                  e.target.options[e.target.selectedIndex].getAttribute(
+                    "data-id"
+                  )
+                );
                 setExtraInfo({
                   ...extraInfo,
                   shahr: e.target.value,
@@ -241,243 +267,20 @@ const ExtraInfoForm = () => {
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
               <option>همه</option>
-              <option
-                selected={extraInfo.shahr == "اسلام اباد" ? true : false}
-                value="اسلام اباد"
-              >
-                اسلام اباد
-              </option>
-              <option
-                value="آزادگان"
-                selected={extraInfo.shahr == "آزادگان" ? true : false}
-              >
-                {" "}
-                آزادگان
-              </option>
-              <option
-                value="ابوذر"
-                selected={extraInfo.shahr == "ابوذر" ? true : false}
-              >
-                {" "}
-                ابوذر
-              </option>
-              <option
-                value="استاد حقیقی"
-                selected={extraInfo.shahr == "استاد حقیقی" ? true : false}
-              >
-                استاد حقیقی
-              </option>
-              <option
-                value="اسکندری"
-                selected={extraInfo.shahr == "اسکندری" ? true : false}
-              >
-                اسکندری
-              </option>
-              <option
-                value="امیر آباد"
-                selected={extraInfo.shahr == "امیر آباد" ? true : false}
-              >
-                امیر آباد
-              </option>
-              <option
-                value="اینگیجه"
-                selected={extraInfo.shahr == "اینگیجه" ? true : false}
-              >
-                {" "}
-                اینگیجه
-              </option>
-              <option
-                value="پارک ساحلی"
-                selected={extraInfo.shahr == "پارک ساحلی" ? true : false}
-              >
-                پارک ساحلی
-              </option>
-              <option
-                value="جاده حصار"
-                selected={extraInfo.shahr == "جاده حصار" ? true : false}
-              >
-                جاده حصار
-              </option>
-              <option
-                value="چهاراه اطلاعات"
-                selected={extraInfo.shahr == "چهاراه اطلاعات" ? true : false}
-              >
-                چهاراه اطلاعات
-              </option>
-              <option
-                value="چهاراه شهرداری"
-                selected={extraInfo.shahr == "چهاراه شهرداری" ? true : false}
-              >
-                چهاراه شهرداری
-              </option>
-              <option
-                value="خیابان انقلاب"
-                selected={extraInfo.shahr == "خیابان انقلاب" ? true : false}
-              >
-                خیابان انقلاب
-              </option>
-              <option
-                value="خیابان زیتون"
-                selected={extraInfo.shahr == "خیابان زیتون" ? true : false}
-              >
-                خیابان زیتون
-              </option>
-              <option
-                value="خیابان سقز"
-                selected={extraInfo.shahr == "خیابان سقز" ? true : false}
-              >
-                خیابان سقز
-              </option>
-              <option
-                value="خیابان ورزش"
-                selected={extraInfo.shahr == "خیابان ورزش" ? true : false}
-              >
-                خیابان ورزش
-              </option>
-              <option
-                value="دانشگاه آزاد"
-                selected={extraInfo.shahr == "دانشگاه آزاد" ? true : false}
-              >
-                دانشگاه آزاد
-              </option>
-              <option
-                value="زیبا کنار"
-                selected={extraInfo.shahr == "زیبا کنار" ? true : false}
-              >
-                زیبا کنار
-              </option>
-              <option
-                value="سه راه خاوران"
-                selected={extraInfo.shahr == "سه راه خاوران" ? true : false}
-              >
-                سه راه خاوران
-              </option>
-              <option
-                value="سید شکره"
-                selected={extraInfo.shahr == "سید شکره" ? true : false}
-              >
-                سید شکره
-              </option>
-              <option
-                value="شهرک امام"
-                selected={extraInfo.shahr == "شهرک امام" ? true : false}
-              >
-                شهرک امام
-              </option>
-              <option
-                value="شهرک برق"
-                selected={extraInfo.shahr == "شهرک برق" ? true : false}
-              >
-                شهرک برق
-              </option>
-              <option
-                value="شهرک فرهنگیان"
-                selected={extraInfo.shahr == "شهرک فرهنگیان" ? true : false}
-              >
-                شهرک فرهنگیان
-              </option>
-              <option
-                value="شهرک گلستان"
-                selected={extraInfo.shahr == "شهرک گلستان" ? true : false}
-              >
-                شهرک گلستان
-              </option>
-              <option
-                value="عشایر"
-                selected={extraInfo.shahr == "عشایر" ? true : false}
-              >
-                عشایر
-              </option>
-              <option
-                value="علی آباد"
-                selected={extraInfo.shahr == "علی آباد" ? true : false}
-              >
-                علی آباد
-              </option>
-              <option
-                value="فرمانداری"
-                selected={extraInfo.shahr == "فرمانداری" ? true : false}
-              >
-                فرمانداری
-              </option>
-              <option
-                value="فلکه قدس"
-                selected={extraInfo.shahr == "فلکه قدس" ? true : false}
-              >
-                فلکه قدس
-              </option>
-              <option
-                value="کشتارگاه"
-                selected={extraInfo.shahr == "کشتارگاه" ? true : false}
-              >
-                کشتارگاه
-              </option>
-              <option
-                value="کلتپه"
-                selected={extraInfo.shahr == "کلتپه" ? true : false}
-              >
-                کلتپه
-              </option>
-              <option
-                value="کمربندی"
-                selected={extraInfo.shahr == "کمربندی" ? true : false}
-              >
-                کمربندی
-              </option>
-              <option
-                value="کهریزه محمود آباد"
-                selected={extraInfo.shahr == "کهریزه محمود آباد" ? true : false}
-              >
-                کهریزه محمود آباد
-              </option>
-              <option
-                value="کوسه"
-                selected={extraInfo.shahr == "کوسه" ? true : false}
-              >
-                کوسه
-              </option>
-              <option
-                value="کوی آفتاب"
-                selected={extraInfo.shahr == "کوی آفتاب" ? true : false}
-              >
-                کوی آفتاب
-              </option>
-              <option
-                value="کوی اندیشه"
-                selected={extraInfo.shahr == "کوی اندیشه" ? true : false}
-              >
-                کوی اندیشه
-              </option>
-              <option
-                value="کوی سپاه"
-                selected={extraInfo.shahr == "کوی سپاه" ? true : false}
-              >
-                کوی سپاه
-              </option>
-              <option
-                value="کوی محمدیه"
-                selected={extraInfo.shahr == "کوی محمدیه" ? true : false}
-              >
-                کوی محمدیه
-              </option>
-              <option
-                value="مجسمه مادر"
-                selected={extraInfo.shahr == "مجسمه مادر" ? true : false}
-              >
-                مجسمه مادر
-              </option>
-              <option
-                value="مسکن مهر"
-                selected={extraInfo.shahr == "مسکن مهر" ? true : false}
-              >
-                مسکن مهر
-              </option>
-              <option
-                value="ناچیت"
-                selected={extraInfo.shahr == "ناچیت" ? true : false}
-              >
-                ناچیت
-              </option>
+
+              {getManategh.map((item) => {
+                return item.parent == 1443 ? (
+                  <option
+                    selected={extraInfo.shahr == item.name ? true : false}
+                    value={item.name}
+                    data-id={item.term_id}
+                  >
+                    {item.name}
+                  </option>
+                ) : (
+                  ""
+                );
+              })}
             </Field>
           )}
 

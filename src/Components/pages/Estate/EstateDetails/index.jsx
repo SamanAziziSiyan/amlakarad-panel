@@ -48,6 +48,7 @@ const EstateDetails = () => {
         } else {
           setVideoSrc("");
         }
+        console.log(data.data);
         setStateData(data.data[0]);
         setShowLoading(false);
         service.personnel
@@ -57,6 +58,7 @@ const EstateDetails = () => {
           })
           .catch((err) => {
             toastAlert("سرور مشغول است");
+            console.log(err);
           });
       })
       .catch((err) => {
@@ -299,7 +301,8 @@ const EstateDetails = () => {
                         )}
 
                         <div className="flex items-center ">
-                          {userRole.administrator || userId == stateData.post_author ?(
+                          {userRole.administrator ||
+                          userId == stateData.post_author ? (
                             <div className="flex items-center gap-4 justify-center">
                               <Link to={`/edit-estate/${stateData.ID}`}>
                                 <button
@@ -441,26 +444,27 @@ const EstateDetails = () => {
                           <div className=" col-span-6 gap-4 max-lg:col-span-12">
                             <div className="flex items-center w-full gap-4 mb-4  ">
                               <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                                <span className="text">قیمت متری</span>
+                                <span className="text">امکان معاوضه</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
                                 <span>
                                   {" "}
-                                  {formatNumber(stateData["price-meteri"])}{" "}
-                                  <span className="text-xs">تومان</span>
+                                  {stateData.moaveze == "0"
+                                    ? "ندارد"
+                                    : "دارد"}{" "}
                                 </span>
                               </div>
                             </div>
                             <div className="flex items-center w-full gap-4 col-span-6  mb-4    ">
                               <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
-                                <span className="text">پیش فروش</span>
+                                <span className="text">معاوضه با</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
                                 <span>
                                   {" "}
-                                  {stateData.pishforosh == "0"
-                                    ? "ندارد"
-                                    : "دارد"}{" "}
+                                  {stateData["moaveze-for"] == ""
+                                    ? "-"
+                                    : stateData["moaveze-for"]}
                                 </span>
                               </div>
                             </div>
@@ -664,7 +668,12 @@ const EstateDetails = () => {
                                 <span className="text">تعداد طبقات</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["tedad-tabaghat"]} </span>
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-tabaghat"] == "undefined"
+                                    ? "-"
+                                    : stateData["tedad-tabaghat"]}{" "}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -687,7 +696,12 @@ const EstateDetails = () => {
                                 <span className="text">تعداد واحد کل</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["tedad-vahed-kol"]}</span>
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-vahed-kol"] == "undefined"
+                                    ? "-"
+                                    : stateData["tedad-vahed-kol"]}{" "}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -776,7 +790,12 @@ const EstateDetails = () => {
                                 <span className="text">تعداد طبقات</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["tedad-tabaghat"]} </span>
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-tabaghat"] == "undefined"
+                                    ? "-"
+                                    : stateData["tedad-tabaghat"]}{" "}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -786,7 +805,12 @@ const EstateDetails = () => {
                                 <span className="text">تعداد واحد کل </span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["tedad-vahed-kol"]} </span>
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-vahed-kol"] == "undefined"
+                                    ? "-"
+                                    : stateData["tedad-vahed-kol"]}{" "}
+                                </span>
                               </div>
                             </div>
                             <div className="flex items-center w-full gap-4 mb-4  ">
@@ -866,6 +890,16 @@ const EstateDetails = () => {
                               </div>
                             </div>
                           </div>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text"> دهنه ملک</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.dahane} </span>
+                              </div>
+                            </div>
+                          </div>
                         </>
                       ) : stateData.melk == "اداری و تجاری" ? (
                         <>
@@ -886,7 +920,12 @@ const EstateDetails = () => {
                                 <span className="text">تعداد طبقات</span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["tedad-tabaghat"]} </span>
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-tabaghat"] == "undefined"
+                                    ? "-"
+                                    : stateData["tedad-tabaghat"]}{" "}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -896,7 +935,12 @@ const EstateDetails = () => {
                                 <span className="text">تعداد واحد کل </span>
                               </div>
                               <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
-                                <span> {stateData["tedad-vahed-kol"]} </span>
+                                <span>
+                                  {" "}
+                                  {stateData["tedad-vahed-kol"] == "undefined"
+                                    ? "-"
+                                    : stateData["tedad-vahed-kol"]}{" "}
+                                </span>
                               </div>
                             </div>
                             <div className="flex items-center w-full gap-4 mb-4  ">
@@ -957,9 +1001,39 @@ const EstateDetails = () => {
                               </div>
                             </div>
                           </div>
+                          <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                            <div className="flex items-center w-full gap-4 mb-4  ">
+                              <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                                <span className="text"> دهنه ملک</span>
+                              </div>
+                              <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                                <span> {stateData.dahane} </span>
+                              </div>
+                            </div>
+                          </div>
                         </>
                       ) : stateData.melk == "زمین و کلنگی" ? (
-                        ""
+                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                          <div className="flex items-center w-full gap-4 mb-4  ">
+                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                              <span className="text"> دهنه ملک</span>
+                            </div>
+                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                              <span> {stateData.dahane} </span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : stateData.melk == "زمین کشاورزی" ? (
+                        <div className=" col-span-6 gap-4 max-lg:col-span-12">
+                          <div className="flex items-center w-full gap-4 mb-4  ">
+                            <div className="w-full h-10 rounded-md flex bg-gray-400 items-center justify-center  border border-gray-100 ">
+                              <span className="text"> دهنه ملک</span>
+                            </div>
+                            <div className="w-full h-10 rounded-md flex bg-white  items-center justify-center  border border-gray-100 ">
+                              <span> {stateData.dahane} </span>
+                            </div>
+                          </div>
+                        </div>
                       ) : (
                         ""
                       )}

@@ -14,12 +14,15 @@ import { BeatLoader } from "react-spinners";
 const ExtraInfoForm = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [getSpecial, setSpecial] = useState(false);
+  const [mantagheId, setManateghId] = useState(0);
+  const [mantagheTitle, setManateghTitle] = useState("");
 
   const [showMantagha, setshowMantagha] = useState(false);
   const [showMantaghaData, setshowMantaghaData] = useState("");
   const [userRole, setUserRole] = useState(null);
   const [userID, setUserId] = useState(0);
   const [moshavers, setMoshavers] = useState([]);
+  const [getManategh, setManategh] = useState([]);
   const shahrakiRef = useRef();
   const kohpayeRef = useRef();
   const saheliRef = useRef();
@@ -55,6 +58,14 @@ const ExtraInfoForm = () => {
       .catch((err) => {
         toastAlert("شما به بخش دسترسی ندارید");
       });
+    service.states
+      .getManategh(userToken)
+      .then((data) => {
+        setManategh(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   const handleCreateStateMeta = (values) => {
     setShowLoading(true);
@@ -83,7 +94,7 @@ const ExtraInfoForm = () => {
       meta: [
         {
           ostan: showMantaghaData,
-          shahr: values.shahr,
+          shahr: mantagheTitle,
           name: values.name,
           address: values.address,
           mobile: values.mobile,
@@ -107,12 +118,14 @@ const ExtraInfoForm = () => {
         },
       ],
     };
+    console.log(stateData);
     service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
         if (data.status == 200) {
           localStorage.setItem("ownerMobile", values.mobile);
           localStorage.setItem("moshaverName", e.options[e.selectedIndex].text);
+          localStorage.setItem("ownerName", values.name);
           setShowLoading(false);
           toastAlert("اطلاعات اضافی با موفقیت ثبت شد", "success");
           toastAlert("روی مرحله رسانه کلیک کنید", "info");
@@ -121,6 +134,19 @@ const ExtraInfoForm = () => {
       .catch((err) => {
         toastAlert("سرور مشغول است");
         setShowLoading(false);
+      });
+    let mantagheData = {
+      stateId: stateId,
+      mantaghe: mantagheId,
+    };
+    console.log(mantagheData);
+    service.states
+      .addMantaghe(userToken, mantagheData)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -154,22 +180,43 @@ const ExtraInfoForm = () => {
               if (e.target.value != 0) setshowMantagha(true);
               setshowMantaghaData(e.target.value);
             }}
-            rows={10}
             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
           >
             <option value="">منطقه را انتخاب کنید</option>
-            <option value="بوکان">بوکان</option>
+            {getManategh.map((item) => {
+              return item.parent == 0 ? (
+                <option value={item.name}>{item.name}</option>
+              ) : (
+                ""
+              );
+            })}
           </Field>
           {showMantagha && (
-            <Field
+            <select
               id="ostan"
               name="shahr"
               as="select"
-              rows={10}
+              onChange={(e) => {
+                setManateghTitle(e.target.value);
+                setManateghId(
+                  e.target.options[e.target.selectedIndex].getAttribute(
+                    "data-id"
+                  )
+                );
+              }}
               className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
             >
               <option>همه</option>
-              <option value="اسلام اباد">اسلام اباد</option>
+              {getManategh.map((item) => {
+                return item.parent == 1443 ? (
+                  <option data-id={item.term_id} value={item.name}>
+                    {item.name}
+                  </option>
+                ) : (
+                  ""
+                );
+              })}
+              {/* <option value="اسلام اباد">اسلام اباد</option>
               <option value="آزادگان"> آزادگان</option>
               <option value=" ابوذر"> ابوذر</option>
               <option value="استاد حقیقی">استاد حقیقی</option>
@@ -207,8 +254,8 @@ const ExtraInfoForm = () => {
               <option value="کوی محمدیه">کوی محمدیه</option>
               <option value="مجسمه مادر">مجسمه مادر</option>
               <option value="مسکن مهر">مسکن مهر</option>
-              <option value="ناچیت">ناچیت</option>
-            </Field>
+              <option value="ناچیت">ناچیت</option> */}
+            </select>
           )}
 
           <div className="flex items-center justify-between gap-4 max-md:flex-col">

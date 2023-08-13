@@ -54,6 +54,7 @@ const InformationForm = ({ setNextSection }) => {
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
+        console.log(err);
         setShowLoading(false);
       });
   };
@@ -102,6 +103,7 @@ const InformationForm = ({ setNextSection }) => {
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
+        console.log(err);
         setShowLoading(false);
       });
   }, []);

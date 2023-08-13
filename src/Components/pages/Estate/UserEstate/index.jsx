@@ -30,6 +30,9 @@ import ReactPaginate from "react-paginate";
 import { ClipLoader } from "react-spinners";
 
 const UserEstate = () => {
+  const [getManategh, setManategh] = useState([]);
+  const [showOtagh, setShowOtagh] = useState(false);
+
   const [states, setStates] = useState([]);
   const [empty, showEmpty] = useState(false);
   const [userRole, setUserRole] = useState("");
@@ -116,6 +119,8 @@ const UserEstate = () => {
         })
         .catch((err) => {
           navigate("/");
+          console.log(err);
+
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -123,6 +128,15 @@ const UserEstate = () => {
       navigate("/");
       toastAlert("شما به این بخش دسترسی ندارید");
     }
+    service.states
+      .getManategh(userToken)
+      .then((data) => {
+        console.log(data);
+        setManategh(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [itemOffset]);
   const deleteState = (stateId, stateTitle) => {
     let userToken = getToken();
@@ -144,12 +158,41 @@ const UserEstate = () => {
             setStates(filteredStates);
           })
           .catch((err) => {
+            console.log(err);
             toastAlert("سرور مشغول است");
           });
         Swal.fire("حذف شد!", "ملک مورد نظر حذف شد", "success");
       }
     });
   };
+
+  const deleteAdminState = (stateId, stateTitle) => {
+    let userToken = getToken();
+    Swal.fire({
+      title: `آیا از حذف ${stateTitle} مطمئن هستید ؟`,
+      text: "این عمل قابل بازگردانی نیست!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "!بله حذف شود",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        service.states
+          .deleteStateAdmin(stateId, userToken)
+          .then((data) => {
+            let filteredStates = states.filter((item) => item.ID != stateId);
+            setStates(filteredStates);
+          })
+          .catch((err) => {
+            console.log(err);
+            toastAlert("سرور مشغول است");
+          });
+        Swal.fire("حذف شد!", "ملک مورد نظر حذف شد", "success");
+      }
+    });
+  };
+
   const filterState = (e) => {
     e.preventDefault();
     setShowLoading(true);
@@ -160,23 +203,38 @@ const UserEstate = () => {
       let melk = e.target[1].value;
       let karbari = e.target[2].value;
       let mantaghe = e.target[3].value;
-      let price = e.target[4].value;
-      let metrazh = e.target[5].value;
+      let vahed = e.target[4].value;
+
+      let otagh = "";
+
+      let price = e.target[5].value;
+      let metrazh = e.target[6].value;
+      if (vahed == "1") {
+        otagh = e.target[5].value;
+        price = e.target[6].value;
+        metrazh = e.target[7].value;
+      }
       let stateData = {
         authorID: authorId,
         moamele,
         melk,
         karbari,
         mantaghe,
+        vahed,
         metrazhFrom: Number(getMinMetrazhRange),
         metrazhTo: Number(metrazh),
         priceFrom: Number(getMinPriceRange),
         priceTo: Number(price),
       };
+      if (vahed == "1") {
+        stateData.otagh = otagh;
+      }
+      console.log(stateData);
 
       service.states
         .filterStateAuthorID(userToken, stateData)
         .then((data) => {
+          console.log(data);
           if (data.data.length == 0) {
             showFilterEmpty(true);
           } else {
@@ -187,6 +245,7 @@ const UserEstate = () => {
           setFilteredState(data.data);
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
           setShowFilteredState(false);
@@ -228,6 +287,7 @@ const UserEstate = () => {
           setFilteredState(data.data);
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
           setShowFilteredState(false);
@@ -264,6 +324,7 @@ const UserEstate = () => {
           setFilteredState(data.data);
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
           setShowFilteredState(false);
@@ -341,6 +402,7 @@ const UserEstate = () => {
                           <option>آپارتمان</option>
                           <option>خانه و ویلا</option>
                           <option>زمین و کلنگی</option>
+                          <option>زمین کشاورزی</option>
                           <option>اداری و تجاری</option>
                         </select>
                       </div>
@@ -365,6 +427,8 @@ const UserEstate = () => {
                           <option>باغات </option>
                           <option>تفریحی </option>
                           <option>ورزشی </option>
+                          <option>صنعتی </option>
+                          <option>کشاورزی </option>
                           <option>فضای سبر </option>
                           <option> بدون کاربری </option>
                           <option> خارج از بافت </option>
@@ -382,55 +446,69 @@ const UserEstate = () => {
                             className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3    placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                           >
                             <option value="">همه</option>
-                            <option value="اسلام اباد">اسلام اباد</option>
-                            <option value="آزادگان"> آزادگان</option>
-                            <option value=" ابوذر"> ابوذر</option>
-                            <option value="استاد حقیقی">استاد حقیقی</option>
-                            <option value="اسکندری">اسکندری</option>
-                            <option value="امیر آباد">امیر آباد</option>
-                            <option value=" اینگیجه"> اینگیجه</option>
-                            <option value="پارک ساحلی">پارک ساحلی</option>
-                            <option value="جاده حصار">جاده حصار</option>
-                            <option value="چهاراه اطلاعات">
-                              چهاراه اطلاعات
-                            </option>
-                            <option value="چهاراه شهرداری">
-                              چهاراه شهرداری
-                            </option>
-                            <option value="خیابان انقلاب">خیابان انقلاب</option>
-                            <option value="خیابان زیتون">خیابان زیتون</option>
-                            <option value="خیابان سقز">خیابان سقز</option>
-                            <option value="خیابان ورزش">خیابان ورزش</option>
-                            <option value="دانشگاه آزاد">دانشگاه آزاد</option>
-                            <option value="زیبا کنار">زیبا کنار</option>
-                            <option value="سه راه خاوران">سه راه خاوران</option>
-                            <option value="سید شکره">سید شکره</option>
-                            <option value="شهرک امام">شهرک امام</option>
-                            <option value="شهرک برق">شهرک برق</option>
-                            <option value="شهرک فرهنگیان">شهرک فرهنگیان</option>
-                            <option value="شهرک گلستان">شهرک گلستان</option>
-                            <option value="عشایر">عشایر</option>
-                            <option value="علی آباد">علی آباد</option>
-                            <option value="فرمانداری">فرمانداری</option>
-                            <option value="فلکه قدس">فلکه قدس</option>
-                            <option value="کشتارگاه">کشتارگاه</option>
-                            <option value="کلتپه">کلتپه</option>
-                            <option value="کمربندی">کمربندی</option>
-                            <option value="کهریزه محمود آباد">
-                              کهریزه محمود آباد
-                            </option>
-                            <option value="کوسه">کوسه</option>
-                            <option value="کوی آفتاب">کوی آفتاب</option>
-                            <option value="کوی اندیشه">کوی اندیشه</option>
-                            <option value="کوی سپاه">کوی سپاه</option>
-                            <option value="کوی محمدیه">کوی محمدیه</option>
-                            <option value="مجسمه مادر">مجسمه مادر</option>
-                            <option value="مسکن مهر">مسکن مهر</option>
-                            <option value="ناچیت">ناچیت</option>
+                            {getManategh.map((item) => {
+                              return item.parent == 1443 ? (
+                                <option value={item.name}>{item.name}</option>
+                              ) : (
+                                ""
+                              );
+                            })}
                           </select>
                         </div>
                       </div>
                     </div>
+                    {moameleType == "خرید و فروش" ? (
+                      <div className="w-full flex items-center justify-between max-lg:flex-col gap-4">
+                        <div className="w-full">
+                          <label htmlFor="v" className="mb-3 block">
+                            چند واحده
+                          </label>
+                          <select
+                            id="v"
+                            name="v"
+                            as="select"
+                            onChange={(e) => {
+                              if (e.target.value == "1") {
+                                setShowOtagh(true);
+                              } else {
+                                setShowOtagh(false);
+                              }
+                            }}
+                            className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                          >
+                            <option value="">انتخاب کنید</option>
+                            <option value="1"> تک واحده </option>
+                            <option value="2"> دو واحده </option>
+                            <option value="3"> سه واحده </option>
+                            <option value="4"> چهار واحده </option>
+                          </select>
+                        </div>
+                        {showOtagh ? (
+                          <>
+                            <div className="w-full">
+                              <label htmlFor="otagh" className="mb-3 block">
+                                تعداد خواب
+                              </label>
+                              <select
+                                id="otagh"
+                                name="otagh"
+                                as="select"
+                                className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg	border-[1px] border-gray-400 border-solid p-3  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
+                              >
+                                <option value="">انتخاب کنید</option>
+                                <option value="1"> تک خوابه </option>
+                                <option value="2"> دو خوابه </option>
+                                <option value="3"> سه خوابه </option>
+                              </select>
+                            </div>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="w-full flex items-start justify-start max-lg:flex-col gap-4">
                     {moameleType == "خرید و فروش" ? (
@@ -718,7 +796,8 @@ const UserEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  پارکینگ : {item.parking == "0" ? "ندارد" : "دارد"}
+                                  پارکینگ :{" "}
+                                  {item.parking == "0" ? "ندارد" : "دارد"}
                                 </span>
                               </div>
 
@@ -756,19 +835,39 @@ const UserEstate = () => {
                             <div className="flex items-center gap-2 mt-4 justify-center">
                               {userRole.administrator ? (
                                 <>
-                                  <button
-                                    onClick={() => {
-                                      deleteState(item.ID, item.post_title);
-                                    }}
-                                    type="button"
-                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
-                                  >
-                                    <RiDeleteBin6Line
-                                      size={18}
-                                      className="pl-1"
-                                    />
-                                    حذف{" "}
-                                  </button>
+                                  {item.post_status == "trash" ? (
+                                    <button
+                                      onClick={() => {
+                                        deleteAdminState(
+                                          item.ID,
+                                          item.post_title
+                                        );
+                                      }}
+                                      type="button"
+                                      className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                    >
+                                      <RiDeleteBin6Line
+                                        size={18}
+                                        className="pl-1"
+                                      />
+                                      حذف برای همیشه
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => {
+                                        deleteState(item.ID, item.post_title);
+                                      }}
+                                      type="button"
+                                      className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                    >
+                                      <RiDeleteBin6Line
+                                        size={18}
+                                        className="pl-1"
+                                      />
+                                      حذف{" "}
+                                    </button>
+                                  )}
+
                                   <Link to={`/edit-estate/${item.ID}`}>
                                     <button
                                       type="button"
@@ -980,7 +1079,8 @@ const UserEstate = () => {
                                   className="text-gray-600"
                                 />
                                 <span className="mr-2 text-sm ">
-                                  پارکینگ : {item.parking}
+                                  پارکینگ :{" "}
+                                  {item.parking == "0" ? "ندارد" : "دارد"}
                                 </span>
                               </div>
 
@@ -1018,19 +1118,36 @@ const UserEstate = () => {
                             <div className="flex items-center gap-2 mt-4 justify-center">
                               {userRole.administrator ? (
                                 <>
-                                  <button
-                                    onClick={() => {
-                                      deleteState(item.ID, item.post_title);
-                                    }}
-                                    type="button"
-                                    className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
-                                  >
-                                    <RiDeleteBin6Line
-                                      size={18}
-                                      className="pl-1"
-                                    />
-                                    حذف{" "}
-                                  </button>
+                                  {item.post_status == "trash" ? (
+                                    <button
+                                      onClick={() => {
+                                        deleteState(item.ID, item.post_title);
+                                      }}
+                                      type="button"
+                                      className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                    >
+                                      <RiDeleteBin6Line
+                                        size={18}
+                                        className="pl-1"
+                                      />
+                                      حذف برای همیشه
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => {
+                                        deleteState(item.ID, item.post_title);
+                                      }}
+                                      type="button"
+                                      className="bg-red-500 p-2 flex items-start  rounded-md text-white text-sm "
+                                    >
+                                      <RiDeleteBin6Line
+                                        size={18}
+                                        className="pl-1"
+                                      />
+                                      حذف{" "}
+                                    </button>
+                                  )}
+
                                   <Link to={`/edit-estate/${item.ID}`}>
                                     <button
                                       type="button"

@@ -65,12 +65,14 @@ const MediaForm = () => {
               setShowLoading(false);
             })
             .catch((err) => {
+              console.log(err);
               toastAlert("سرور مشغول است");
               setShowLoading(false);
             });
         }
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
         setShowLoading(false);
       });
@@ -95,6 +97,7 @@ const MediaForm = () => {
         }
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
   };
@@ -118,6 +121,7 @@ const MediaForm = () => {
         setUploadedVideos(videos);
       })
       .catch((err) => {
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
   }, []);
@@ -129,7 +133,7 @@ const MediaForm = () => {
     });
     let data = {
       ID: stateId,
-      meta: [{ gallery: imageIds , _gallery:"field_5bdd406aef1f8" }],
+      meta: [{ gallery: imageIds, _gallery: "field_5bdd406aef1f8" }],
     };
 
     service.states
@@ -139,7 +143,7 @@ const MediaForm = () => {
       })
       .catch((err) => {
         setShowLoading(false);
-
+        console.log(err);
         toastAlert("سرور مشغول است");
       });
   };

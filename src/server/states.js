@@ -18,6 +18,15 @@ const deleteState = (stateId, token) => {
   });
 };
 
+const deleteStateAdmin = (stateId, token) => {
+  return axios.delete(
+    `${config.api}/wp-json/wp/v2/state/${stateId}?force=true`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+
 const getAutherStates = (userId, token) => {
   return axios.get(`${config.api}/wp-json/wp/v2/state/author/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -70,6 +79,16 @@ const getStateImage = (stateId, token) => {
   });
 };
 
+const getManategh = (stateId, token) => {
+  return axios.get(`${config.api}/wp-json/wp/v2/areas`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+const addMantaghe = (token, data) => {
+  return axios.post(`${config.api}/wp-json/wp/v2/addmantaghe`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 export default {
   getAutherStates,
   getStates,
@@ -82,4 +101,7 @@ export default {
   getStateImage,
   getBackoup,
   filterStateAuthorID,
+  getManategh,
+  deleteStateAdmin,
+  addMantaghe,
 };

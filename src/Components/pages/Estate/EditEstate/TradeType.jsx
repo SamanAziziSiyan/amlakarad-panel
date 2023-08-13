@@ -110,8 +110,7 @@ const TradeType = ({ stateData }) => {
         })
         .catch((err) => {
           toastAlert("سرور مشغول است");
-          setShowLoading(false);
-          toastAlert("سرور مشغول است");
+          console.log(err);
           setShowLoading(false);
         });
     }
@@ -144,8 +143,7 @@ const TradeType = ({ stateData }) => {
         })
         .catch((err) => {
           toastAlert("سرور مشغول است");
-          setShowLoading(false);
-          toastAlert("سرور مشغول است");
+          console.log(err);
           setShowLoading(false);
         });
     }
@@ -177,8 +175,8 @@ const TradeType = ({ stateData }) => {
         })
         .catch((err) => {
           toastAlert("سرور مشغول است");
+          console.log(err);
           setShowLoading(false);
-          toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
     }
@@ -245,6 +243,8 @@ const TradeType = ({ stateData }) => {
       })
       .catch((err) => {
         toastAlert("سرور مشغول است");
+        console.log(err);
+
         setShowLoading(false);
       });
   }, []);
@@ -463,6 +463,20 @@ const TradeType = ({ stateData }) => {
                         </option>
                         <option
                           selected={
+                            kharidData.karbari == "صنعتی" ? true : false
+                          }
+                        >
+                          صنعتی
+                        </option>
+                        <option
+                          selected={
+                            kharidData.karbari == "کشاورزی" ? true : false
+                          }
+                        >
+                          کشاورزی
+                        </option>
+                        <option
+                          selected={
                             kharidData.karbari == "خارج از بافت" ? true : false
                           }
                         >
@@ -548,6 +562,14 @@ const TradeType = ({ stateData }) => {
                           دردست اقدام
                         </option>
                         <option
+                          selected={
+                            kharidData.sanad == "ریز زمین" ? true : false
+                          }
+                        >
+                          ریز زمین
+                        </option>
+
+                        <option
                           selected={kharidData.sanad == "سایر" ? true : false}
                         >
                           سایر{" "}
@@ -609,6 +631,16 @@ const TradeType = ({ stateData }) => {
                         >
                           کلنگی
                         </option>
+                        <option
+                          selected={
+                            kharidData.construction == "شناژ قائم"
+                              ? true
+                              : false
+                          }
+                        >
+                          شناژ قائم
+                        </option>
+
                         <option
                           selected={
                             kharidData.construction == "ترکیبی" ? true : false

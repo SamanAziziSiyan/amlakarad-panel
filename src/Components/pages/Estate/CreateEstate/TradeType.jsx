@@ -68,6 +68,7 @@ const TradeType = () => {
           } else throw new Error();
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
           setShowLoading(false);
         });
@@ -99,6 +100,7 @@ const TradeType = () => {
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
         });
     }
@@ -129,6 +131,7 @@ const TradeType = () => {
           toastAlert("روی مرحله اطلاعات اضافی کلیک کنید ", "info");
         })
         .catch((err) => {
+          console.log(err);
           toastAlert("سرور مشغول است");
         });
     }
@@ -267,17 +270,19 @@ const TradeType = () => {
                         className="w-full mb-4 backdrop-blur-md bg-opacity-50 outline-none  bg-white/5 rounded-lg border-[1px] border-gray-400 border-solid p-3 text-gray-300  placeholder-slate-300 focus:border-gray-200  shadow-gray-800 shadow-sm   sm:text-sm"
                       >
                         <option value={0}>انتخاب کنید</option>
-                        <option> مسکونی </option>
-                        <option> تجاری</option>
-                        <option>اداری </option>
-                        <option>زراعی </option>
-                        <option>باغات </option>
+                        <option>مسکونی </option>
+                        <option>تجاری</option>
+                        <option>اداری</option>
+                        <option>زراعی</option>
+                        <option>باغات</option>
                         <option>تفریحی </option>
-                        <option>ورزشی </option>
-                        <option>فضای سبر </option>
-                        <option> بدون کاربری </option>
-                        <option> خارج از بافت </option>
-                        <option> سایر </option>
+                        <option>ورزشی</option>
+                        <option>صنعتی</option>
+                        <option>کشاورزی</option>
+                        <option>فضای سبر</option>
+                        <option>بدون کاربری</option>
+                        <option>خارج از بافت</option>
+                        <option>سایر</option>
                       </Field>
                     </div>
                     <div className="w-full">
@@ -300,6 +305,7 @@ const TradeType = () => {
                         <option>سازمانی</option>
                         <option>نسخ</option>
                         <option>دردست اقدام</option>
+                        <option>ریز زمین</option>
                         <option>سایر </option>
                       </Field>
                     </div>
@@ -323,6 +329,7 @@ const TradeType = () => {
                         <option>بتن آرمه</option>
                         <option>اسکلت فلزی</option>
                         <option>کلنگی</option>
+                        <option>شناژ قائم</option>
                         <option>ترکیبی</option>
                       </Field>
                     </div>
