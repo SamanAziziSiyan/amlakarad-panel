@@ -118,8 +118,7 @@ const ExtraInfoForm = () => {
         },
       ],
     };
-    console.log(stateData);
-    service.states
+     service.states
       .insertMetaData(userToken, stateData)
       .then((data) => {
         if (data.status == 200) {
@@ -139,12 +138,10 @@ const ExtraInfoForm = () => {
       stateId: stateId,
       mantaghe: mantagheId,
     };
-    console.log(mantagheData);
-    service.states
+     service.states
       .addMantaghe(userToken, mantagheData)
       .then((data) => {
-        console.log(data);
-      })
+       })
       .catch((err) => {
         console.log(err);
       });

@@ -252,8 +252,7 @@ const SearchEstate = () => {
         service.states
           .filterStates(userToken, stateData)
           .then((data) => {
-            console.log(data);
-            if (data.data.length == 0) {
+             if (data.data.length == 0) {
               showFilterEmpty(true);
             } else {
               showFilterEmpty(false);

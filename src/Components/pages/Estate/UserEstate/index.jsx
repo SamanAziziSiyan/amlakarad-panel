@@ -131,8 +131,7 @@ const UserEstate = () => {
     service.states
       .getManategh(userToken)
       .then((data) => {
-        console.log(data);
-        setManategh(data.data);
+         setManategh(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -229,13 +228,11 @@ const UserEstate = () => {
       if (vahed == "1") {
         stateData.otagh = otagh;
       }
-      console.log(stateData);
-
+ 
       service.states
         .filterStateAuthorID(userToken, stateData)
         .then((data) => {
-          console.log(data);
-          if (data.data.length == 0) {
+           if (data.data.length == 0) {
             showFilterEmpty(true);
           } else {
             showFilterEmpty(false);

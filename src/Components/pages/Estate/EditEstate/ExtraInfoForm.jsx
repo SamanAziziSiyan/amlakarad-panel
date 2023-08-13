@@ -196,12 +196,9 @@ const ExtraInfoForm = () => {
       stateId: Number(stateId),
       mantaghe: Number(mantagheId),
     };
-    console.log(mantagheData);
     service.states
       .addMantaghe(userToken, mantagheData)
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch((err) => {
         console.log(err);
       });

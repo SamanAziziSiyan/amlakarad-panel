@@ -48,8 +48,7 @@ const EstateDetails = () => {
         } else {
           setVideoSrc("");
         }
-        console.log(data.data);
-        setStateData(data.data[0]);
+         setStateData(data.data[0]);
         setShowLoading(false);
         service.personnel
           .getUser(token, data.data[0].post_author)
