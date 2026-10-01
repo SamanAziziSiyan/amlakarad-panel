@@ -1,6 +1,5 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-// import bcrypt from "bcrypt";
 
 export const toastAlert = (msg, type = "error") => {
   toast(msg, {
@@ -12,20 +11,20 @@ export const toastAlert = (msg, type = "error") => {
     draggable: true,
     progress: undefined,
     theme: "colored",
-    type: type,
+    type,
   });
 };
 
-export const getToken = () => {
-  return localStorage.getItem("token");
-};
+export const getToken = () => localStorage.getItem("token");
+
 export const getUserDataOnLocalStorage = () => {
-  let userData = localStorage.getItem("user");
-  return JSON.parse(userData);
+  const userData = localStorage.getItem("user");
+  return userData ? JSON.parse(userData) : null;
 };
+
 export const getUserSettinOnLocalStorage = () => {
-  let userSetting = localStorage.getItem("Settings");
-  return JSON.parse(userSetting);
+  const userSetting = localStorage.getItem("Settings");
+  return userSetting ? JSON.parse(userSetting) : null;
 };
 
 export const modalStyles = {
@@ -39,81 +38,47 @@ export const modalStyles = {
   },
 };
 
+/*
+ * SMS provider credentials must never be shipped in the browser bundle.
+ * Configure a server-side proxy endpoint that owns the provider credential:
+ *
+ * REACT_APP_SMS_PROXY_URL=https://your-backend.example.com/api/sms
+ *
+ * The proxy is expected to accept the same payload used below and authenticate
+ * with the SMS provider on the server. Do not put the provider API key in a
+ * REACT_APP_* variable.
+ */
+const getSmsProxyUrl = () => {
+  const url = process.env.REACT_APP_SMS_PROXY_URL;
+  if (!url) {
+    throw new Error("SMS proxy is not configured");
+  }
+  return url;
+};
+
+const postSms = (data) => axios.post(getSmsProxyUrl(), data);
+
 export const sendSMSCode = async (mobile, code) => {
-  let data = {
-    mobile: mobile,
+  return postSms({
+    type: "verification",
+    mobile: String(mobile),
     templateId: 100000,
-    parameters: [
-      {
-        name: "Code",
-        value: String(code),
-      },
-    ],
-  };
-  return axios.post(`https://api.sms.ir/v1/send/verify`, JSON.stringify(data), {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "text/plain",
-      "x-api-key":
-        "N4gqCCHLO3bvKbzipOG0ZxdZykJKfZKBIFrcnAcQwK8baftKgz5iu9fpxH4rAejb",
-    },
+    parameters: [{ name: "Code", value: String(code) }],
   });
 };
 
 export const sendSMSAdminState = async (username, title) => {
-  let data = {
-    mobile: "09145618696",
-    templateId: 689397,
-    parameters: [
-      {
-        name: "username",
-        value: username,
-      },
-      {
-        name: "title",
-        value: title,
-      },
-    ],
-  };
-  return axios.post(`https://api.sms.ir/v1/send/verify`, JSON.stringify(data), {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "text/plain",
-      "x-api-key":
-        "N4gqCCHLO3bvKbzipOG0ZxdZykJKfZKBIFrcnAcQwK8baftKgz5iu9fpxH4rAejb",
-    },
+  return postSms({
+    type: "admin-state",
+    username: String(username),
+    title: String(title),
   });
 };
 
 export const sendSMSStateOwner = async (mobile, title) => {
-  let data = {
+  return postSms({
+    type: "state-owner",
     mobile: String(mobile),
-    templateId: 172091,
-    parameters: [
-      {
-        name: "title",
-        value: title,
-      },
-    ],
-  };
-  return axios.post(`https://api.sms.ir/v1/send/verify`, JSON.stringify(data), {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "text/plain",
-      "x-api-key":
-        "N4gqCCHLO3bvKbzipOG0ZxdZykJKfZKBIFrcnAcQwK8baftKgz5iu9fpxH4rAejb",
-    },
+    title: String(title),
   });
 };
-
-// export const hashData = (data) => {
-//   const salt = bcrypt.genSaltSync(10);
-//   const hash = bcrypt.hashSync(data, salt);
-//   return hash;
-// };
-
-// export const unHashData = async (data) => {
-//   const unHash = await bcrypt.compare(password, hash);
-
-//   return unHash;
-// };
